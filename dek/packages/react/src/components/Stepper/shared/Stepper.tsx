@@ -1,0 +1,86 @@
+"use client";
+
+import React, {
+  createContext,
+  ElementRef,
+  forwardRef,
+  useContext,
+} from "react";
+import { Check, Clock, Cross } from "@fair/icons";
+import * as Styled from "./Stepper.styles";
+import {
+  StepInformation,
+  StepperContentProps,
+  StepperIndicatorProps,
+  StepperItemProps,
+  StepperRootProps,
+} from "./Stepper.types";
+
+export const StepperContext = createContext<StepperRootProps>(
+  {} as StepperRootProps,
+);
+
+export const StepperItemContext = createContext<StepperItemProps>(
+  {} as StepperItemProps,
+);
+
+export const StepContext = createContext<StepInformation>(undefined);
+
+export const Root = forwardRef<
+  ElementRef<typeof Styled.StepperList>,
+  StepperRootProps
+>((props: StepperRootProps, ref) => {
+  const { children, size, ...rest } = props;
+  return (
+    <Styled.StepperList ref={ref} size={size} {...rest}>
+      <StepperContext.Provider value={props}>
+        {children}
+      </StepperContext.Provider>
+    </Styled.StepperList>
+  );
+});
+Root.displayName = "Stepper.Root";
+
+const Indicator = forwardRef<
+  ElementRef<typeof Styled.StepperIndicator>,
+  StepperIndicatorProps
+>(({ state, children, step, checkout, ...rest }, ref) => {
+  const { size } = useContext(StepperContext);
+  return (
+    <Styled.StepperIndicator
+      ref={ref}
+      $size={size}
+      $state={state}
+      step={step}
+      {...rest}
+    >
+      {state === "completed" && <Check />}
+      {state === "error" && <Cross />}
+      {state === "pending" && <Clock />}
+      {(state === "open" || state === "current") && (
+        <Styled.IndicatorText $size={size} $checkout={checkout}>
+          {step}
+        </Styled.IndicatorText>
+      )}
+    </Styled.StepperIndicator>
+  );
+});
+
+Indicator.displayName = "Stepper.Indicator";
+
+export const Content = forwardRef<
+  ElementRef<typeof Styled.StepperContent>,
+  StepperContentProps
+>((props: StepperContentProps, ref) => {
+  const { children, ...rest } = props;
+  return (
+    <Styled.StepperContent ref={ref} {...rest}>
+      {children}
+    </Styled.StepperContent>
+  );
+});
+
+Content.displayName = "Stepper.Content";
+
+export const Stepper = { Indicator, Root, Content };
+export type { StepperItemState } from "./Stepper.types";

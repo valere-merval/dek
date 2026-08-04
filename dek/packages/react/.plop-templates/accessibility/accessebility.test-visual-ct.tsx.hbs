@@ -1,0 +1,57 @@
+test.describe("Accessibility", () => {
+  test.use(viewports.sm);
+
+  test("highContrast and light mode", async ({
+    mount,
+    {{camelCase name}}Page,
+  }) => {
+    await {{camelCase name}}Page.page.emulateMedia({
+      forcedColors: "active",
+      colorScheme: "light",
+    });
+    await mount(<stories.Default />);
+    // TODO: Replace root with specific locator if possible
+    await expect({{camelCase name}}Page.root).toBeVisible();
+    await expect({{camelCase name}}Page.root).toHaveScreenshot();
+  });
+
+  test("highContrast and dark mode", async ({
+    mount,
+    {{camelCase name}}Page,
+  }) => {
+    await {{camelCase name}}Page.page.emulateMedia({
+      forcedColors: "active",
+      colorScheme: "dark",
+    });
+    await mount(<stories.Default />);
+    // TODO: Replace root with specific locator if possible
+    await expect({{camelCase name}}Page.root).toBeVisible();
+    await expect({{camelCase name}}Page.root).toHaveScreenshot();
+  });
+  
+  test("lineHeight and letterSpacing modification", async ({
+    mount,
+    {{camelCase name}}Page,
+  }) => {
+    await {{camelCase name}}Page.page.addStyleTag({
+      path: "./playwright/assets/a11y.css",
+    });
+    await mount(<stories.Default />);
+    // TODO: Replace root with specific locator if possible
+    await expect({{camelCase name}}Page.root).toBeVisible();
+    await expect({{camelCase name}}Page.root).toHaveScreenshot();
+  });
+
+  test("axe report", async ({ mount, {{camelCase name}}Page }) => {
+    await mount(<stories.Default />);
+
+    const accessibilityScanResults = await new AxeBuilder({
+       
+      page: {{camelCase name}}Page.page,
+    })
+      .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+      .analyze(); 
+
+    expect(accessibilityScanResults.violations).toEqual([]); 
+  });
+});

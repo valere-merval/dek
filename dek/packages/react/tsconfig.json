@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "../tsconfig/react-library.json",
+  "include": [
+    "./src",
+    "./scripts",
+    "./.storybook/preview.tsx",
+    "./.storybook/manager.tsx",
+    "./.storybook/fairTheme.ts",
+    "custom.d.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "plopfile.ts",
+    "./playwright",
+    "playwright-ct.config.ts"
+  ],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "noEmit": true,
+    "typeRoots": ["./node_modules/@types"]
+  }
+}

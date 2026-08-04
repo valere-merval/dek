@@ -1,0 +1,91 @@
+import { expect, test as base } from "@playwright/experimental-ct-react";
+import type { Locator, Page } from "@playwright/test";
+import stories from "./{{pascalCase name}}.stories.portable";
+
+import { viewports,testDescribeAllowedBackgrounds } from "{{#if subfolder}}../{{/if}}../../../playwright/fixtures";
+import AxeBuilder from "@axe-core/playwright";
+
+const test = base.extend<{
+    {{camelCase name}}Page: {
+      page: Page;
+      root: Locator;
+    };
+  }>({
+    {{camelCase name}}Page: async ({ page }, use) => {
+      const root = page.locator("#root");
+      await use({
+        page,
+        root,
+      });
+    },
+  });
+
+testDescribeAllowedBackgrounds(
+  test,
+  {
+    // TODO: Check supported background colors
+    congstarWeb: {
+      black: stories.WithCongstarWebBlackBackground,
+      white: stories.WithCongstarWebWhiteBackground,
+      lightGrey: stories.WithCongstarWebLightGreyBackground,
+      darkGrey: stories.WithCongstarWebDarkGreyBackground,
+      blue: stories.WithCongstarWebBlueBackground,
+    },
+    congstarApp: {
+        black: stories.WithCongstarAppBlackBackground,
+        white: stories.WithCongstarAppWhiteBackground,
+        lightGrey: stories.WithCongstarAppLightGreyBackground,
+        darkGrey: stories.WithCongstarAppDarkGreyBackground,
+      },
+    ja: {
+        jaAgave20: stories.WithJaJaAgave20Background,
+        jaAgave80: stories.WithJaJaAgave80Background,
+        jaGeneralWhite: stories.WithJaJaGeneralWhiteBackground,
+        jaAgaveOutlinesSecondary:
+          stories.WithJaJaAgaveOutlinesSecondaryBackground,
+      },
+    penny: {
+      pennyRed: stories.WithPennyPennyRedBackground,
+        pennyRedDark: stories.WithPennyPennyRedDarkBackground,
+        pennyNeutralWhite: stories.WithPennyPennyNeutralWhiteBackground,
+        pennyNeutralLightGrey: stories.WithPennyPennyNeutralLightGreyBackground,
+    },
+  },
+  (BackgroundStory) => {
+    test(`Should render {{camelCase name}}`, async ({
+      mount,
+      {{camelCase name}}Page,
+    }) => {
+      await mount(<BackgroundStory />);
+      // TODO: Replace root with specific locator if possible
+      await expect({{camelCase name}}Page.root).toBeVisible();
+      await expect({{camelCase name}}Page.root).toHaveScreenshot();
+    });
+  },
+);
+
+test.describe("Small Viewport", () => {
+  test.use(viewports.sm);
+
+  test("Should render", async ({
+    mount,
+    {{camelCase name}}Page,
+  }) => {
+    await mount(<stories.Default />);
+    // TODO: Replace root with specific locator if possible
+    await expect({{camelCase name}}Page.root).toBeVisible();
+    await expect({{camelCase name}}Page.root).toHaveScreenshot();
+  });
+});
+
+test.describe("Large Viewport", () => {
+  test("Should render", async ({
+    mount,
+    {{camelCase name}}Page,
+  }) => {
+    await mount(<stories.Default />);
+    // TODO: Replace root with specific locator if possible
+    await expect({{camelCase name}}Page.root).toBeVisible();
+    await expect({{camelCase name}}Page.root).toHaveScreenshot();
+  });
+});

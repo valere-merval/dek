@@ -1,0 +1,28 @@
+import { defineVisualMeta } from "{{relativePrefix}}scripts/storybook-llms-extractor/types.js";
+
+/**
+ * Visual metadata for AI component recognition.
+ * This helps LLMs identify when to use this component based on visual designs.
+ *
+ * @see /packages/react/scripts/storybook-llms-extractor/types.ts for VisualMeta type
+ */
+export default defineVisualMeta({
+  component: "{{pascalCase name}}",
+  categories: [{{#each categories}}"{{this}}"{{#unless @last}}, {{/unless}}{{/each}}],
+  visualTraits: [
+    // TODO: Add visual traits that help identify this component
+    // Examples: "Solid filled background", "Rounded corners", "Icon on the left"
+  ],
+  useWhen: [
+    // TODO: Describe scenarios when this component should be used
+    // Examples: "Primary call-to-action", "Displaying user profile information"
+  ],
+  notUseWhen: [
+    // TODO: Describe scenarios when NOT to use this component (optional)
+    // Examples: "For secondary actions, use ButtonSecondary instead"
+  ],
+  similarComponents: [
+    // TODO: List components that might be confused with this one (optional)
+    // { component: "SimilarComponent", difference: "Explain the difference" }
+  ],
+});

@@ -1,0 +1,29 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { {{pascalCase name}} } from "./{{pascalCase name}}";
+import { AllowedBackgroundColors } from "{{#if subfolder}}../{{/if}}../../theme/theme";
+
+const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
+  congstarWeb: ["black", "white", "darkGrey", "lightGrey", "blue"],
+};
+
+const meta = {
+  component: {{pascalCase name}},
+  parameters: {
+    allowedBackgroundColors,
+  },
+  tags: [
+    "notReadyForCongstarApp",
+    "notReadyForJa",
+    "notReadyForPenny",
+    "!readyForCongstarApp",
+    "!readyForJa",
+    "!readyForPenny",
+  ],
+} satisfies Meta<typeof {{pascalCase name}}>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {}
+};

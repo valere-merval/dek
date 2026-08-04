@@ -1,0 +1,6 @@
+{
+  "distPath": "storybook-static",
+  "tokensPath": "../tokens/dist/llms-tokens.txt",
+  "summaryTitle": "Fair Library",
+  "summaryDescription": "Fair React components documentation"
+}

@@ -1,0 +1,8 @@
+import React, { forwardRef, ElementRef } from "react";
+import { {{pascalCase name}}Props } from "./{{pascalCase name}}.types";
+import * as Styled from "./{{pascalCase name}}.styles";
+
+export const {{pascalCase name}} = forwardRef<ElementRef<typeof Styled.Root>, {{pascalCase name}}Props>((props: {{pascalCase name}}Props, ref) => {
+  return <Styled.Root ref={ref} {...props} />;
+});
+{{pascalCase name}}.displayName = "{{pascalCase name}}"

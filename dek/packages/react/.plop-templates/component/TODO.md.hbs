@@ -1,0 +1,30 @@
+## Vor der Entwicklung
+
+- [ ] Ich habe das **[CONTRIBUTING](../../CONTRIBUTING.md)**-Dokument gelesen.
+- [ ] Ich habe die `delete source branch` Option ausgewählt, oder nach dem Merge meinen Branch gelöscht
+
+## Entwicklung
+### Fair Checkliste
+- [ ] Ich habe die Komponente als forwardRef implementiert
+- [ ] Ich habe eine Default Story mit funktionierenden Controls angelegt. (Weitere Stories sollten nur angelegt werden,
+  ([Referenz](../../packages/react/src/components/Typography/Typography.tsx))
+- [ ] Ich gebe für alle Komponenten, in denen es möglich ist, die Default HTML Props mit ...rest mit
+  ([Referenz](../../packages/react/src/components/List/List.tsx))
+- [ ] Ich habe einen Wrapper für alle reinen StyledComponents gebaut und exportiere diese aus der React Datei (nicht aus
+  der .style Datei)
+  ([Referenz](../../packages/react/src/components/Divider/Divider.tsx))
+- [ ] Ich habe alle Komponenten aussagekräftig benannt
+  Beispiel für eine gute Benamung ist `HeadlineHighlighted`, denn sie folgt dem Schema "NomenAdjektiv" wobei das
+  Adjektiv
+  optional ist.
+- [ ] Ich exportiere für alle Komponenten die jeweiligen PropTypes.
+  ([Referenz](../../packages/react/src/components/List/index.ts))
+- [ ] Ich habe Visual regression Tests hinzugefügt, um die Komponente abzudecken.
+- [ ] Ich habe die Visual Meta Datei entsprechend angereichert.
+- [ ] Ich habe meine Komponente in der nextjs example app eingebunden.
+- [ ] Ich habe die Browser Konsole geprüft und Errors behoben.
+- [ ] Ich habe alle unnötigen props und Styles von der Entwicklung aus meiner Komponente entfernt.
+- [ ] Ich habe alle Typen in eine Seperate `.types` Datei ausgelagert um Circular Deps. zu vermeiden.
+- [ ] Ich habe die Dokumentation entsprechend aktualisiert.
+- [ ] Ich habe ein Changeset per `npx changeset` erzeugt.
+- [ ] Ich habe alle css Werte die in Tokens abgebildet werden auch in Tokens abgebildet.
