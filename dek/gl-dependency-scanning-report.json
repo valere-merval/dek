@@ -1,0 +1,1724 @@
+{
+  "version": "15.2.4",
+  "vulnerabilities": [
+    {
+      "id": "d8159000fd0ad6766c950abda9a7241365ddbfbf07c2905db5ad3012225c25a9",
+      "name": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
+      "description": "`matchOne()` performs unbounded recursive backtracking when a glob pattern contains multiple non-adjacent `**` (GLOBSTAR) segments and the input path does not match. The time complexity is O(C(n, k)) -- binomial -- where `n` is the number of path segments and `k` is the number of globstars. With k=11 and n=30, a call to the default `minimatch()` API stalls for roughly 5 seconds. With k=13, it exceeds 15 seconds. No memoization or call budget exists to bound this behavior.\n\n---",
+      "severity": "High",
+      "solution": "Upgrade to versions 10.2.3, 3.1.3, 4.2.5, 5.1.8, 6.2.2, 7.4.8, 8.0.6, 9.0.7 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "minimatch"
+          },
+          "version": "10.2.1"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-53015c5c-1b85-4429-bd11-d84e31c438a4",
+          "value": "53015c5c-1b85-4429-bd11-d84e31c438a4"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-407",
+          "value": "407",
+          "url": "https://cwe.mitre.org/data/definitions/407.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-27903",
+          "value": "CVE-2026-27903",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27903"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-7r86-cg39-jmmj",
+          "value": "GHSA-7r86-cg39-jmmj",
+          "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj"
+        },
+        {
+          "url": "https://github.com/isaacs/minimatch"
+        },
+        {
+          "url": "https://github.com/isaacs/minimatch/commit/0bf499aa45f5059b56809cc3b75ff3eafeb8d748"
+        },
+        {
+          "url": "https://github.com/isaacs/minimatch/security/advisories/GHSA-7r86-cg39-jmmj"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-27903"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "minimatch:10.2.1"
+        }
+      }
+    },
+    {
+      "id": "f7384aff62440b241a7e8046d5b04ce32648041300c283a12141a13a63dd4282",
+      "name": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
+      "description": "Nested `*()` extglobs produce regexps with nested unbounded quantifiers (e.g. `(?:(?:a|b)*)*`), which exhibit catastrophic backtracking in V8. With a 12-byte pattern `*(*(*(a|b)))` and an 18-byte non-matching input, `minimatch()` stalls for over 7 seconds. Adding a single nesting level or a few input characters pushes this to minutes. This is the most severe finding: it is triggered by the default `minimatch()` API with no special options, and the minimum viable pattern is only 12 bytes. The same issue affects `+()` extglobs equally.\n\n---",
+      "severity": "High",
+      "solution": "Upgrade to versions 10.2.3, 3.1.4, 4.2.5, 5.1.8, 6.2.2, 7.4.8, 8.0.6, 9.0.7 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "minimatch"
+          },
+          "version": "10.2.1"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-83c93824-8eda-49c7-a92e-6f2578615bfc",
+          "value": "83c93824-8eda-49c7-a92e-6f2578615bfc"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1333",
+          "value": "1333",
+          "url": "https://cwe.mitre.org/data/definitions/1333.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-27904",
+          "value": "CVE-2026-27904",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-27904"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-23c5-xmqv-rm74",
+          "value": "GHSA-23c5-xmqv-rm74",
+          "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74"
+        },
+        {
+          "url": "https://github.com/isaacs/minimatch"
+        },
+        {
+          "url": "https://github.com/isaacs/minimatch/commit/11d0df6165d15a955462316b26d52e5efae06fce"
+        },
+        {
+          "url": "https://github.com/isaacs/minimatch/security/advisories/GHSA-23c5-xmqv-rm74"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-27904"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "minimatch:10.2.1"
+        }
+      }
+    },
+    {
+      "id": "8b53f6b220f5f748ce38bdcd6af4c217884727762a80e39c4bbb5d7f2707bde9",
+      "name": "lodash vulnerable to Code Injection via `_.template` imports key names",
+      "description": "The fix for [CVE-2021-23337](https://github.com/advisories/GHSA-35jh-r3h4-6jhm) added validation for the `variable` option in `_.template` but did not apply the same validation to `options.imports` key names. Both paths flow into the same `Function()` constructor sink.\n\nWhen an application passes untrusted input as `options.imports` key names, an attacker can inject default-parameter expressions that execute arbitrary code at template compilation time.\n\nAdditionally, `_.template` uses `assignInWith` to merge imports, which enumerates inherited properties via `for..in`. If `Object.prototype` has been polluted by any other vector, the polluted keys are copied into the imports object and passed to `Function()`.",
+      "severity": "High",
+      "solution": "Upgrade to version 4.18.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "lodash"
+          },
+          "version": "4.17.23"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-cd02b702-718b-43b0-84b5-413ccbf7eabb",
+          "value": "cd02b702-718b-43b0-84b5-413ccbf7eabb"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-94",
+          "value": "94",
+          "url": "https://cwe.mitre.org/data/definitions/94.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-4800",
+          "value": "CVE-2026-4800",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-4800"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-r5fr-rjxr-66jc",
+          "value": "GHSA-r5fr-rjxr-66jc",
+          "url": "https://github.com/advisories/GHSA-r5fr-rjxr-66jc"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://cna.openjsf.org/security-advisories.html"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-35jh-r3h4-6jhm"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-r5fr-rjxr-66jc"
+        },
+        {
+          "url": "https://github.com/lodash/lodash"
+        },
+        {
+          "url": "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c"
+        },
+        {
+          "url": "https://github.com/lodash/lodash/security/advisories/GHSA-r5fr-rjxr-66jc"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-4800"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "lodash:4.17.23"
+        }
+      }
+    },
+    {
+      "id": "89171d3320213875e01f9a4c1aefc71d1e844780a790e0b8a6fa84753375b1a2",
+      "name": "Undici has Unbounded Memory Consumption in WebSocket permessage-deflate Decompression",
+      "description": "The undici WebSocket client is vulnerable to a denial-of-service attack via unbounded memory consumption during permessage-deflate decompression. When a WebSocket connection negotiates the permessage-deflate extension, the client decompresses incoming compressed frames without enforcing any limit on the decompressed data size. A malicious WebSocket server can send a small compressed frame (a \"decompression bomb\") that expands to an extremely large size in memory, causing the Node.js process to exhaust available memory and crash or become unresponsive.\n\nThe vulnerability exists in the `PerMessageDeflate.decompress()` method, which accumulates all decompressed chunks in memory and concatenates them into a single Buffer without checking whether the total size exceeds a safe threshold.",
+      "severity": "High",
+      "solution": "Upgrade to versions 6.24.0, 7.24.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "undici"
+          },
+          "version": "5.29.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-d3ea0aa0-8870-4463-92b7-11f19f30bf89",
+          "value": "d3ea0aa0-8870-4463-92b7-11f19f30bf89"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-409",
+          "value": "409",
+          "url": "https://cwe.mitre.org/data/definitions/409.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-1526",
+          "value": "CVE-2026-1526",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-1526"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-vrm6-8vpv-qv8q",
+          "value": "GHSA-vrm6-8vpv-qv8q",
+          "url": "https://github.com/advisories/GHSA-vrm6-8vpv-qv8q"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://cna.openjsf.org/security-advisories.html"
+        },
+        {
+          "url": "https://datatracker.ietf.org/doc/html/rfc7692"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-vrm6-8vpv-qv8q"
+        },
+        {
+          "url": "https://github.com/nodejs/undici"
+        },
+        {
+          "url": "https://github.com/nodejs/undici/security/advisories/GHSA-vrm6-8vpv-qv8q"
+        },
+        {
+          "url": "https://hackerone.com/reports/3481206"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-1526"
+        },
+        {
+          "url": "https://owasp.org/www-community/attacks/Denial_of_Service"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "undici:5.29.0"
+        }
+      }
+    },
+    {
+      "id": "ff03a0fadb0ba78782cdd9b6aad01184a57d336eb5d83ba0d45abd81c2cb13d0",
+      "name": "Undici has Unhandled Exception in WebSocket Client Due to Invalid server_max_window_bits Validation",
+      "description": "The undici WebSocket client is vulnerable to a denial-of-service attack due to improper validation of the `server_max_window_bits` parameter in the permessage-deflate extension. When a WebSocket client connects to a server, it automatically advertises support for permessage-deflate compression. A malicious server can respond with an out-of-range `server_max_window_bits` value (outside zlib's valid range of 8-15). When the server subsequently sends a compressed frame, the client attempts to create a zlib InflateRaw instance with the invalid windowBits value, causing a synchronous RangeError exception that is not caught, resulting in immediate process termination.\n\nThe vulnerability exists because:\n\n1. The `isValidClientWindowBits()` function only validates that the value contains ASCII digits, not that it falls within the valid range 8-15\n2. The `createInflateRaw()` call is not wrapped in a try-catch block\n3. The resulting exception propagates up through the call stack and crashes the Node.js process",
+      "severity": "High",
+      "solution": "Upgrade to versions 6.24.0, 7.24.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "undici"
+          },
+          "version": "5.29.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-d056fc99-9980-4223-ae7c-1022ac922007",
+          "value": "d056fc99-9980-4223-ae7c-1022ac922007"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-248",
+          "value": "248",
+          "url": "https://cwe.mitre.org/data/definitions/248.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-2229",
+          "value": "CVE-2026-2229",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-2229"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-v9p9-hfj2-hcw8",
+          "value": "GHSA-v9p9-hfj2-hcw8",
+          "url": "https://github.com/advisories/GHSA-v9p9-hfj2-hcw8"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://cna.openjsf.org/security-advisories.html"
+        },
+        {
+          "url": "https://datatracker.ietf.org/doc/html/rfc7692"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-v9p9-hfj2-hcw8"
+        },
+        {
+          "url": "https://github.com/nodejs/undici"
+        },
+        {
+          "url": "https://github.com/nodejs/undici/security/advisories/GHSA-v9p9-hfj2-hcw8"
+        },
+        {
+          "url": "https://hackerone.com/reports/3487486"
+        },
+        {
+          "url": "https://nodejs.org/api/zlib.html#class-zlibinflateraw"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-2229"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "undici:5.29.0"
+        }
+      }
+    },
+    {
+      "id": "ae09f63e6fe7f8f6a930040dec6e133f7c7ba6caa78c570d3950f5b4cdb6ead8",
+      "name": "Vite Vulnerable to Arbitrary File Read via Vite Dev Server WebSocket",
+      "description": "[`server.fs`](https://vite.dev/config/server-options#server-fs-strict) check was not enforced to the `fetchModule` method that is exposed in Vite dev server's WebSocket.",
+      "severity": "High",
+      "solution": "Upgrade to versions 6.4.2, 7.3.2, 8.0.5 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "vite"
+          },
+          "version": "6.4.1"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-c1575393-930a-4396-bd6d-952e8da53757",
+          "value": "c1575393-930a-4396-bd6d-952e8da53757"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-200",
+          "value": "200",
+          "url": "https://cwe.mitre.org/data/definitions/200.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-306",
+          "value": "306",
+          "url": "https://cwe.mitre.org/data/definitions/306.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-p9ff-h696-f583",
+          "value": "GHSA-p9ff-h696-f583",
+          "url": "https://github.com/advisories/GHSA-p9ff-h696-f583"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
+        },
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-p9ff-h696-f583"
+        },
+        {
+          "url": "https://github.com/vitejs/vite"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/commit/f02d9fde0b195afe3ea2944414186962fbbe41e0"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/pull/22159"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v6.4.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v7.3.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v8.0.5"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/security/advisories/GHSA-p9ff-h696-f583"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "vite:6.4.1"
+        }
+      }
+    },
+    {
+      "id": "259d6abe001c237c262b44e4cc27cc5659baf6d8150fbc19b1f6156d9180f09d",
+      "name": "Vite Vulnerable to Arbitrary File Read via Vite Dev Server WebSocket",
+      "description": "[`server.fs`](https://vite.dev/config/server-options#server-fs-strict) check was not enforced to the `fetchModule` method that is exposed in Vite dev server's WebSocket.",
+      "severity": "High",
+      "solution": "Upgrade to versions 6.4.2, 7.3.2, 8.0.5 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "vite"
+          },
+          "version": "6.4.1"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-a24e9d30-fa45-4bf2-9aee-223603401e54",
+          "value": "a24e9d30-fa45-4bf2-9aee-223603401e54"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-200",
+          "value": "200",
+          "url": "https://cwe.mitre.org/data/definitions/200.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-306",
+          "value": "306",
+          "url": "https://cwe.mitre.org/data/definitions/306.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-39363",
+          "value": "CVE-2026-39363",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-39363"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-p9ff-h696-f583",
+          "value": "GHSA-p9ff-h696-f583",
+          "url": "https://github.com/advisories/GHSA-p9ff-h696-f583"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
+        },
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-p9ff-h696-f583"
+        },
+        {
+          "url": "https://github.com/vitejs/vite"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/commit/f02d9fde0b195afe3ea2944414186962fbbe41e0"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/pull/22159"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v6.4.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v7.3.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v8.0.5"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/security/advisories/GHSA-p9ff-h696-f583"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-39363"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "vite:6.4.1"
+        }
+      }
+    },
+    {
+      "id": "21491453ed3edd8af29efd90cb19f7875a75bab2b066c33709e50c4552d93901",
+      "name": "follow-redirects leaks Custom Authentication Headers to Cross-Domain Redirect Targets",
+      "description": "When an HTTP request follows a cross-domain redirect (301/302/307/308), `follow-redirects` only strips `authorization`, `proxy-authorization`, and `cookie` headers (matched by regex at index.js:469-476). Any custom authentication header (e.g., `X-API-Key`, `X-Auth-Token`, `Api-Key`, `Token`) is forwarded verbatim to the redirect target.\n\nSince `follow-redirects` is the redirect-handling dependency for **axios** (105K+ stars), this vulnerability affects the entire axios ecosystem.",
+      "severity": "Medium",
+      "solution": "Upgrade to version 1.16.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "follow-redirects"
+          },
+          "version": "1.15.11"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-ede7ee8c-4ecc-4fa0-a3d6-e7fc95e9ee1a",
+          "value": "ede7ee8c-4ecc-4fa0-a3d6-e7fc95e9ee1a"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-200",
+          "value": "200",
+          "url": "https://cwe.mitre.org/data/definitions/200.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-r4q5-vmmm-2653",
+          "value": "GHSA-r4q5-vmmm-2653",
+          "url": "https://github.com/advisories/GHSA-r4q5-vmmm-2653"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N"
+        },
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-r4q5-vmmm-2653"
+        },
+        {
+          "url": "https://github.com/follow-redirects/follow-redirects"
+        },
+        {
+          "url": "https://github.com/follow-redirects/follow-redirects/commit/844c4d302ac963d29bdb5dc1754ec7df3d70d7f9"
+        },
+        {
+          "url": "https://github.com/follow-redirects/follow-redirects/security/advisories/GHSA-r4q5-vmmm-2653"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "follow-redirects:1.15.11"
+        }
+      }
+    },
+    {
+      "id": "dd3e7f14729dac8ce3f4a754e0434317c41c089b08dee95c30f41ef5e4fbe239",
+      "name": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+      "description": "`v3`, `v5`, and `v6` accept external output buffers but do not reject out-of-range writes (small `buf` or large `offset`).\nBy contrast, `v4`, `v1`, and `v7` explicitly throw `RangeError` on invalid bounds.\n\nThis inconsistency allows **silent partial writes** into caller-provided buffers.",
+      "severity": "Medium",
+      "solution": "Upgrade to version 14.0.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "uuid"
+          },
+          "version": "10.0.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-cd8ae919-fdb7-446b-b964-7bab019850fe",
+          "value": "cd8ae919-fdb7-446b-b964-7bab019850fe"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1285",
+          "value": "1285",
+          "url": "https://cwe.mitre.org/data/definitions/1285.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-787",
+          "value": "787",
+          "url": "https://cwe.mitre.org/data/definitions/787.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-w5hq-g745-h8pq",
+          "value": "GHSA-w5hq-g745-h8pq",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N"
+        },
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq"
+        },
+        {
+          "url": "https://github.com/uuidjs/uuid"
+        },
+        {
+          "url": "https://github.com/uuidjs/uuid/commit/3d2c5b0342f0fcb52a5ac681c3d47c13e7444b34"
+        },
+        {
+          "url": "https://github.com/uuidjs/uuid/releases/tag/v14.0.0"
+        },
+        {
+          "url": "https://github.com/uuidjs/uuid/security/advisories/GHSA-w5hq-g745-h8pq"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "uuid:10.0.0"
+        }
+      }
+    },
+    {
+      "id": "d3f7364a568dc519e9969ed6089889df1b5ad065f57bbb696d52c0fe3b3f4564",
+      "name": "file-type: ZIP Decompression Bomb DoS via [Content_Types].xml entry",
+      "description": "A crafted ZIP file can trigger excessive memory growth during type detection in `file-type` when using `fileTypeFromBuffer()`, `fileTypeFromBlob()`, or `fileTypeFromFile()`.\n\nIn affected versions, the ZIP inflate output limit is enforced for stream-based detection, but not for known-size inputs. As a result, a small compressed ZIP can cause `file-type` to inflate and process a much larger payload while probing ZIP-based formats such as OOXML. In testing on `file-type` `21.3.1`, a ZIP of about `255 KB` caused about `257 MB` of RSS growth during `fileTypeFromBuffer()`.\n\nThis is an availability issue. Applications that use these APIs on untrusted uploads can be forced to consume large amounts of memory and may become slow or crash.",
+      "severity": "Medium",
+      "solution": "Upgrade to version 21.3.2 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "file-type"
+          },
+          "version": "20.5.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-531c4283-d597-4248-b630-e71eae68b0bf",
+          "value": "531c4283-d597-4248-b630-e71eae68b0bf"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-400",
+          "value": "400",
+          "url": "https://cwe.mitre.org/data/definitions/400.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-409",
+          "value": "409",
+          "url": "https://cwe.mitre.org/data/definitions/409.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-32630",
+          "value": "CVE-2026-32630",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-32630"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-j47w-4g3g-c36v",
+          "value": "GHSA-j47w-4g3g-c36v",
+          "url": "https://github.com/advisories/GHSA-j47w-4g3g-c36v"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-j47w-4g3g-c36v"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type/commit/399b0f156063f5aeb1c124a7fd61028f3ea7c124"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type/commit/a155cd71323279de173c54e8c530d300d3854fdd"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type/releases/tag/v21.3.2"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type/security/advisories/GHSA-j47w-4g3g-c36v"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-32630"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "file-type:20.5.0"
+        }
+      }
+    },
+    {
+      "id": "3412691414689c556dd73f4da5a3e9316829fa13d66dc11db2f8f2e8883d64a2",
+      "name": "file-type affected by infinite loop in ASF parser on malformed input with zero-size sub-header",
+      "description": "A denial of service vulnerability exists in the ASF (WMV/WMA) file type detection parser. When parsing a crafted input where an ASF sub-header has a `size` field of zero, the parser enters an infinite loop. The `payload` value becomes negative (-24), causing `tokenizer.ignore(payload)` to move the read position backwards, so the same sub-header is read repeatedly forever.\n\nAny application that uses `file-type` to detect the type of untrusted/attacker-controlled input is affected. An attacker can stall the Node.js event loop with a 55-byte payload.",
+      "severity": "Medium",
+      "solution": "Upgrade to version 21.3.1 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "file-type"
+          },
+          "version": "20.5.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-859e037a-d066-4bc0-8c8b-954ccf7a63e8",
+          "value": "859e037a-d066-4bc0-8c8b-954ccf7a63e8"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-835",
+          "value": "835",
+          "url": "https://cwe.mitre.org/data/definitions/835.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-31808",
+          "value": "CVE-2026-31808",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-31808"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-5v7r-6r5c-r473",
+          "value": "GHSA-5v7r-6r5c-r473",
+          "url": "https://github.com/advisories/GHSA-5v7r-6r5c-r473"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-5v7r-6r5c-r473"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type/commit/319abf871b50ba2fa221b4a7050059f1ae096f4f"
+        },
+        {
+          "url": "https://github.com/sindresorhus/file-type/security/advisories/GHSA-5v7r-6r5c-r473"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-31808"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "file-type:20.5.0"
+        }
+      }
+    },
+    {
+      "id": "9f5032a6cbd491d023ec86928af14addd34d7ea30a07e86c07b9d43516bcf7b0",
+      "name": "lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit`",
+      "description": "Lodash versions 4.17.23 and earlier are vulnerable to prototype pollution in the `_.unset` and `_.omit` functions. The fix for [CVE-2025-13465](https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg) only guards against string key members, so an attacker can bypass the check by passing array-wrapped path segments. This allows deletion of properties from built-in prototypes such as `Object.prototype`, `Number.prototype`, and `String.prototype`.\n\nThe issue permits deletion of prototype properties but does not allow overwriting their original behavior.",
+      "severity": "Medium",
+      "solution": "Upgrade to version 4.18.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "lodash"
+          },
+          "version": "4.17.23"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-20a119ca-fb08-4579-a674-9a540f2e0815",
+          "value": "20a119ca-fb08-4579-a674-9a540f2e0815"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1321",
+          "value": "1321",
+          "url": "https://cwe.mitre.org/data/definitions/1321.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-2950",
+          "value": "CVE-2026-2950",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-2950"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-f23m-r3pf-42rh",
+          "value": "GHSA-f23m-r3pf-42rh",
+          "url": "https://github.com/advisories/GHSA-f23m-r3pf-42rh"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-f23m-r3pf-42rh"
+        },
+        {
+          "url": "https://github.com/lodash/lodash"
+        },
+        {
+          "url": "https://github.com/lodash/lodash/security/advisories/GHSA-f23m-r3pf-42rh"
+        },
+        {
+          "url": "https://github.com/lodash/lodash/security/advisories/GHSA-xxjr-mmjv-4gpg"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-2950"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "lodash:4.17.23"
+        }
+      }
+    },
+    {
+      "id": "bd2aa123fd03f5272c00593f8baa960a1270c60ff36f4bf70c29be31f3d780c8",
+      "name": "Undici has an HTTP Request/Response Smuggling issue",
+      "description": "Undici allows duplicate HTTP `Content-Length` headers when they are provided in an array with case-variant names (e.g., `Content-Length` and `content-length`). This produces malformed HTTP/1.1 requests with multiple conflicting `Content-Length` values on the wire.\n\n**Who is impacted:**\n- Applications using `undici.request()`, `undici.Client`, or similar low-level APIs with headers passed as flat arrays\n- Applications that accept user-controlled header names without case-normalization\n\n**Potential consequences:**\n- **Denial of Service**: Strict HTTP parsers (proxies, servers) will reject requests with duplicate `Content-Length` headers (400 Bad Request)\n- **HTTP Request Smuggling**: In deployments where an intermediary and backend interpret duplicate headers inconsistently (e.g., one uses the first value, the other uses the last), this can enable request smuggling attacks leading to ACL bypass, cache poisoning, or credential hijacking",
+      "severity": "Medium",
+      "solution": "Upgrade to versions 6.24.0, 7.24.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "undici"
+          },
+          "version": "5.29.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-460c6ba6-4605-4dea-971f-8d1d5956772f",
+          "value": "460c6ba6-4605-4dea-971f-8d1d5956772f"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-444",
+          "value": "444",
+          "url": "https://cwe.mitre.org/data/definitions/444.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-1525",
+          "value": "CVE-2026-1525",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-1525"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-2mjp-6q6p-2qxm",
+          "value": "GHSA-2mjp-6q6p-2qxm",
+          "url": "https://github.com/advisories/GHSA-2mjp-6q6p-2qxm"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://cna.openjsf.org/security-advisories.html"
+        },
+        {
+          "url": "https://cwe.mitre.org/data/definitions/444.html"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-2mjp-6q6p-2qxm"
+        },
+        {
+          "url": "https://github.com/nodejs/undici"
+        },
+        {
+          "url": "https://github.com/nodejs/undici/security/advisories/GHSA-2mjp-6q6p-2qxm"
+        },
+        {
+          "url": "https://hackerone.com/reports/3556037"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-1525"
+        },
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc9110.html#section-8.6"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "undici:5.29.0"
+        }
+      }
+    },
+    {
+      "id": "c77361ac22ac15d53c86c10078cc1ef02bfd64c80bf09ce85aed28c3227daa83",
+      "name": "Undici has CRLF Injection in undici via `upgrade` option",
+      "description": "When an application passes user-controlled input to the `upgrade` option of `client.request()`, an attacker can inject CRLF sequences (`\\r\\n`) to:\n\n1. Inject arbitrary HTTP headers\n2. Terminate the HTTP request prematurely and smuggle raw data to non-HTTP services (Redis, Memcached, Elasticsearch)\n\nThe vulnerability exists because undici writes the `upgrade` value directly to the socket without validating for invalid header characters:\n\n```javascript\n// lib/dispatcher/client-h1.js:1121\nif (upgrade) {\nheader += `connection: upgrade\\r\\nupgrade: ${upgrade}\\r\\n`\n}\n```",
+      "severity": "Medium",
+      "solution": "Upgrade to versions 6.24.0, 7.24.0 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "undici"
+          },
+          "version": "5.29.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-405005b8-8dd4-4639-84e9-773ab7305c67",
+          "value": "405005b8-8dd4-4639-84e9-773ab7305c67"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-93",
+          "value": "93",
+          "url": "https://cwe.mitre.org/data/definitions/93.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-1527",
+          "value": "CVE-2026-1527",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-1527"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-4992-7rv2-5pvq",
+          "value": "GHSA-4992-7rv2-5pvq",
+          "url": "https://github.com/advisories/GHSA-4992-7rv2-5pvq"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:U/C:L/I:L/A:N"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://cna.openjsf.org/security-advisories.html"
+        },
+        {
+          "url": "https://github.com/advisories/GHSA-4992-7rv2-5pvq"
+        },
+        {
+          "url": "https://github.com/nodejs/undici"
+        },
+        {
+          "url": "https://github.com/nodejs/undici/security/advisories/GHSA-4992-7rv2-5pvq"
+        },
+        {
+          "url": "https://hackerone.com/reports/3487198"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-1527"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "undici:5.29.0"
+        }
+      }
+    },
+    {
+      "id": "8dc09b809cfc6a4180e0313e19ffddd86c299e5592acda2420d553dc22273142",
+      "name": "Vite Vulnerable to Path Traversal in Optimized Deps `.map` Handling",
+      "description": "Any files ending with `.map` even out side the project can be returned to the browser.",
+      "severity": "Medium",
+      "solution": "Upgrade to versions 6.4.2, 7.3.2, 8.0.5 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "vite"
+          },
+          "version": "6.4.1"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-cf3c9b33-55cc-42b1-ab17-4aff7c0c455a",
+          "value": "cf3c9b33-55cc-42b1-ab17-4aff7c0c455a"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-200",
+          "value": "200",
+          "url": "https://cwe.mitre.org/data/definitions/200.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-22",
+          "value": "22",
+          "url": "https://cwe.mitre.org/data/definitions/22.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-4w7w-66w2-5vf9",
+          "value": "GHSA-4w7w-66w2-5vf9",
+          "url": "https://github.com/advisories/GHSA-4w7w-66w2-5vf9"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N"
+        },
+        {
+          "vendor": "GitHub",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-4w7w-66w2-5vf9"
+        },
+        {
+          "url": "https://github.com/vitejs/vite"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/commit/79f002f2286c03c88c7b74c511c7f9fc6dc46694"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/pull/22161"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v6.4.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v7.3.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v8.0.5"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/security/advisories/GHSA-4w7w-66w2-5vf9"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "vite:6.4.1"
+        }
+      }
+    },
+    {
+      "id": "eb7e55719c9cb12a82429205740239d6cd596a68b0c7183f850a826d8227fbdf",
+      "name": "Vite Vulnerable to Path Traversal in Optimized Deps `.map` Handling",
+      "description": "Any files ending with `.map` even out side the project can be returned to the browser.",
+      "severity": "Medium",
+      "solution": "Upgrade to versions 6.4.2, 7.3.2, 8.0.5 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "vite"
+          },
+          "version": "6.4.1"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-6c004239-1dff-4166-8d93-a32326818f8c",
+          "value": "6c004239-1dff-4166-8d93-a32326818f8c"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-200",
+          "value": "200",
+          "url": "https://cwe.mitre.org/data/definitions/200.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-22",
+          "value": "22",
+          "url": "https://cwe.mitre.org/data/definitions/22.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-39365",
+          "value": "CVE-2026-39365",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-39365"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-4w7w-66w2-5vf9",
+          "value": "GHSA-4w7w-66w2-5vf9",
+          "url": "https://github.com/advisories/GHSA-4w7w-66w2-5vf9"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N"
+        },
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-4w7w-66w2-5vf9"
+        },
+        {
+          "url": "https://github.com/vitejs/vite"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/commit/79f002f2286c03c88c7b74c511c7f9fc6dc46694"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/pull/22161"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v6.4.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v7.3.2"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/releases/tag/v8.0.5"
+        },
+        {
+          "url": "https://github.com/vitejs/vite/security/advisories/GHSA-4w7w-66w2-5vf9"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-39365"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "vite:6.4.1"
+        }
+      }
+    },
+    {
+      "id": "56ea614ca2771f390c318b03ca31b4d7ae14632386937c7fe472ed45be8d6403",
+      "name": "Undici has an unbounded decompression chain in HTTP responses on Node.js Fetch API via Content-Encoding leads to resource exhaustion",
+      "description": "The `fetch()` API supports chained HTTP encoding algorithms for response content according to RFC 9110 (e.g., Content-Encoding: gzip, br). This is also supported by the undici decompress interceptor.\n\nHowever, the number of links in the decompression chain is unbounded and the default maxHeaderSize allows a malicious server to insert thousands compression steps leading to high CPU usage and excessive memory allocation.",
+      "severity": "Low",
+      "solution": "Upgrade to versions 6.23.0, 7.18.2 or above.",
+      "location": {
+        "file": "pnpm-lock.yaml",
+        "dependency": {
+          "package": {
+            "name": "undici"
+          },
+          "version": "5.29.0"
+        },
+        "files": [
+          {
+            "path": "pnpm-lock.yaml",
+            "type": "lockfile",
+            "in_repository": true
+          }
+        ]
+      },
+      "identifiers": [
+        {
+          "type": "gemnasium",
+          "name": "Gemnasium-4cbd9de7-5fb8-43ff-824d-e569ec6bb37d",
+          "value": "4cbd9de7-5fb8-43ff-824d-e569ec6bb37d"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-1035",
+          "value": "1035",
+          "url": "https://cwe.mitre.org/data/definitions/1035.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-770",
+          "value": "770",
+          "url": "https://cwe.mitre.org/data/definitions/770.html"
+        },
+        {
+          "type": "cwe",
+          "name": "CWE-937",
+          "value": "937",
+          "url": "https://cwe.mitre.org/data/definitions/937.html"
+        },
+        {
+          "type": "cve",
+          "name": "CVE-2026-22036",
+          "value": "CVE-2026-22036",
+          "url": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2026-22036"
+        },
+        {
+          "type": "ghsa",
+          "name": "GHSA-g9mf-h72j-4rw9",
+          "value": "GHSA-g9mf-h72j-4rw9",
+          "url": "https://github.com/advisories/GHSA-g9mf-h72j-4rw9"
+        }
+      ],
+      "cvss_vectors": [
+        {
+          "vendor": "NVD",
+          "vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+        }
+      ],
+      "links": [
+        {
+          "url": "https://github.com/advisories/GHSA-g9mf-h72j-4rw9"
+        },
+        {
+          "url": "https://github.com/nodejs/undici"
+        },
+        {
+          "url": "https://github.com/nodejs/undici/commit/b04e3cbb569c1596f86c108e9b52c79d8475dcb3"
+        },
+        {
+          "url": "https://github.com/nodejs/undici/security/advisories/GHSA-g9mf-h72j-4rw9"
+        },
+        {
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-22036"
+        }
+      ],
+      "details": {
+        "vulnerable_package": {
+          "name": "Vulnerable Package",
+          "type": "text",
+          "value": "undici:5.29.0"
+        }
+      }
+    }
+  ],
+  "scan": {
+    "analyzer": {
+      "id": "dependency-scanning",
+      "name": "dependency-scanning",
+      "url": "https://gitlab.com/gitlab-org/security-products/analyzers/dependency-scanning",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "1.30.0"
+    },
+    "scanner": {
+      "id": "gitlab-sbom-vulnerability-scanner",
+      "name": "GitLab SBoM Vulnerability Scanner",
+      "url": "https://docs.gitlab.com/user/application_security/dependency_scanning/dependency_scanning_sbom/",
+      "vendor": {
+        "name": "GitLab"
+      },
+      "version": "18.11.1"
+    },
+    "type": "dependency_scanning",
+    "start_time": "2026-04-24T07:21:53",
+    "end_time": "2026-04-24T07:21:53",
+    "status": "success",
+    "observability": {
+      "events": [
+        {
+          "event": "collect_ds_analyzer_scan_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "label": "1.30.0",
+          "value": 17
+        },
+        {
+          "event": "collect_ds_analyzer_scan_duration_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "value": 394261669
+        },
+        {
+          "event": "collect_ds_analyzer_scan_static_reachability_duration_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "value": 0
+        },
+        {
+          "event": "collect_ds_analyzer_scan_sbom_duration_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "value": 0
+        },
+        {
+          "event": "collect_ds_analyzer_scan_security_report_duration_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "value": 0
+        },
+        {
+          "event": "collect_ds_analyzer_scan_sbom_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "label": "npm",
+          "value": 1779,
+          "input_file_path": "pnpm-lock.yaml"
+        },
+        {
+          "event": "collect_ds_analyzer_scan_ci_integration_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "label": "template::v2"
+        },
+        {
+          "event": "collect_ds_analyzer_sbom_scan_cache_metrics_from_pipeline",
+          "property": "95bb13d0-50b7-4184-927b-09cbe565c124",
+          "label": "cache_hit",
+          "input_file_path": "pnpm-lock.yaml"
+        }
+      ]
+    }
+  }
+}

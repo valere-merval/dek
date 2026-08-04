@@ -1,0 +1,68 @@
+image: node:24.18.1
+
+stages:
+  - schedule
+  - comment
+  - test
+  - build
+  - deploy
+  - release
+
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_COMMIT_TAG
+
+include:
+  - component: $CI_SERVER_FQDN/congo-web/ci/gitlab/components/security-scanning/dependency-scanning@1.1.1
+  ########## SNOWBALL ##########
+  - project: congo-web/ci/gitlab/snowball-gitlab-ci-templates
+    ref: v1
+    file:
+      - "/.helm.yml"
+      - "/.buildctl.yml"
+  ########## misc ##########
+  - ".gitlab/ci/templates.yml"
+  - ".gitlab/ci/variables.yml"
+  ### always run ###
+  - local: "/.gitlab/ci/base.yml"
+  ### release ###
+  - local: "/.gitlab/ci/release/release.yml"
+    rules:
+      - if: $CI_PIPELINE_SOURCE == "schedule"
+        when: never
+      - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+  ### release snapshot ###
+  - local: "/.gitlab/ci/release/release_snapshot.yml"
+    rules:
+      - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ "/^snapshot/"
+  ### react-mr ###
+  - local: "/.gitlab/ci/react/merge_request.yml"
+    rules:
+      - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^changeset-release/
+        when: never
+      - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+        changes:
+          paths:
+            - "packages/react/**/*"
+            - "packages/icons/**/*"
+  ### production storybook ###
+  - local: "/.gitlab/ci/react/prod_storybook/prod_storybook.yml"
+    rules:
+      - if: '$CI_COMMIT_TAG =~ /^@fair\/react@\d+\.\d+\.\d+$/'
+      - if: '$CI_COMMIT_TAG =~ /^@fair\/icons@\d+\.\d+\.\d+$/'
+  ### tokens ###
+  - local: "/.gitlab/ci/tokens/tokens.yml"
+    rules:
+      - if: '$CI_COMMIT_TAG =~ /^@fair\/react/'
+        when: never
+      - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^changeset-release/
+        when: never
+      # only run if branch name is tokens ##
+      - if: $CI_COMMIT_BRANCH == "tokens"
+  ### schedules ###
+  - local: "/.gitlab/ci/schedules/scheduled_messages.yml"
+    rules:
+      - if: $CI_PIPELINE_SOURCE == "schedule"

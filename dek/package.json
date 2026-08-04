@@ -1,0 +1,74 @@
+{
+  "name": "fair",
+  "version": "1.0.0",
+  "description": "the congstar design system",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build --filter=!./examples/*",
+    "clean": "rimraf -rf build && turbo run clean",
+    "clean:modules": "rimraf -rf build && pnpm -r exec rimraf -rf node_modules && rimraf -rf node_modules",
+    "gitlab-ci-utils": "turbo run cli --filter @fair/gitlab-ci-utils",
+    "commentMergeRequest": "turbo run commentMergeRequest --filter @fair/gitlab-ci-utils",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "sonar:report": "turbo run sonar:report",
+    "test": "turbo run test",
+    "test:changeset-refs": "cross-env NODE_NO_WARNINGS=1 node --loader ts-node/esm --test scripts/check-changeset-refs.test.ts",
+    "test:ci": "turbo run test:ci --filter=!./examples/*",
+    "test:visual:ci": "turbo run test:visual:ci",
+    "test:visual:os-agnostic": "turbo run test:visual:os-agnostic",
+    "ts:check": "turbo run ts:check --filter=!./examples/*",
+    "storybook": "turbo run storybook",
+    "storybook:build": "turbo run build-storybook",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "update-versions": "changeset version && pnpm install --no-frozen-lockfile",
+    "update-versions-snapshot": "changeset version --snapshot $SNAPSHOTNAME && pnpm install --no-frozen-lockfile",
+    "release": "turbo run build --filter=!./examples/* && changeset publish",
+    "release-snapshot": "turbo run build --filter=!./examples/* && changeset publish --tag $SNAPSHOTNAME",
+    "prepare": "is-ci || husky install"
+  },
+  "packageManager": "pnpm@10.28.2",
+  "keywords": [],
+  "author": "AOE",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@types/dockerode": "catalog:",
+    "@types/node": "catalog:",
+    "changesets-gitlab": "catalog:",
+    "commitlint": "catalog:",
+    "cross-env": "catalog:",
+    "cross-replace": "catalog:",
+    "dockerode": "catalog:",
+    "husky": "catalog:",
+    "is-ci": "catalog:",
+    "lint-staged": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "ts-node": "catalog:",
+    "turbo": "catalog:"
+  },
+  "workspaces": [
+    "examples/*",
+    "packages/*"
+  ],
+  "engines": {
+    "npm": ">=11.6.2",
+    "node": ">=20.19.0 <=24.18.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "catalog:",
+      "@types/react-dom": "catalog:"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint-plugin-react>eslint": "^10.0.0",
+        "eslint-plugin-jsx-a11y>eslint": "^10.0.0"
+      }
+    }
+  }
+}

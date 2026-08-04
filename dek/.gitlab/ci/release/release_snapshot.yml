@@ -1,0 +1,16 @@
+release-snapshot:
+  stage: release
+  extends:
+    - .init-pnpm
+  variables:
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "7Gi"
+    INPUT_VERSION: pnpm update-versions-snapshot
+    INPUT_PUBLISH: pnpm release-snapshot
+    INPUT_TITLE: Version Packages Snapshot
+    INPUT_COMMIT: Version Packages Snapshot
+  script:
+    - export SNAPSHOTNAME=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME#snapshot/}
+    - pnpm changesets-gitlab
+  tags:
+    - snowball-web-tuadev

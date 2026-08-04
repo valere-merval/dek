@@ -1,0 +1,17 @@
+{
+  "name": "@fair/global-css",
+  "version": "2.2.4",
+  "main": "./dist/main.min.css",
+  "style": "./dist/main.min.css",
+  "files": [
+    "./dist/**"
+  ],
+  "author": "AOE",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "esbuild --bundle --minify src/*.css --outdir=dist --out-extension:.css=.min.css"
+  },
+  "devDependencies": {
+    "esbuild": "catalog:"
+  }
+}

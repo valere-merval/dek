@@ -1,0 +1,79 @@
+include:
+  - project: congo-web/ci/gitlab/snowball-gitlab-ci-templates
+    ref: v1
+    file:
+      - "/.helm.yml"
+  - component: $CI_SERVER_FQDN/$CI_COMPONENTS_PATH/container/docker-build@2.0.0
+    inputs:
+      stage: build
+      docker_context: "./packages/react"
+      docker_file_path: "./packages/react"
+      harbor_project: "itg"
+      maintainer: "team-deko"
+      container_name: $APPLICATION_NAME
+      tag: "$CI_PIPELINE_IID"
+      vault_role: "${VAULT_ROLE}"
+      job_prefix: "review:"
+      _needs:
+        - llms-extractor
+
+build-react-storybook:
+  stage: build
+  needs:
+    - build-packages
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm storybook:build
+  tags:
+    - snowball-web-tuadev
+  variables:
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "8Gi"
+  artifacts:
+    paths:
+      - packages/react/storybook-static
+
+llms-extractor:
+  extends:
+    - .llms-extractor
+  variables:
+    SUMMARY_BASE_URL: "https://${APPLICATION_NAME}-${CI_COMMIT_REF_SLUG}.itg-wirk.narf.tech"
+
+helm_install_itg_wirk:
+  interruptible: false
+  stage: deploy
+  needs:
+    - review:docker-build
+  extends: .itg-wirk:helm_install
+  variables:
+    NAMESPACE: "apps"
+    HELM_NAME: "fair-react-${CI_COMMIT_REF_SLUG}"
+    ENVIRONMENT: "itg-wirk"
+    HELM_CHART_VERSION: "1.2.0-rc1"
+    VERSION: "$CI_PIPELINE_IID-$CI_COMMIT_SHORT_SHA"
+    DOCKER_TAG: "$CI_PIPELINE_IID"
+    IMAGE_TAG: "$CI_PIPELINE_IID"
+    HELM_ARGS: "--set reviewApp.isReviewApp=true --set reviewApp.name=${CI_COMMIT_REF_SLUG} --set publishOnPremis.enabled=false --set serviceAccount.create=false --set serviceAccount.name=${APPLICATION_NAME}"
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    url: https://${APPLICATION_NAME}-${CI_COMMIT_REF_SLUG}.itg-wirk.narf.tech
+    on_stop: stop_review
+    auto_stop_in: 1 week
+    deployment_tier: testing
+  script:
+    - !reference [.itg-wirk:helm_install, script]
+  artifacts:
+    reports:
+      dotenv: build.env
+
+stop_review:
+  stage: deploy
+  extends: .itg-wirk:helm_uninstall
+  variables:
+    HELM_NAME: ${APPLICATION_NAME}-${CI_COMMIT_REF_SLUG}
+    NAMESPACE: "apps"
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    action: stop
+  when: manual

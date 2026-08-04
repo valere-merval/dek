@@ -1,0 +1,46 @@
+#https://www.npmjs.com/package/changesets-gitlab
+#creates a merge request with all the package versions updated and changelogs updated and when there are new changesets on master, the MR will be updated.
+#When you're ready, you can merge the merge request and the INPUT_PUBLISH script is triggered.
+
+release:
+  stage: release
+  extends:
+    - .init-pnpm
+  variables:
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "7Gi"
+    INPUT_VERSION: pnpm update-versions
+    INPUT_PUBLISH: pnpm release
+  script:
+    - pnpm changesets-gitlab
+  tags:
+    - snowball-web-tuadev
+
+release-notification:
+  stage: release
+  allow_failure: true
+  needs:
+    - release
+  script:
+    - pnpm --filter @fair/teams-notifications release-notes
+  tags:
+    - snowball-itg-wirk
+  extends:
+    - .init-pnpm
+
+zeroheight-adoption:
+  image: "node:24.18.1"
+  stage: release
+  allow_failure: true
+  needs:
+    - release
+  variables:
+    ZEROHEIGHT_CLIENT_ID: $ZEROHEIGHT_USAGE_DATA_CLIENT_ID
+    ZEROHEIGHT_ACCESS_TOKEN: $ZEROHEIGHT_USAGE_DATA_TOKEN
+    KUBERNETES_CPU_REQUEST: "0.3"
+    KUBERNETES_MEMORY_REQUEST: "0.5Gi"
+  script:
+    - corepack enable pnpm
+    - pnpx @zeroheight/adoption-cli track-package --interactive false --packages @fair/react,@fair/icons,@fair/global-css,@fair/tokens
+  tags:
+    - snowball-itg-wirk

@@ -1,0 +1,16 @@
+{
+  "name": "@fair/teams-notifications",
+  "version": "1.11.4",
+  "scripts": {
+    "release-notes": "ts-node src/releaseNotes",
+    "scheduled-message": "ts-node src/scheduled",
+    "test": "node --test -r ts-node/register src/releaseNotes/Changelog.test.ts",
+    "test:ci": "pnpm test"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "catalog:",
+    "axios": "catalog:",
+    "ts-node": "catalog:"
+  }
+}

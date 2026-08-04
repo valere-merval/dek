@@ -1,0 +1,35 @@
+@font-face {
+  font-family: "Akko";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/akko/AkkoForPenny-Regular.woff")
+    format("woff");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Akko";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/akko/AkkoForPenny-Medium.woff")
+    format("woff");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Akko";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/akko/AkkoForPenny-BoldItalic.woff")
+    format("woff");
+  font-style: italic;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Akko";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/akko/AkkoForPenny-Bold.woff")
+    format("woff");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Akko";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/akko/AkkoForPenny-Black.woff")
+    format("woff");
+  font-weight: 900;
+}

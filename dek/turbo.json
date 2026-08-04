@@ -1,0 +1,125 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", ".cache/**"],
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "test:visual:ci": {
+      "dependsOn": [
+        "@fair/tokens#build",
+        "@fair/global-css#build",
+        "@fair/icons#build"
+      ],
+      "outputs": [],
+      "outputLogs": "new-only",
+      "env": [
+        "PLAYWRIGHT_BROWSERS_PATH",
+        "NPM_TOKEN",
+        "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"
+      ]
+    },
+    "test:visual:os-agnostic": {
+      "dependsOn": [
+        "@fair/tokens#build",
+        "@fair/global-css#build",
+        "@fair/icons#build"
+      ],
+      "outputs": [],
+      "outputLogs": "new-only",
+      "env": [
+        "PLAYWRIGHT_BROWSERS_PATH",
+        "NPM_TOKEN",
+        "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"
+      ]
+    },
+    "test:ci": {
+      "dependsOn": [
+        "@fair/tokens#build",
+        "@fair/global-css#build",
+        "@fair/icons#build"
+      ],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "lint": {
+      "outputs": [],
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "lint:fix": {
+      "outputs": [],
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "ts:check": {
+      "dependsOn": [
+        "@fair/tokens#build",
+        "@fair/global-css#build",
+        "@fair/icons#build"
+      ],
+      "outputs": [],
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "sonar:report": {
+      "outputs": ["**/build/report.json"],
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "cli": {
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "clean": {
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "dev": {
+      "dependsOn": [
+        "@fair/tokens#build",
+        "@fair/global-css#build",
+        "@fair/icons#build"
+      ],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "storybook": {
+      "dependsOn": [
+        "@fair/tokens#build",
+        "@fair/global-css#build",
+        "@fair/icons#build"
+      ],
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    },
+    "build-storybook": {
+      "dependsOn": [
+        "@fair/tokens#build",
+        "@fair/global-css#build",
+        "@fair/icons#build"
+      ],
+      "outputs": ["storybook-static/**"],
+      "env": ["BASE_PATH", "NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"],
+      "outputLogs": "new-only"
+    },
+    "commentMergeRequest": {
+      "cache": false,
+      "outputLogs": "new-only",
+      "env": ["NPM_TOKEN", "CONGSTAR_GITLAB_FAIR_NPM_TOKEN"]
+    }
+  }
+}

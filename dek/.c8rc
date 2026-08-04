@@ -1,0 +1,24 @@
+{
+  "reports-dir": "build/coverage",
+  "reporter": [
+    "lcov",
+    "cobertura",
+    "text",
+    "text-summary"
+  ],
+  "all": true,
+  "include": [
+    "**/src/**/*"
+  ],
+  "exclude": [
+    "**/*.config.ts",
+    "**/vite-env.d.ts",
+    "**/setupTests.ts",
+    "**/setup.ts",
+    "**/dist/*",
+    "**/build/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/__generated__/*"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig/react-library.json",
+  "include": ["./src/index.ts", "./src/types.ts"],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist"
+  }
+}

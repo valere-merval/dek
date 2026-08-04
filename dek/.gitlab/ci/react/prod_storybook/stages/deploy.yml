@@ -1,0 +1,11 @@
+helm-install-itg-wirk:
+  stage: deploy
+  needs:
+    - build-react-storybook-docker
+  extends: .itg-wirk:helm_install
+  variables:
+    VERSION: $DOCKER_TAG
+    IMAGE_TAG: $DOCKER_TAG
+#  environment:
+#    name: itg-wirk
+#    url: https://fair-react.itg-wirk.narf.tech

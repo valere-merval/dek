@@ -1,0 +1,18 @@
+#nonk8s
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: fair
+  description: |
+    Congstar design system monorepo with design tokens, global CSS, icons,
+    React components, examples, and supporting tooling for consuming teams.
+  tags:
+    - react
+    - storybook
+    - styled-components
+    - design-tokens
+spec:
+  type: library
+  owner: group:default/team-deko
+  lifecycle: production
+  system: webshop

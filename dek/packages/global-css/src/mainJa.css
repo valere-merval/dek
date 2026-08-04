@@ -1,0 +1,49 @@
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("https://cdn.congstar.de/libraries/@fair/fonts/poppins/poppins-v20-latin-regular.woff2")
+      format("woff2"),
+    url("https://cdn.congstar.de/libraries/@fair/fonts/poppins/poppins-v20-latin-regular.woff")
+      format("woff");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src:
+    url("https://cdn.congstar.de/libraries/@fair/fonts/poppins/poppins-v20-latin-700.woff2")
+      format("woff2"),
+    url("https://cdn.congstar.de/libraries/@fair/fonts/poppins/poppins-v20-latin-700.woff")
+      format("woff");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Praktika";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/praktika/PraktikaRoundBold.woff")
+    format("woff");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Praktika";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/praktika/PraktikaRoundBlack.woff")
+    format("woff");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "PraktikaCondensed";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/praktika-condensed/PraktikaRoundMediumCondensed.woff")
+    format("woff");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "PraktikaCondensed";
+  src: url("https://cdn.congstar.de/libraries/@fair/fonts/praktika-condensed/PraktikaRoundBoldCondensed.woff")
+    format("woff");
+  font-weight: 700;
+}

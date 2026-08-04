@@ -1,0 +1,60 @@
+{
+  "name": "@fair/icons",
+  "version": "5.5.2",
+  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "style": "./dist/css/icons.css",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/__generated__/components/*.d.ts",
+      "import": "./dist/__generated__/components/*.js",
+      "default": "./dist/__generated__/components/*.js"
+    },
+    "./types": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/types.js",
+      "default": "./dist/types.js"
+    },
+    "./css/icons.css": "./dist/css/icons.css"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "clean": "rimraf -rf ./src/__generated__/components/ && rimraf -rf ./dist",
+    "lint": "eslint src --max-warnings 0",
+    "generate:readme": "markdown-include readme/markdown.json",
+    "build": "pnpm run clean && pnpm generate:readme && pnpm run svg:renamer && pnpm run build:tsx && pnpm run build:tsx:prettier && tsc && pnpm run build:css",
+    "build:css": "copyfiles -f ./src/css/icons.css dist/css/",
+    "build:tsx": "svgr --svgo-config svgo.config.cjs --config-file .svgrrc.cjs ./src/assets/icons ",
+    "build:tsx:prettier": "prettier --write src/__generated__/ ",
+    "svg:renamer": "renamer --chain renamer.mjs src/assets/icons/**"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@svgr/cli": "catalog:",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "copyfiles": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-custom": "workspace:*",
+    "globals": "catalog:",
+    "markdown-include": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "renamer": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  }
+}

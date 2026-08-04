@@ -1,0 +1,7 @@
+if ! git diff --cached --diff-filter=A --quiet -- ".changeset/*.md"; then
+	NODE_NO_WARNINGS=1 ./node_modules/.bin/ts-node scripts/check-changeset-refs.ts
+fi
+
+pnpm ts:check
+lint-staged
+pnpm lint:fix

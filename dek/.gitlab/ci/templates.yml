@@ -1,0 +1,55 @@
+.init-pnpm:
+  before_script:
+    - npm install --global corepack@latest
+    - corepack enable
+    - corepack prepare pnpm@10.28.2 --activate
+    - node --max-old-space-size=8192
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install # install dependencies
+  tags:
+    - snowball-web-tuadev
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
+
+.test-visual:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.62.0-jammy
+  interruptible: true
+  extends:
+    - .init-pnpm
+  tags:
+    - snowball-web-tuadev
+  after_script:
+    - cp ./packages/react/playwright-report/index.html .
+    - mkdir data
+    - cp -v ./packages/react/playwright-report/data/* ./data/
+  artifacts:
+    when: on_failure
+    name: "playwright-ct-$CI_NODE_INDEX-of-$CI_NODE_TOTAL-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - index.html
+      - data
+  variables:
+    KUBERNETES_MEMORY_LIMIT: "7Gi"
+
+.llms-extractor:
+  stage: build
+  image: mcr.microsoft.com/playwright:v1.62.0-jammy
+  needs:
+    - build-packages
+    - build-react-storybook
+  extends:
+    - .init-pnpm
+  script:
+    - cd packages/react && pnpm run llms
+  tags:
+    - snowball-web-tuadev
+  variables:
+    SUMMARY_BASE_URL: "https://${APPLICATION_NAME}.itg-wirk.narf.tech"
+  artifacts:
+    paths:
+      - packages/react/storybook-static

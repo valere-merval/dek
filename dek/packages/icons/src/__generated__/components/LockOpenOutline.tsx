@@ -1,0 +1,34 @@
+import * as React from "react";
+import type { SVGProps } from "react";
+import { Ref, forwardRef } from "react";
+import { SVGRProps } from "../../types";
+const SvgLockOpenOutline = (
+  { title, titleId, ...props }: SVGProps<SVGSVGElement> & SVGRProps,
+  ref: Ref<SVGSVGElement>,
+) => (
+  <svg
+    width="1em"
+    height="1em"
+    fill="none"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
+    strokeWidth={0}
+    ref={ref}
+    aria-labelledby={titleId}
+    {...props}
+  >
+    {title ? <title id={titleId}>{title}</title> : null}
+    <path
+      fill="currentColor"
+      d="M7.375 9.625a1.125 1.125 0 0 0-2.25 0c0 .393.213.722.518.923L5.375 12.5h1.75l-.268-1.952c.305-.201.518-.53.518-.923"
+    />
+    <path
+      fill="currentColor"
+      d="M11.75 1A3.254 3.254 0 0 0 8.5 4.25V6H2.75c-.827 0-1.5.673-1.5 1.5v6c0 .827.673 1.5 1.5 1.5h7c.827 0 1.5-.673 1.5-1.5v-6c0-.827-.673-1.5-1.5-1.5H9.5V4.25C9.5 3.01 10.51 2 11.75 2S14 3.01 14 4.25V7h1V4.25A3.254 3.254 0 0 0 11.75 1m-2 6c.275 0 .5.225.5.5v6c0 .275-.225.5-.5.5h-7a.5.5 0 0 1-.5-.5v-6c0-.275.225-.5.5-.5z"
+    />
+  </svg>
+);
+SvgLockOpenOutline.displayName = "LockOpenOutline";
+const ForwardRef = forwardRef(SvgLockOpenOutline);
+export default ForwardRef;

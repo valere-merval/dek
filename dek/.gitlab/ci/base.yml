@@ -1,0 +1,118 @@
+comment:
+  stage: comment
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm changesets-gitlab comment # comment automatically like https://github.com/changesets/bot
+  tags:
+    - snowball-web-tuadev
+
+lint:
+  stage: test
+  interruptible: true
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm lint
+    - pnpm sonar:report
+  tags:
+    - snowball-web-tuadev
+  artifacts:
+    paths:
+      - "**/build/report.json"
+
+test:
+  stage: test
+  interruptible: true
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm test:ci
+  tags:
+    - snowball-web-tuadev
+
+# runs on main and on a renovate branch
+test-visual-full:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: on_success
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ "/^renovate/"
+      when: on_success
+
+  extends:
+    - .test-visual
+  parallel: 5
+  script:
+    - pnpm test:visual:ci -- --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+
+# runs on every merge request except for renovate branches
+test-visual-changes:
+  rules:
+    - if: $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ "/^renovate/"
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: on_success
+  extends:
+    - .test-visual
+  parallel: 2
+  script:
+    - git fetch origin main
+    - pnpm test:visual:ci -- --only-changed=refs/remotes/origin/main --pass-with-no-tests --shard=$CI_NODE_INDEX/$CI_NODE_TOTAL
+
+tscheck:
+  stage: test
+  interruptible: true
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm ts:check
+  tags:
+    - snowball-web-tuadev
+  variables:
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "7Gi"
+
+debug-teams-webhook:
+  stage: test
+  interruptible: true
+  extends:
+    - .init-pnpm
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $DEBUG_TEAMS_WEBHOOK =~ /^"?true"?$/i'
+      when: on_success
+    - when: never
+  script:
+    - export FAIL_ON_WEBHOOK_ERROR="true"
+    - |
+      if [[ -z "$FAIR_TEAMS_WEBHOOK_URL" ]]; then
+        echo "FAIR_TEAMS_WEBHOOK_URL is not set. Configure it as CI/CD variable for merge request pipelines."
+        exit 1
+      fi
+    - pnpm --filter @fair/teams-notifications scheduled-message debug
+    - pnpm --filter @fair/teams-notifications scheduled-message debug-release
+  tags:
+    - snowball-web-tuadev
+
+build-packages:
+  stage: build
+  interruptible: true
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm clean
+    - pnpm build
+  tags:
+    - snowball-web-tuadev
+  variables:
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "7Gi"
+  artifacts:
+    paths:
+      - packages/tokens/dist
+      - packages/icons/dist
+      - packages/react/dist
+      - packages/global-css/dist
+
+dependency-scanning:
+  tags:
+    - snowball-web-tuadev

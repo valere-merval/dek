@@ -1,0 +1,49 @@
+:root {
+  font-size: 62.5%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: "Interstate Congstar Cond";
+  src:
+    url("https://cdn.congstar.de/libraries/@fair/fonts/congstar-black/congstar-interstate-cond-black.woff2")
+      format("woff2"),
+    url("https://cdn.congstar.de/libraries/@fair/fonts/congstar-black/congstar-interstate-cond-black.woff")
+      format("woff");
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "Interstate";
+  src:
+    url("https://cdn.congstar.de/libraries/@fair/fonts/interstate/interstate-light.woff2")
+      format("woff2"),
+    url("https://cdn.congstar.de/libraries/@fair/fonts/interstate/interstate-light.woff")
+      format("woff");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Interstate";
+  src:
+    url("https://cdn.congstar.de/libraries/@fair/fonts/interstate/interstate-bold.woff2")
+      format("woff2"),
+    url("https://cdn.congstar.de/libraries/@fair/fonts/interstate/interstate-bold.woff")
+      format("woff");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Interstate Condensed";
+  src:
+    url("https://cdn.congstar.de/libraries/@fair/fonts/interstate-condensed-bold/Interstate-cond-bold.woff2")
+      format("woff2"),
+    url("https://cdn.congstar.de/libraries/@fair/fonts/interstate-condensed-bold/Interstate-cond-bold.woff")
+      format("woff");
+  font-style: normal;
+  font-weight: 700;
+}

@@ -1,0 +1,8 @@
+scheduled_notification:
+  stage: schedule
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm --filter @fair/teams-notifications scheduled-message $TEMPLATE_NAME
+  tags:
+    - snowball-web-tuadev

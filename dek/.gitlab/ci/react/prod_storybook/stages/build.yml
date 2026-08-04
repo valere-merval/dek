@@ -1,0 +1,49 @@
+build-packages:
+  stage: build
+  interruptible: true
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm clean
+    - pnpm build
+  tags:
+    - snowball-web-tuadev
+  variables:
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "8Gi"
+  artifacts:
+    paths:
+      - packages/tokens/dist
+      - packages/icons/dist
+      - packages/react/dist
+      - packages/global-css/dist
+
+build-react-storybook:
+  stage: build
+  needs:
+    - build-packages
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm storybook:build
+  tags:
+    - snowball-web-tuadev
+  variables:
+    KUBERNETES_MEMORY_REQUEST: "4Gi"
+    KUBERNETES_MEMORY_LIMIT: "8Gi"
+  artifacts:
+    paths:
+      - packages/react/storybook-static
+
+llms-extractor:
+  extends:
+    - .llms-extractor
+
+build-react-storybook-docker:
+  stage: build
+  needs:
+    - llms-extractor
+  extends: .itg-wirk:buildctl_harbor
+  variables:
+    DOCKER_CONTEXT: "./packages/react"
+    DOCKER_FILE_PATH: "./packages/react"

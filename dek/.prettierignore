@@ -1,0 +1,10 @@
+**/.plop-templates
+**/.next
+**/dist
+**/.cache
+**/.turbo
+.changeset
+**/.idea
+**/build
+**/storybook-static
+**/CHANGELOG.md

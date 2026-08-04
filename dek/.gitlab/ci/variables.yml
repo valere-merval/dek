@@ -1,0 +1,20 @@
+variables:
+  ########## GENERAL ##########
+  FF_USE_FASTZIP: "true" # for faster gitlab caching of node modules
+  ARTIFACT_COMPRESSION_LEVEL: fastest # for faster gitlab caching of node modules
+  CACHE_COMPRESSION_LEVEL: fastest # for faster gitlab caching of node modules
+  TRANSFER_METER_FREQUENCY: 5s # for faster gitlab caching of node modules
+  GIT_DEPTH: 10 #https://docs.gitlab.com/ee/user/project/repository/monorepos/#shallow-cloning
+  ########## STORYBOOK ##########
+  HELM_CHART_VERSION: "1.2.0-rc1"
+  ENVIRONMENT: "itg-wirk"
+  HARBOR_PROJECT: "itg"
+  REGISTRY: "core-harbor.ops-wirk.narf.tech/${HARBOR_PROJECT}"
+  NAMESPACE: "apps"
+  AWS_PROFILE: "snowball-itg"
+  AWS_ROLE: "gitlab-team-deko"
+  VAULT_ROLE: "aoe_gitlab_congstar_congo_fair"
+  HELM_NAME: "fair-react"
+  APPLICATION_NAME: "fair-react"
+  DOCKER_TAG: "${CI_PIPELINE_IID}"
+  IMAGE: "${REGISTRY}/${HELM_NAME}"

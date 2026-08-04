@@ -1,0 +1,3 @@
+include:
+  - "/.gitlab/ci/react/prod_storybook/stages/build.yml"
+  - "/.gitlab/ci/react/prod_storybook/stages/deploy.yml"

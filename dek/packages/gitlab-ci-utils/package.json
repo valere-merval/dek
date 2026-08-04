@@ -1,0 +1,28 @@
+{
+  "name": "@fair/gitlab-ci-utils",
+  "version": "0.9.2",
+  "sideEffects": false,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "cli": "ts-node ./src/cli.ts",
+    "commentMergeRequest": "pnpm run cli commentMergeRequest",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "sonar:report": "pnpm run lint -f json -o build/report.json"
+  },
+  "devDependencies": {
+    "@gitbeaker/rest": "catalog:",
+    "@swc/core": "catalog:",
+    "@swc/helpers": "catalog:",
+    "@types/node": "catalog:",
+    "commander": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-custom": "workspace:*",
+    "globals": "catalog:",
+    "regenerator-runtime": "catalog:",
+    "ts-node": "catalog:",
+    "tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

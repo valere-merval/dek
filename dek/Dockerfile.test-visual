@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/playwright:v1.62.0-jammy
+
+COPY . /fair
+WORKDIR /fair
+
+ARG NPM_TOKEN
+ARG CONGSTAR_GITLAB_FAIR_NPM_TOKEN
+
+ENV NPM_TOKEN=$NPM_TOKEN
+ENV CONGSTAR_GITLAB_FAIR_NPM_TOKEN=$CONGSTAR_GITLAB_FAIR_NPM_TOKEN
+
+# init pnpm
+RUN npm install --global corepack@latest && \
+    corepack enable && \
+    corepack prepare pnpm@10.28.2 --activate && \
+    node --max-old-space-size=8192 && \
+    pnpm config set store-dir .pnpm-store && \
+    pnpm install
+
+WORKDIR /fair/packages/react

@@ -1,0 +1,33 @@
+{
+  "name": "eslint-config-custom",
+  "version": "0.6.1",
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./base": "./base.js",
+    "./react": "./react.js",
+    "./a11y": "./a11y.js"
+  },
+  "scripts": {
+    "test": "node --test __tests__/eslint-config.test.js"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@eslint/compat": "catalog:",
+    "@eslint/js": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-jsx-a11y": "catalog:",
+    "eslint-plugin-react": "catalog:",
+    "eslint-plugin-react-hooks": "catalog:",
+    "globals": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "peerDependencies": {
+    "eslint": "catalog:"
+  },
+  "devDependencies": {
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  }
+}

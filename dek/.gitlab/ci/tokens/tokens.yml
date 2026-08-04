@@ -1,0 +1,8 @@
+check-tokens:
+  stage: test
+  extends:
+    - .init-pnpm
+  script:
+    - pnpm --filter @fair/gitlab-ci-utils cli openMergeRequest
+  tags:
+    - snowball-web-tuadev
