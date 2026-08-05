@@ -16,10 +16,8 @@ import { textColorMixin } from "../../../../Typography/themeBackgroundColorMappi
 import { TypographyVariant } from "../../../../Typography/Typography";
 import { up } from "../../../../../theme/mappings/mediaBreakpoints";
 
-export const Root = styled(CardFilled.Root)<{
-  headerImageSidePaddingCorrection?: boolean;
-}>`
-  ${({ theme, headerImageSidePaddingCorrection }) => {
+export const Root = styled(CardFilled.Root)`
+  ${({ theme }) => {
     const brand = theme.contextSpecific.brand;
     return css`
       position: relative;
@@ -27,13 +25,18 @@ export const Root = styled(CardFilled.Root)<{
         boxColorMapping[theme.contextSpecific.backgroundColor].backgroundColor
       ]};
       cursor: pointer;
-      ${brand === "congstarWeb" && headerImageSidePaddingCorrection
-        ? `padding-left: ${theme.space[20]};
-      padding-right: ${theme.space[20]};
-      ${up("md")} {
-        padding-left: ${theme.space[24]};
-        padding-right: ${theme.space[24]};
-      };`
+      ${brand === "congstarWeb"
+        ? css`
+            &[data-selection-box-header-image-correction="true"] {
+              padding-left: ${theme.space[20]};
+              padding-right: ${theme.space[20]};
+
+              ${up("md")} {
+                padding-left: ${theme.space[24]};
+                padding-right: ${theme.space[24]};
+              }
+            }
+          `
         : ``}
       @media (hover: hover) {
         &:hover {

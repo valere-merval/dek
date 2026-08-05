@@ -100,7 +100,9 @@ const Item = forwardRef<
         contentIfSelected={contentIfSelected}
         headerImage={headerImage}
         headerImageSize={headerImageSize}
-        headerImageSidePaddingCorrection={!!headerImage}
+        data-selection-box-header-image-correction={
+          headerImage ? "true" : undefined
+        }
         contentId={contentId}
         subText={subText}
         duration={duration}

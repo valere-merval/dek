@@ -11,7 +11,6 @@ export interface BaseProps extends ComponentPropsWithoutRef<"div"> {
   contentIfSelected?: ReactNode;
   headerImage?: ReactNode;
   headerImageSize?: CardFilledHeaderImageSize;
-  headerImageSidePaddingCorrection?: boolean;
   children?: ReactNode;
   contentId: string;
   duration?: DurationOption;
