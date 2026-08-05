@@ -73,13 +73,6 @@ export const Root = styled(CardFilled.Root)`
   }}
 `;
 
-export const HeaderImageSideMarginCorrection = styled.div`
-  ${({ theme }) => css`
-    margin-left: -${theme.space["04"]};
-    margin-right: -${theme.space["04"]};
-  `}
-`;
-
 export const Discount = styled.div<{ $backgroundColor: CardFilledColor }>`
   ${({ theme, $backgroundColor }) => {
     const backgroundColor = $backgroundColor;

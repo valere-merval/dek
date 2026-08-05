@@ -52,6 +52,7 @@ export const Root = forwardRef<ElementRef<typeof Styled.Root>, CardFilledProps>(
       promotionTop,
       headerImage,
       headerImageSize = "medium",
+      headerImageSidePaddingCorrection,
       promotionTopId,
       ...rest
     } = props;
@@ -88,6 +89,9 @@ export const Root = forwardRef<ElementRef<typeof Styled.Root>, CardFilledProps>(
               <Styled.HeaderImageWrapper
                 $headerImageSize={headerImageSize}
                 $size={props.size}
+                $headerImageSidePaddingCorrection={
+                  headerImageSidePaddingCorrection
+                }
               >
                 {headerImage}
               </Styled.HeaderImageWrapper>

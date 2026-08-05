@@ -22,6 +22,7 @@ export interface CardFilledProps extends CardProps {
   promotionTopId?: string;
   headerImage?: ReactNode;
   headerImageSize?: CardFilledHeaderImageSize;
+  headerImageSidePaddingCorrection?: boolean;
 }
 
 export interface CardFilledFooterProps

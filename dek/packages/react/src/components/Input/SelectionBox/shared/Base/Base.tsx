@@ -21,7 +21,7 @@ export const Base = (props: BaseProps) => {
     interactiveElement,
     headerImage,
     headerImageSize,
-    headerImageSideMarginCorrection,
+    headerImageSidePaddingCorrection,
     interactiveElementRef,
     contentId,
     onBoxClick,
@@ -33,14 +33,6 @@ export const Base = (props: BaseProps) => {
     themeContext?.contextSpecific.backgroundColor || "white";
   const boxColorBackground =
     boxColorBackgroundMapping[backgroundColor]?.backgroundColor || "white";
-  const correctedHeaderImage =
-    headerImage && headerImageSideMarginCorrection ? (
-      <Styled.HeaderImageSideMarginCorrection>
-        {headerImage}
-      </Styled.HeaderImageSideMarginCorrection>
-    ) : (
-      headerImage
-    );
   // Touch triggers pointerup and then click. This flag prevents a double onBoxClick.
   const skipNextClickAfterTouchRef = useRef(false);
 
@@ -99,8 +91,9 @@ export const Base = (props: BaseProps) => {
     <Styled.Root
       promotionTop={labelText}
       promotionTopId={promotionTopId}
-      headerImage={correctedHeaderImage}
+      headerImage={headerImage}
       headerImageSize={headerImageSize}
+      headerImageSidePaddingCorrection={headerImageSidePaddingCorrection}
       backgroundColor={boxColorBackground as CardFilledColor}
       size="small"
       onClick={handleFreeAreaClick}
