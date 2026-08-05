@@ -56,6 +56,7 @@ export const Root = forwardRef<ElementRef<typeof Styled.Root>, CardFilledProps>(
       promotionTopId,
       ...rest
     } = props;
+    void headerImageSidePaddingCorrection;
     const themeContext = useContext(ThemeContext);
     const brand = themeContext?.contextSpecific.brand || "congstarWeb";
     const brandSpecificBackgroundColor = getBrandSpecificBackgroundColor(
@@ -89,9 +90,6 @@ export const Root = forwardRef<ElementRef<typeof Styled.Root>, CardFilledProps>(
               <Styled.HeaderImageWrapper
                 $headerImageSize={headerImageSize}
                 $size={props.size}
-                $headerImageSidePaddingCorrection={
-                  headerImageSidePaddingCorrection
-                }
               >
                 {headerImage}
               </Styled.HeaderImageWrapper>

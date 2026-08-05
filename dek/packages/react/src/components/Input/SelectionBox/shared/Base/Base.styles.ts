@@ -16,8 +16,10 @@ import { textColorMixin } from "../../../../Typography/themeBackgroundColorMappi
 import { TypographyVariant } from "../../../../Typography/Typography";
 import { up } from "../../../../../theme/mappings/mediaBreakpoints";
 
-export const Root = styled(CardFilled.Root)`
-  ${({ theme }) => {
+export const Root = styled(CardFilled.Root)<{
+  headerImageSidePaddingCorrection?: boolean;
+}>`
+  ${({ theme, headerImageSidePaddingCorrection }) => {
     const brand = theme.contextSpecific.brand;
     return css`
       position: relative;
@@ -25,7 +27,7 @@ export const Root = styled(CardFilled.Root)`
         boxColorMapping[theme.contextSpecific.backgroundColor].backgroundColor
       ]};
       cursor: pointer;
-      ${brand === "congstarWeb"
+      ${brand === "congstarWeb" && headerImageSidePaddingCorrection
         ? `padding-left: ${theme.space[20]};
       padding-right: ${theme.space[20]};
       ${up("md")} {
