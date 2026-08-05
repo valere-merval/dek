@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import styled, { css, DefaultTheme } from "styled-components";
 
 import { highContrast } from "../../../../../utils/accessibility";
@@ -17,8 +16,8 @@ import { textColorMixin } from "../../../../Typography/themeBackgroundColorMappi
 import { TypographyVariant } from "../../../../Typography/Typography";
 import { up } from "../../../../../theme/mappings/mediaBreakpoints";
 
-export const Root = styled(CardFilled.Root)<{ headerImage?: ReactNode }>`
-  ${({ theme, headerImage }) => {
+export const Root = styled(CardFilled.Root)`
+  ${({ theme }) => {
     const brand = theme.contextSpecific.brand;
     return css`
       position: relative;
@@ -26,7 +25,7 @@ export const Root = styled(CardFilled.Root)<{ headerImage?: ReactNode }>`
         boxColorMapping[theme.contextSpecific.backgroundColor].backgroundColor
       ]};
       cursor: pointer;
-      ${brand === "congstarWeb" && !headerImage
+      ${brand === "congstarWeb"
         ? `padding-left: ${theme.space[20]};
       padding-right: ${theme.space[20]};
       ${up("md")} {
@@ -72,6 +71,13 @@ export const Root = styled(CardFilled.Root)<{ headerImage?: ReactNode }>`
       }
     `;
   }}
+`;
+
+export const HeaderImageSideMarginCorrection = styled.div`
+  ${({ theme }) => css`
+    margin-left: -${theme.space["04"]};
+    margin-right: -${theme.space["04"]};
+  `}
 `;
 
 export const Discount = styled.div<{ $backgroundColor: CardFilledColor }>`

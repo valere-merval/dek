@@ -96,6 +96,7 @@ const Item = forwardRef<
         contentIfSelected={contentIfSelected}
         headerImage={headerImage}
         headerImageSize={headerImageSize}
+        headerImageSideMarginCorrection={!!headerImage}
         contentId={contentId}
         subText={subText}
         duration={duration}
