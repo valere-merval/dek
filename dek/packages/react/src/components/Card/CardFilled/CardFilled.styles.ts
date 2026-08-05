@@ -151,8 +151,9 @@ export const PromotionTop = styled(LabelPromoted)`
 export const HeaderImageWrapper = styled.div<{
   $headerImageSize: CardFilledHeaderImageSize;
   $size: CardSize;
+  $headerImageSidePaddingCorrection?: boolean;
 }>`
-  ${({ theme, $headerImageSize, $size }) => {
+  ${({ theme, $headerImageSize, $size, $headerImageSidePaddingCorrection }) => {
     return css`
       box-sizing: border-box;
       background-color: ${theme.color[
@@ -180,6 +181,34 @@ export const HeaderImageWrapper = styled.div<{
           ]} *
           -1 + ${theme.space["04"]}
       );
+      ${$headerImageSidePaddingCorrection &&
+      theme.contextSpecific.brand === "congstarWeb"
+        ? css`
+            margin-right: calc(
+              ${theme.space[20]} * -1 + ${theme.space["04"]}
+            );
+            margin-left: calc(
+              ${theme.space[20]} * -1 + ${theme.space["04"]}
+            );
+
+            ${up("md")} {
+              margin-right: calc(
+                ${theme.space[
+                    CardOptionMap[theme.contextSpecific.brand][$size].desktop
+                      .paddingX
+                  ]} *
+                  -1 + ${theme.space["04"]}
+              );
+              margin-left: calc(
+                ${theme.space[
+                    CardOptionMap[theme.contextSpecific.brand][$size].desktop
+                      .paddingX
+                  ]} *
+                  -1 + ${theme.space["04"]}
+              );
+            }
+          `
+        : ``}
       ${up("md")} {
         margin-top: calc(
           ${theme.space[

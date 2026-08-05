@@ -26,17 +26,12 @@ export const Root = styled(CardFilled.Root)`
       ]};
       cursor: pointer;
       ${brand === "congstarWeb"
-        ? css`
-            &[data-selection-box-header-image-correction="true"] {
-              padding-left: ${theme.space[20]};
-              padding-right: ${theme.space[20]};
-
-              ${up("md")} {
-                padding-left: ${theme.space[24]};
-                padding-right: ${theme.space[24]};
-              }
-            }
-          `
+        ? `padding-left: ${theme.space[20]};
+      padding-right: ${theme.space[20]};
+      ${up("md")} {
+        padding-left: ${theme.space[24]};
+        padding-right: ${theme.space[24]};
+      };`
         : ``}
       @media (hover: hover) {
         &:hover {

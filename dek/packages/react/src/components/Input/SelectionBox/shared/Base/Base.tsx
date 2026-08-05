@@ -21,6 +21,7 @@ export const Base = (props: BaseProps) => {
     interactiveElement,
     headerImage,
     headerImageSize,
+    headerImageSidePaddingCorrection,
     interactiveElementRef,
     contentId,
     onBoxClick,
@@ -92,6 +93,7 @@ export const Base = (props: BaseProps) => {
       promotionTopId={promotionTopId}
       headerImage={headerImage}
       headerImageSize={headerImageSize}
+      headerImageSidePaddingCorrection={headerImageSidePaddingCorrection}
       backgroundColor={boxColorBackground as CardFilledColor}
       size="small"
       onClick={handleFreeAreaClick}
