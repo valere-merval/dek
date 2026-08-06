@@ -98,6 +98,15 @@ testDescribeAllowedBackgrounds(
       await expect(selectionBoxCheckboxPage.root).toHaveScreenshot();
     });
 
+    test.describe("Should render selectionBoxCheckbox", () => {
+      test.use(viewports.sm);
+      test(`on mobile`, async ({ mount, selectionBoxCheckboxPage }) => {
+        await mount(<BackgroundStory />);
+        await expect(selectionBoxCheckboxPage.root).toBeVisible();
+        await expect(selectionBoxCheckboxPage.root).toHaveScreenshot();
+      });
+    });
+
     test(`Should render selectionBoxCheckbox in hover state`, async ({
       mount,
       selectionBoxCheckboxPage,

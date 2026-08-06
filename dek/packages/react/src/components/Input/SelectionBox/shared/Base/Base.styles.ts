@@ -15,22 +15,35 @@ import { Brand, getFocusStyles } from "../../../../../theme/theme";
 import { textColorMixin } from "../../../../Typography/themeBackgroundColorMapping";
 import { TypographyVariant } from "../../../../Typography/Typography";
 import { up } from "../../../../../theme/mappings/mediaBreakpoints";
+import { HeaderImageWrapper } from "../../../../Card/CardFilled/CardFilled.styles";
 
 export const Root = styled(CardFilled.Root)`
   ${({ theme }) => {
     const brand = theme.contextSpecific.brand;
+    const congstarWebOffset = theme.mediaBreakpoints.lg
+      ? theme.space[24]
+      : theme.space[20];
     return css`
       position: relative;
       background-color: ${theme.color[
         boxColorMapping[theme.contextSpecific.backgroundColor].backgroundColor
       ]};
       cursor: pointer;
+
       ${brand === "congstarWeb"
-        ? `padding-left: ${theme.space[20]};
-      padding-right: ${theme.space[20]};
+        ? `padding-left: ${congstarWebOffset};
+      padding-right: ${congstarWebOffset};
+        ${HeaderImageWrapper} {
+        margin-right: calc(${congstarWebOffset} * -1 + ${theme.space["04"]});
+        margin-left: calc(${congstarWebOffset} * -1 + ${theme.space["04"]});
+      }
       ${up("md")} {
-        padding-left: ${theme.space[24]};
-        padding-right: ${theme.space[24]};
+        padding-left: ${congstarWebOffset};
+        padding-right: ${congstarWebOffset};
+        ${HeaderImageWrapper} {
+        margin-right: calc(${congstarWebOffset} * -1 + ${theme.space["04"]});
+        margin-left: calc(${congstarWebOffset} * -1 + ${theme.space["04"]});
+      }
       };`
         : ``}
       @media (hover: hover) {

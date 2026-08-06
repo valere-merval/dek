@@ -96,6 +96,15 @@ testDescribeAllowedBackgrounds(
       await expect(selectionBoxRadioPage.root).toHaveScreenshot();
     });
 
+    test.describe("Should render selectionBoxRadio", () => {
+      test.use(viewports.sm);
+      test(`on mobile`, async ({ mount, selectionBoxRadioPage }) => {
+        await mount(<BackgroundStory />);
+        await expect(selectionBoxRadioPage.root).toBeVisible();
+        await expect(selectionBoxRadioPage.root).toHaveScreenshot();
+      });
+    });
+
     test(`Should render selectionBoxRadio in hover state`, async ({
       mount,
       selectionBoxRadioPage,
