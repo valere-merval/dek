@@ -32,7 +32,7 @@ export const Root = styled(CardFilled.Root)`
       cursor: pointer;
       ${brand === "congstarWeb"
         ? css`
-            &[data-selection-box-header-image-correction="true"] {
+            &:has(${HeaderImageWrapper}) {
               padding-left: ${congstarWebOffsetMobile};
               padding-right: ${congstarWebOffsetMobile};
 
