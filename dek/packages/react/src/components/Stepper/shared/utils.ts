@@ -5,7 +5,5 @@ export const getAriaLabel = (
   step: StepInformation,
   state: StepperItemState,
 ) => {
-  return step
-    ? `Schritt ${step.index + 1} von ${step.total}: ${stepStatusToTextMap[state]}`
-    : undefined;
+  return step ? stepStatusToTextMap[state] : undefined;
 };
