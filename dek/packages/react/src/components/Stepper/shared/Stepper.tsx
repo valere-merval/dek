@@ -54,11 +54,15 @@ const Indicator = forwardRef<
       step={step}
       {...rest}
     >
-      {state === "completed" && <Check />}
-      {state === "error" && <Cross />}
-      {state === "pending" && <Clock />}
+      {state === "completed" && <Check aria-hidden="true" />}
+      {state === "error" && <Cross aria-hidden="true" />}
+      {state === "pending" && <Clock aria-hidden="true" />}
       {(state === "open" || state === "current") && (
-        <Styled.IndicatorText $size={size} $checkout={checkout}>
+        <Styled.IndicatorText
+          $size={size}
+          $checkout={checkout}
+          aria-hidden="true"
+        >
           {step}
         </Styled.IndicatorText>
       )}
