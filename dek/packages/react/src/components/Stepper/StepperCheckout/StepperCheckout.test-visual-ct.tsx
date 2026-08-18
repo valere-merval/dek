@@ -20,10 +20,10 @@ const test = base.extend<{
     const root = page.locator("#root");
     const list = page.getByRole("list");
     const stepItem1Label = page.getByLabel(
-      "abgeschlossen, Bestellübersicht",
+      "Schritt 1 von 5: abgeschlossen, Bestellübersicht",
     );
     const stepItem2Label = page.getByLabel(
-      "abgeschlossen, Persönliche Daten",
+      "Schritt 1 von 5: abgeschlossen, Persönliche Daten",
     );
 
     await use({
