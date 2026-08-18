@@ -5,6 +5,7 @@ import React, {
   ElementRef,
   forwardRef,
   useContext,
+  useId,
 } from "react";
 import { Check, Clock, Cross } from "@fair/icons";
 import * as Styled from "./Stepper.styles";
@@ -16,8 +17,12 @@ import {
   StepperRootProps,
 } from "./Stepper.types";
 
-export const StepperContext = createContext<StepperRootProps>(
-  {} as StepperRootProps,
+type StepperContextValue = StepperRootProps & {
+  contentIdPrefix: string;
+};
+
+export const StepperContext = createContext<StepperContextValue>(
+  {} as StepperContextValue,
 );
 
 export const StepperItemContext = createContext<StepperItemProps>(
@@ -31,9 +36,10 @@ export const Root = forwardRef<
   StepperRootProps
 >((props: StepperRootProps, ref) => {
   const { children, size, ...rest } = props;
+  const contentIdPrefix = useId();
   return (
     <Styled.StepperList ref={ref} size={size} {...rest}>
-      <StepperContext.Provider value={props}>
+      <StepperContext.Provider value={{ ...props, contentIdPrefix }}>
         {children}
       </StepperContext.Provider>
     </Styled.StepperList>
@@ -45,13 +51,17 @@ const Indicator = forwardRef<
   ElementRef<typeof Styled.StepperIndicator>,
   StepperIndicatorProps
 >(({ state, children, step, checkout, ...rest }, ref) => {
-  const { size } = useContext(StepperContext);
+  const { size, contentIdPrefix } = useContext(StepperContext);
+  const stepContentId = step
+    ? `${contentIdPrefix}-step-${step}-content`
+    : undefined;
   return (
     <Styled.StepperIndicator
       ref={ref}
       $size={size}
       $state={state}
       step={step}
+      aria-describedby={stepContentId}
       {...rest}
     >
       {state === "completed" && <Check aria-hidden="true" />}
@@ -76,9 +86,12 @@ export const Content = forwardRef<
   ElementRef<typeof Styled.StepperContent>,
   StepperContentProps
 >((props: StepperContentProps, ref) => {
-  const { children, ...rest } = props;
+  const { children, id, ...rest } = props;
+  const { contentIdPrefix } = useContext(StepperContext);
+  const step = useContext(StepContext);
+  const stepContentId = id ?? (step ? `${contentIdPrefix}-step-${step.index + 1}-content` : undefined);
   return (
-    <Styled.StepperContent ref={ref} {...rest}>
+    <Styled.StepperContent ref={ref} id={stepContentId} {...rest}>
       {children}
     </Styled.StepperContent>
   );

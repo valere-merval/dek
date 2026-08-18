@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ElementRef, forwardRef, useContext } from "react";
+import React, { ElementRef, forwardRef, useContext, useId } from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
 import {
   StepContext,
@@ -16,12 +16,13 @@ export const Root = forwardRef<
   StepperRootProps
 >((props: StepperRootProps, ref) => {
   const { children, size, ...rest } = props;
+  const contentIdPrefix = useId();
   const childrenArray = React.Children.toArray(children);
   const total = childrenArray.length;
 
   return (
     <Styled.Root ref={ref} {...rest}>
-      <StepperContext.Provider value={props}>
+      <StepperContext.Provider value={{ ...props, contentIdPrefix }}>
         {childrenArray.map((child, index) => {
           const contextValue = { index, total };
           return (
@@ -50,7 +51,6 @@ export const Item = forwardRef<
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
-          role="img"
           aria-label={ariaLabel}
           step={(step?.index ?? 0) + 1}
         />
