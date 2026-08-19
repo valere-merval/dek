@@ -44,19 +44,21 @@ Root.displayName = "Stepper.Root";
 const Indicator = forwardRef<
   ElementRef<typeof Styled.StepperIndicator>,
   StepperIndicatorProps
->(({ state, children, step, checkout, ...rest }, ref) => {
+>(({ state, step, checkout, ...rest }, ref) => {
   const { size } = useContext(StepperContext);
   return (
-    <Styled.StepperIndicator
-      ref={ref}
-      $size={size}
-      $state={state}
-      $checkout={checkout}
-      {...rest}
-    >
-      {state === "completed" && <Check aria-hidden="true" />}
-      {state === "error" && <Cross aria-hidden="true" />}
-      {state === "pending" && <Clock aria-hidden="true" />}
+    <Styled.IndicatorShell>
+      <Styled.StepperIndicator
+        ref={ref}
+        $size={size}
+        $state={state}
+        $checkout={checkout}
+        {...rest}
+      >
+        {state === "completed" && <Check aria-hidden="true" />}
+        {state === "error" && <Cross aria-hidden="true" />}
+        {state === "pending" && <Clock aria-hidden="true" />}
+      </Styled.StepperIndicator>
       {(state === "open" || state === "current") && (
         <Styled.IndicatorText
           $size={size}
@@ -66,7 +68,7 @@ const Indicator = forwardRef<
           {step}
         </Styled.IndicatorText>
       )}
-    </Styled.StepperIndicator>
+    </Styled.IndicatorShell>
   );
 });
 

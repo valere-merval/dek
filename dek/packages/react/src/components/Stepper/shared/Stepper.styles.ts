@@ -20,6 +20,11 @@ import { backgroundColorMapping } from "../../../theme/theme";
 
 const COUNTER_NAME = "stepper";
 
+export const IndicatorShell = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
 export const StepperList = styled.ul<StepperRootProps>(
   () => css`
     all: unset;
@@ -176,6 +181,11 @@ export const IndicatorText = styled.span<{
           fontMapForBrand[$size || "medium"],
           fontMapForBrand[$size || "large"],
         )}
-
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
   `;
 });
