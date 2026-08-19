@@ -32,7 +32,7 @@ export const StepperList = styled.ul<StepperRootProps>(
 );
 
 export const StepperIndicator = styled.div<
-  ConvertToTransient<StepperIndicatorProps, "state"> & {
+  ConvertToTransient<Omit<StepperIndicatorProps, "step">, "state"> & {
     $size?: StepperSize;
   }
 >(({ theme, $state, $size }) => {

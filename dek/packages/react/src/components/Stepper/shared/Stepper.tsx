@@ -51,7 +51,6 @@ const Indicator = forwardRef<
       ref={ref}
       $size={size}
       $state={state}
-      step={step}
       {...rest}
     >
       {state === "completed" && <Check />}
