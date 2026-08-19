@@ -47,7 +47,14 @@ const Indicator = forwardRef<
 >(({ state, step, checkout, ...rest }, ref) => {
   const { size } = useContext(StepperContext);
   return (
-    <Styled.IndicatorShell>
+    <Styled.IndicatorShell
+      $size={size}
+      $state={state}
+      $checkout={checkout}
+      data-step={
+        state === "open" || state === "current" ? String(step) : undefined
+      }
+    >
       <Styled.StepperIndicator
         ref={ref}
         $size={size}
@@ -59,16 +66,6 @@ const Indicator = forwardRef<
         {state === "error" && <Cross aria-hidden="true" />}
         {state === "pending" && <Clock aria-hidden="true" />}
       </Styled.StepperIndicator>
-      {(state === "open" || state === "current") && (
-        <Styled.IndicatorText
-          $size={size}
-          $checkout={checkout}
-          aria-hidden="true"
-          inert
-        >
-          {step}
-        </Styled.IndicatorText>
-      )}
     </Styled.IndicatorShell>
   );
 });
