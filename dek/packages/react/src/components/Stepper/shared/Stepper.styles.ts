@@ -12,7 +12,9 @@ import {
   itemSizeMap,
   stepTextColorMap,
 } from "./mappings";
+import { trimFont } from "../../../theme/mappings/typography";
 import { up } from "../../../theme/mappings/mediaBreakpoints";
+import { TypographyVariant } from "../../Typography/Typography";
 import { ConvertToTransient } from "../../propTypes";
 import { backgroundColorMapping } from "../../../theme/theme";
 
@@ -33,7 +35,7 @@ export const StepperIndicator = styled.div<
   ConvertToTransient<Omit<StepperIndicatorProps, "step">, "state" | "checkout"> & {
     $size?: StepperSize;
   }
->(({ theme, $state, $size, $checkout }) => {
+>(({ theme, $state, $size }) => {
   const indicatorDimensionsMedium =
     theme.size[itemSizeMap[$size || "medium"].indicatorDimension];
   const indicatorDimensionsLarge =
@@ -43,11 +45,6 @@ export const StepperIndicator = styled.div<
   const iconDimensionsLarge =
     theme.size[itemSizeMap[$size || "large"].iconDimension];
   const accentColor = theme.color[accentColorMap[theme.contextSpecific.brand]];
-  const fontMapForBrand = itemFontMap[theme.contextSpecific.brand];
-  const stepFontVariant = fontMapForBrand[$size || "medium"];
-  const stepFontVariantLarge = fontMapForBrand[$size || "large"];
-  const stepCheckoutFontVariant = fontMapForBrand["large"];
-  const stepCheckoutFontVariantLarge = fontMapForBrand["extraLarge"];
 
   return css`
     all: unset;
@@ -55,9 +52,6 @@ export const StepperIndicator = styled.div<
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    font: ${theme.typography[
-      $checkout ? stepCheckoutFontVariant : stepFontVariant
-    ]};
 
     border: 1px solid ${accentColor};
     border-radius: 50%;
@@ -77,19 +71,7 @@ export const StepperIndicator = styled.div<
       vertical-align: middle;
     }
 
-    ${$state === "open" || $state === "current"
-      ? css`
-          &[data-step]::before {
-            content: attr(data-step);
-          }
-        `
-      : css``}
-
     ${up("md")} {
-      font: ${theme.typography[
-        $checkout ? stepCheckoutFontVariantLarge : stepFontVariantLarge
-      ]};
-
       height: ${indicatorDimensionsLarge};
       min-width: ${indicatorDimensionsLarge};
       max-width: ${indicatorDimensionsLarge};
@@ -159,3 +141,41 @@ export const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+export const generateStepTextStyle = (
+  theme: DefaultTheme,
+  mediumFont: TypographyVariant,
+  largeFont: TypographyVariant,
+) => {
+  return css`
+    all: unset;
+    font: ${theme.typography[mediumFont]};
+    ${trimFont(mediumFont)};
+    ${up("md")} {
+      font: ${theme.typography[largeFont]};
+      ${trimFont(largeFont)};
+    }
+  `;
+};
+
+export const IndicatorText = styled.span<{
+  $size?: StepperSize;
+  $checkout?: boolean;
+}>(({ theme, $size, $checkout }) => {
+  const fontMapForBrand = itemFontMap[theme.contextSpecific.brand];
+
+  return css`
+    ${$checkout
+      ? generateStepTextStyle(
+          theme,
+          fontMapForBrand["large"],
+          fontMapForBrand["extraLarge"],
+        )
+      : generateStepTextStyle(
+          theme,
+          fontMapForBrand[$size || "medium"],
+          fontMapForBrand[$size || "large"],
+        )}
+
+  `;
+});
