@@ -1,6 +1,13 @@
 "use client";
 
-import React, { ElementRef, forwardRef, useContext } from "react";
+import React, {
+  cloneElement,
+  ElementRef,
+  forwardRef,
+  isValidElement,
+  useContext,
+  useId,
+} from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
 import {
   StepContext,
@@ -45,26 +52,37 @@ export const Item = forwardRef<
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
   const ariaLabel = getAriaLabel(step, state);
-  const currentContent =
-    state === "current" && React.isValidElement(children)
-      ? React.cloneElement(children, {
-          children: React.Children.toArray(children.props.children).map(
+  const titleId = useId();
+  const shouldLinkTitle = state === "current";
+  const currentContent = shouldLinkTitle && isValidElement(children)
+    ? (() => {
+        const contentElement =
+          children as React.ReactElement<{ children?: React.ReactNode }>;
+        return cloneElement(contentElement as React.ReactElement<any>, {
+          children: React.Children.toArray(contentElement.props.children).map(
             (child, index) => {
+              if (index === 0 && isValidElement(child)) {
+                return cloneElement(child as React.ReactElement<any>, {
+                  id: titleId,
+                } as any);
+              }
+
               if (index === 0) {
                 return child;
               }
 
-              if (React.isValidElement(child)) {
-                return React.cloneElement(child, {
+              if (isValidElement(child)) {
+                return cloneElement(child as React.ReactElement<any>, {
                   "aria-hidden": true,
-                });
+                } as any);
               }
 
               return <span aria-hidden="true">{child}</span>;
             },
           ),
-        })
-      : children;
+        } as any);
+      })()
+    : children;
   return (
     <Styled.Item ref={ref} $state={state} size={size} {...rest}>
       <StepperItemContext.Provider value={props}>
@@ -72,6 +90,8 @@ export const Item = forwardRef<
           state={state}
           role="group"
           aria-label={ariaLabel}
+          aria-describedby={shouldLinkTitle ? titleId : undefined}
+          hideValue={shouldLinkTitle}
           step={(step?.index ?? 0) + 1}
         />
         {currentContent}
