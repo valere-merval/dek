@@ -30,12 +30,24 @@ const test = base.extend<{
   stepperVerticalPage: async ({ page }, use) => {
     const root = page.locator("#root");
     const list = page.getByRole("list");
-    const stepItem1 = page.getByLabel("Schritt 1 von 4, Auftragseingang");
-    const stepItem2 = page.getByLabel("Schritt 2 von 4, Anbieterwechsel");
-    const stepItem3 = page.getByLabel("Schritt 3 von 4, Auftragsbestätigung");
-    const stepItem4 = page.getByLabel("Schritt 4 von 4, Starttermin");
-    const stepItemError = page.getByLabel("Schritt 3 von 4, Router-Versand");
-    const stepItemPending = page.getByLabel("Schritt 3 von 4, Versandvorbereitung");
+    const stepItem1 = page.getByRole("listitem", {
+      name: "Schritt 1 von 4, abgeschlossen, Auftragseingang",
+    });
+    const stepItem2 = page.getByRole("listitem", {
+      name: "Schritt 2 von 4, abgeschlossen, Anbieterwechsel",
+    });
+    const stepItem3 = page.getByRole("listitem", {
+      name: "Schritt 3 von 4, Aktueller Schritt, Auftragsbestätigung",
+    });
+    const stepItem4 = page.getByRole("listitem", {
+      name: "Schritt 4 von 4, offen, Starttermin",
+    });
+    const stepItemError = page.getByRole("listitem", {
+      name: "Schritt 3 von 4, Fehler, Router-Versand",
+    });
+    const stepItemPending = page.getByRole("listitem", {
+      name: "Schritt 3 von 4, ausstehend, Versandvorbereitung",
+    });
     const stepItem1Content = page.getByText("Dein Auftrag");
     const stepItem2Content = page.getByText("NetCologne hat deinen Wechsel");
     const stepItem3Content = page.getByText("Wir haben deinen Wechsel");
