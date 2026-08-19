@@ -20,11 +20,6 @@ import { backgroundColorMapping } from "../../../theme/theme";
 
 const COUNTER_NAME = "stepper";
 
-export const IndicatorShell = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
 export const StepperList = styled.ul<StepperRootProps>(
   () => css`
     all: unset;
@@ -57,6 +52,7 @@ export const StepperIndicator = styled.div<
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    position: relative;
 
     border: 1px solid ${accentColor};
     border-radius: 50%;
@@ -76,6 +72,22 @@ export const StepperIndicator = styled.div<
       vertical-align: middle;
     }
 
+    &::after {
+      content: attr(data-step);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      font: ${theme.typography[
+        $size ? itemFontMap[theme.contextSpecific.brand][$size] : itemFontMap[theme.contextSpecific.brand]["medium"]
+      ]};
+      ${trimFont(
+        $size ? itemFontMap[theme.contextSpecific.brand][$size] : itemFontMap[theme.contextSpecific.brand]["medium"],
+      )};
+    }
+
     ${up("md")} {
       height: ${indicatorDimensionsLarge};
       min-width: ${indicatorDimensionsLarge};
@@ -85,6 +97,11 @@ export const StepperIndicator = styled.div<
         width: ${iconDimensionsLarge};
         height: ${iconDimensionsLarge};
         vertical-align: middle;
+      }
+
+      &::after {
+        font: ${theme.typography[itemFontMap[theme.contextSpecific.brand]["large"]]};
+        ${trimFont(itemFontMap[theme.contextSpecific.brand]["large"])}
       }
     }
 
@@ -166,26 +183,8 @@ export const generateStepTextStyle = (
 export const IndicatorText = styled.span<{
   $size?: StepperSize;
   $checkout?: boolean;
-}>(({ theme, $size, $checkout }) => {
-  const fontMapForBrand = itemFontMap[theme.contextSpecific.brand];
-
+}>(() => {
   return css`
-    ${$checkout
-      ? generateStepTextStyle(
-          theme,
-          fontMapForBrand["large"],
-          fontMapForBrand["extraLarge"],
-        )
-      : generateStepTextStyle(
-          theme,
-          fontMapForBrand[$size || "medium"],
-          fontMapForBrand[$size || "large"],
-        )}
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
+    display: none;
   `;
 });
