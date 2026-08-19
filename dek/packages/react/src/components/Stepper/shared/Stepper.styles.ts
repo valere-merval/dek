@@ -74,10 +74,6 @@ export const StepperIndicator = styled.div<
       vertical-align: middle;
     }
 
-    &[data-step]::before {
-      content: attr(data-step);
-    }
-
     ${up("md")} {
       ${trimFont(fontMapForBrand[$size || "large"])};
 
@@ -174,6 +170,10 @@ export const IndicatorText = styled.span<{
   const fontMapForBrand = itemFontMap[theme.contextSpecific.brand];
 
   return css`
+    &::before {
+      content: attr(data-step);
+    }
+
     ${$checkout
       ? generateStepTextStyle(
           theme,
