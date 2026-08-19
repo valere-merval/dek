@@ -2,8 +2,10 @@
 
 import React, {
   createContext,
+  cloneElement,
   ElementRef,
   forwardRef,
+  isValidElement,
   useContext,
   useId,
 } from "react";
@@ -52,16 +54,16 @@ const Indicator = forwardRef<
   StepperIndicatorProps
 >(({ state, children, step, checkout, ...rest }, ref) => {
   const { size, contentIdPrefix } = useContext(StepperContext);
-  const stepContentId = step
-    ? `${contentIdPrefix}-step-${step}-content`
+  const stepContentTitleId = step
+    ? `${contentIdPrefix}-step-${step}-title`
     : undefined;
   return (
     <Styled.StepperIndicator
       ref={ref}
+      role="group"
       $size={size}
       $state={state}
-      step={step}
-      aria-describedby={stepContentId}
+      aria-describedby={stepContentTitleId}
       {...rest}
     >
       {state === "completed" && <Check aria-hidden="true" />}
@@ -89,10 +91,24 @@ export const Content = forwardRef<
   const { children, id, ...rest } = props;
   const { contentIdPrefix } = useContext(StepperContext);
   const step = useContext(StepContext);
-  const stepContentId = id ?? (step ? `${contentIdPrefix}-step-${step.index + 1}-content` : undefined);
+  const stepContentId =
+    id ??
+    (step
+      ? `${contentIdPrefix}-step-${step.index + 1}-content`
+      : undefined);
+  const stepContentTitleId = step
+    ? `${contentIdPrefix}-step-${step.index + 1}-title`
+    : undefined;
+  const childrenArray = React.Children.toArray(children);
+  const enhancedChildren = childrenArray.map((child, index) => {
+    if (index === 0 && stepContentTitleId && isValidElement(child)) {
+      return cloneElement(child, { id: stepContentTitleId });
+    }
+    return child;
+  });
   return (
     <Styled.StepperContent ref={ref} id={stepContentId} {...rest}>
-      {children}
+      {enhancedChildren}
     </Styled.StepperContent>
   );
 });

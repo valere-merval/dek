@@ -239,7 +239,6 @@ test.describe("Accessibility", () => {
       page: stepperHorizontalPage.page,
     })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
-      .disableRules("aria-prohibited-attr")
       .analyze();
 
     expect(accessibilityScanResults.violations).toEqual([]);
