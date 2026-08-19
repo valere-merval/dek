@@ -51,7 +51,6 @@ const Indicator = forwardRef<
       ref={ref}
       $size={size}
       $state={state}
-      aria-hidden="true"
       {...rest}
     >
       {state === "completed" && <Check aria-hidden="true" />}
