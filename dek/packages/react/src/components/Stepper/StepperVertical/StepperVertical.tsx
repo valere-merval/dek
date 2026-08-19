@@ -104,17 +104,16 @@ export const Item = forwardRef<
       ref={ref}
       $state={state}
       size={size}
-      tabIndex={0}
-      aria-labelledby={`${labelId} ${titleId}`}
       {...rest}
     >
       <StepperItemContext.Provider value={props}>
-        <Styled.VisuallyHidden id={labelId}>{ariaLabel}</Styled.VisuallyHidden>
         <Stepper.Indicator
           state={state}
-          aria-hidden="true"
+          tabIndex={0}
+          aria-labelledby={`${labelId} ${titleId}`}
           step={(step?.index ?? 0) + 1}
         />
+        <Styled.VisuallyHidden id={labelId}>{ariaLabel}</Styled.VisuallyHidden>
         {labelledChildren}
       </StepperItemContext.Provider>
     </Styled.Item>
