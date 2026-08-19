@@ -9,6 +9,7 @@ import {
   StepperItemContext,
 } from "../shared/Stepper";
 import { getAriaLabel } from "../shared/utils";
+import { stepStatusToTextMap } from "../shared/mappings";
 import * as Styled from "./StepperVertical.styles";
 
 type A11yContentElementProps = {
@@ -134,6 +135,8 @@ export const Item = forwardRef<
   const step = useContext(StepContext);
   const titleId = useId();
   const ariaLabel = getAriaLabel(step, state);
+  const indicatorLabel =
+    state === "current" ? stepStatusToTextMap.current : ariaLabel;
   const contentElement = React.isValidElement(children)
     ? (children as React.ReactElement<A11yContentElementProps>)
     : undefined;
@@ -167,7 +170,7 @@ export const Item = forwardRef<
         <Stepper.Indicator
           state={state}
           role="img"
-          aria-label={ariaLabel}
+          aria-label={indicatorLabel}
           step={(step?.index ?? 0) + 1}
         />
         {content}
