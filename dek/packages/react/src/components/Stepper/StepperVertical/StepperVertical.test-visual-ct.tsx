@@ -14,64 +14,116 @@ const test = base.extend<{
     root: Locator;
     list: Locator;
     stepItem1: Locator;
-    stepItem1Content: Locator;
+    stepItem1Title: Locator;
+    stepItem1Subtitle: Locator;
     stepItem2: Locator;
-    stepItem2Content: Locator;
+    stepItem2Title: Locator;
+    stepItem2Subtitle: Locator;
     stepItem3: Locator;
-    stepItem3Content: Locator;
+    stepItem3Title: Locator;
+    stepItem3Subtitle: Locator;
     stepItemError: Locator;
-    stepItemErrorContent: Locator;
+    stepItemErrorTitle: Locator;
+    stepItemErrorSubtitle: Locator;
     stepItemPending: Locator;
-    stepItemPendingContent: Locator;
+    stepItemPendingTitle: Locator;
+    stepItemPendingSubtitle: Locator;
     stepItem4: Locator;
-    stepItem4Content: Locator;
+    stepItem4Title: Locator;
+    stepItem4Subtitle: Locator;
   };
 }>({
   stepperVerticalPage: async ({ page }, use) => {
     const root = page.locator("#root");
     const list = page.getByRole("list");
-    const stepItem1 = page.getByLabel(
-      "Schritt 1 von 4, abgeschlossen, Auftragseingang",
+    const stepItem1 = page.getByRole("button", {
+      name: "Schritt 1 von 4, abgeschlossen, Auftragseingang",
+    });
+    const stepItem2 = page.getByRole("button", {
+      name: "Schritt 2 von 4, abgeschlossen, Anbieterwechsel",
+    });
+    const stepItem3 = page.getByRole("button", {
+      name: "Schritt 3 von 4, Aktueller Schritt, Auftragsbestätigung",
+    });
+    const stepItem4 = page.getByRole("button", {
+      name: "Schritt 4 von 4, offen, Starttermin",
+    });
+    const stepItemError = page.getByRole("button", {
+      name: "Schritt 3 von 4, Fehler, Router-Versand",
+    });
+    const stepItemPending = page.getByRole("button", {
+      name: "Schritt 3 von 4, ausstehend, Versandvorbereitung",
+    });
+    const stepItem1Title = page.getByRole("heading", {
+      name: "Auftragseingang",
+      level: 1,
+    });
+    const stepItem2Title = page.getByRole("heading", {
+      name: "Anbieterwechsel",
+      level: 2,
+    });
+    const stepItem3Title = page.getByRole("heading", {
+      name: "Auftragsbestätigung",
+      level: 3,
+    });
+    const stepItem4Title = page.getByRole("heading", {
+      name: "Starttermin",
+      level: 4,
+    });
+    const stepItemErrorTitle = page.getByRole("heading", {
+      name: "Router-Versand",
+      level: 3,
+    });
+    const stepItemPendingTitle = page.getByRole("heading", {
+      name: "Versandvorbereitung",
+      level: 3,
+    });
+    const stepItem1Subtitle = page.getByText(
+      "Dein Auftrag ist am 13.05.2024 bei uns eingegangen.",
+      { exact: true },
     );
-    const stepItem2 = page.getByLabel(
-      "Schritt 2 von 4, abgeschlossen, Anbieterwechsel",
+    const stepItem2Subtitle = page.getByText(
+      "NetCologne hat deinen Wechsel zum 01.06.2024 bestätigt.",
+      { exact: true },
     );
-    const stepItem3 = page.getByLabel(
-      "Schritt 3 von 4, Aktueller Schritt, Auftragsbestätigung",
+    const stepItem3Subtitle = page.getByText(
+      "Wir haben deinen Wechsel bei NetCologne angefragt.",
+      { exact: true },
     );
-    const stepItem4 = page.getByLabel("Schritt 4 von 4, offen, Starttermin");
-    const stepItemError = page.getByLabel(
-      "Schritt 3 von 4, Fehler, Router-Versand",
+    const stepItemErrorSubtitle = page.getByText(
+      "Bitte melde dich bei der Service Hotline",
+      { exact: true },
     );
-    const stepItemPending = page.getByLabel(
-      "Schritt 3 von 4, ausstehend, Versandvorbereitung",
-    );
-    const stepItem1Content = page.getByText("Dein Auftrag");
-    const stepItem2Content = page.getByText("NetCologne hat deinen Wechsel");
-    const stepItem3Content = page.getByText("Wir haben deinen Wechsel");
-    const stepItemErrorContent = page.getByText("Bitte melde dich");
-    const stepItemPendingContent = page.getByText(
+    const stepItemPendingSubtitle = page.getByText(
       "Leider verzögert sich der Versand deiner Bestellung.",
+      { exact: true },
     );
-    const stepItem4Content = page.getByText(
-      "Wir bestätigen deinen Starttermin",
+    const stepItem4Subtitle = page.getByText(
+      "Wir bestätigen deinen Starttermin mit Technikereinsatz am 01.06.2024.",
+      { exact: true },
     );
     await use({
       page,
       root,
       list,
       stepItem1,
-      stepItem1Content,
+      stepItem1Title,
+      stepItem1Subtitle,
       stepItem2,
-      stepItem2Content,
+      stepItem2Title,
+      stepItem2Subtitle,
       stepItem3,
-      stepItem3Content,
+      stepItem3Title,
+      stepItem3Subtitle,
       stepItemError,
-      stepItemErrorContent,
+      stepItemErrorTitle,
+      stepItemErrorSubtitle,
       stepItemPending,
-      stepItemPendingContent,
+      stepItemPendingTitle,
+      stepItemPendingSubtitle,
       stepItem4,
-      stepItem4Content,
+      stepItem4Title,
+      stepItem4Subtitle,
     });
   },
 });
@@ -107,10 +159,14 @@ testDescribeAllowedBackgrounds(
       await expect(stepperVerticalPage.stepItem2).toBeVisible();
       await expect(stepperVerticalPage.stepItem3).toBeVisible();
       await expect(stepperVerticalPage.stepItem4).toBeVisible();
-      await expect(stepperVerticalPage.stepItem1Content).toBeVisible();
-      await expect(stepperVerticalPage.stepItem2Content).toBeVisible();
-      await expect(stepperVerticalPage.stepItem3Content).toBeVisible();
-      await expect(stepperVerticalPage.stepItem4Content).toBeVisible();
+      await expect(stepperVerticalPage.stepItem1Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem2Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem3Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem4Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem1Subtitle).toBeVisible();
+      await expect(stepperVerticalPage.stepItem2Subtitle).toBeVisible();
+      await expect(stepperVerticalPage.stepItem3Subtitle).toBeVisible();
+      await expect(stepperVerticalPage.stepItem4Subtitle).toBeVisible();
 
       await expect(stepperVerticalPage.root).toHaveScreenshot();
     });
@@ -130,10 +186,14 @@ test.describe("Small Viewport", () => {
     await expect(stepperVerticalPage.stepItem2).toBeVisible();
     await expect(stepperVerticalPage.stepItem3).toBeVisible();
     await expect(stepperVerticalPage.stepItem4).toBeVisible();
-    await expect(stepperVerticalPage.stepItem1Content).toBeVisible();
-    await expect(stepperVerticalPage.stepItem2Content).toBeVisible();
-    await expect(stepperVerticalPage.stepItem3Content).toBeVisible();
-    await expect(stepperVerticalPage.stepItem4Content).toBeVisible();
+    await expect(stepperVerticalPage.stepItem1Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem2Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem3Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem4Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem1Subtitle).toBeVisible();
+    await expect(stepperVerticalPage.stepItem2Subtitle).toBeVisible();
+    await expect(stepperVerticalPage.stepItem3Subtitle).toBeVisible();
+    await expect(stepperVerticalPage.stepItem4Subtitle).toBeVisible();
     await expect(stepperVerticalPage.root).toHaveScreenshot();
   });
 });
@@ -149,10 +209,14 @@ test.describe("Large Viewport", () => {
     await expect(stepperVerticalPage.stepItem2).toBeVisible();
     await expect(stepperVerticalPage.stepItem3).toBeVisible();
     await expect(stepperVerticalPage.stepItem4).toBeVisible();
-    await expect(stepperVerticalPage.stepItem1Content).toBeVisible();
-    await expect(stepperVerticalPage.stepItem2Content).toBeVisible();
-    await expect(stepperVerticalPage.stepItem3Content).toBeVisible();
-    await expect(stepperVerticalPage.stepItem4Content).toBeVisible();
+    await expect(stepperVerticalPage.stepItem1Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem2Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem3Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem4Title).toBeVisible();
+    await expect(stepperVerticalPage.stepItem1Subtitle).toBeVisible();
+    await expect(stepperVerticalPage.stepItem2Subtitle).toBeVisible();
+    await expect(stepperVerticalPage.stepItem3Subtitle).toBeVisible();
+    await expect(stepperVerticalPage.stepItem4Subtitle).toBeVisible();
 
     await expect(stepperVerticalPage.root).toHaveScreenshot();
   });
@@ -168,10 +232,14 @@ supportedManualSizes.map((size) => {
       await expect(stepperVerticalPage.stepItem2).toBeVisible();
       await expect(stepperVerticalPage.stepItem3).toBeVisible();
       await expect(stepperVerticalPage.stepItem4).toBeVisible();
-      await expect(stepperVerticalPage.stepItem1Content).toBeVisible();
-      await expect(stepperVerticalPage.stepItem2Content).toBeVisible();
-      await expect(stepperVerticalPage.stepItem3Content).toBeVisible();
-      await expect(stepperVerticalPage.stepItem4Content).toBeVisible();
+      await expect(stepperVerticalPage.stepItem1Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem2Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem3Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem4Title).toBeVisible();
+      await expect(stepperVerticalPage.stepItem1Subtitle).toBeVisible();
+      await expect(stepperVerticalPage.stepItem2Subtitle).toBeVisible();
+      await expect(stepperVerticalPage.stepItem3Subtitle).toBeVisible();
+      await expect(stepperVerticalPage.stepItem4Subtitle).toBeVisible();
 
       await expect(stepperVerticalPage.root).toHaveScreenshot();
     });
@@ -188,10 +256,14 @@ test("Should render StepperVertical with Error", async ({
   await expect(stepperVerticalPage.stepItem2).toBeVisible();
   await expect(stepperVerticalPage.stepItemError).toBeVisible();
   await expect(stepperVerticalPage.stepItem4).toBeVisible();
-  await expect(stepperVerticalPage.stepItem1Content).toBeVisible();
-  await expect(stepperVerticalPage.stepItem2Content).toBeVisible();
-  await expect(stepperVerticalPage.stepItemErrorContent).toBeVisible();
-  await expect(stepperVerticalPage.stepItem4Content).toBeVisible();
+  await expect(stepperVerticalPage.stepItem1Title).toBeVisible();
+  await expect(stepperVerticalPage.stepItem2Title).toBeVisible();
+  await expect(stepperVerticalPage.stepItemErrorTitle).toBeVisible();
+  await expect(stepperVerticalPage.stepItem4Title).toBeVisible();
+  await expect(stepperVerticalPage.stepItem1Subtitle).toBeVisible();
+  await expect(stepperVerticalPage.stepItem2Subtitle).toBeVisible();
+  await expect(stepperVerticalPage.stepItemErrorSubtitle).toBeVisible();
+  await expect(stepperVerticalPage.stepItem4Subtitle).toBeVisible();
 
   await expect(stepperVerticalPage.root).toHaveScreenshot();
 });
@@ -203,7 +275,8 @@ test("Should render StepperVertical with Pending State", async ({
   await mount(<stories.WithPendingState />);
   await expect(stepperVerticalPage.list).toBeVisible();
   await expect(stepperVerticalPage.stepItemPending).toBeVisible();
-  await expect(stepperVerticalPage.stepItemPendingContent).toBeVisible();
+  await expect(stepperVerticalPage.stepItemPendingTitle).toBeVisible();
+  await expect(stepperVerticalPage.stepItemPendingSubtitle).toBeVisible();
 
   await expect(stepperVerticalPage.root).toHaveScreenshot();
 });
