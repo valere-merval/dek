@@ -13,6 +13,9 @@ import option5g from "../../../../../.storybook/assets/images/Badge__5G.svg";
 import optionShare from "../../../../../.storybook/assets/images/share-logo-option-4gb.svg";
 import { FileOutline } from "@fair/icons";
 import { useState } from "react";
+import { Decorator } from "@storybook/react-vite";
+import { ThemeProvider } from "../../../../theme/ThemeProvider";
+import { BackgroundColor } from "../../../../theme/theme";
 
 const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
   congstarWeb: ["black", "white", "darkGrey", "lightGrey"],
@@ -21,8 +24,31 @@ const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
   penny: ["pennyNeutralWhite"],
 };
 
+const surfaceThemeByBackgroundColor: Partial<
+  Record<BackgroundColor, BackgroundColor>
+> = {
+  darkGrey: "lightGrey",
+  lightGrey: "white",
+};
+
+const withReadableSelectionBoxSurface: Decorator = (Story, context) => {
+  const backgroundColor = context.globals
+    .backgroundColor as BackgroundColor | undefined;
+  const surfaceBackgroundColor =
+    surfaceThemeByBackgroundColor[backgroundColor ?? "white"] ??
+    backgroundColor ??
+    "white";
+
+  return (
+    <ThemeProvider backgroundColor={surfaceBackgroundColor}>
+      <Story />
+    </ThemeProvider>
+  );
+};
+
 const meta = {
   component: SelectionBoxCheckbox.Group,
+  decorators: [withReadableSelectionBoxSurface],
   parameters: {
     allowedBackgroundColors,
   },
