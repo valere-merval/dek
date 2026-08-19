@@ -77,9 +77,13 @@ export const StepperIndicator = styled.div<
       vertical-align: middle;
     }
 
-    &[data-step]::before {
-      content: attr(data-step);
-    }
+    ${$state === "open" || $state === "current"
+      ? css`
+          &[data-step]::before {
+            content: attr(data-step);
+          }
+        `
+      : css``}
 
     ${up("md")} {
       font: ${theme.typography[
