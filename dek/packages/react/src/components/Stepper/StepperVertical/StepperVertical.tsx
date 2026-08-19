@@ -104,6 +104,7 @@ export const Item = forwardRef<
       ref={ref}
       $state={state}
       size={size}
+      tabIndex={0}
       aria-labelledby={`${labelId} ${titleId}`}
       {...rest}
     >
