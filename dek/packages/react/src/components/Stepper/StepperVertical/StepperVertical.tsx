@@ -74,12 +74,11 @@ export const Item = forwardRef<
   const position = step ? `Schritt ${step.index + 1} von ${step.total}` : "";
   const ariaLabel = [position, title].filter(Boolean).join(", ");
   return (
-    <Styled.Item ref={ref} $state={state} size={size} {...rest}>
+    <Styled.Item ref={ref} $state={state} size={size} aria-label={ariaLabel} {...rest}>
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
-          role="group"
-          aria-label={ariaLabel}
+          aria-hidden="true"
           step={(step?.index ?? 0) + 1}
         />
         {children}
