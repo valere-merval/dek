@@ -152,6 +152,7 @@ export const Item = forwardRef<
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
+          role="button"
           tabIndex={0}
           aria-label={ariaLabel}
           suppressStepTextA11y

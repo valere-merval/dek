@@ -8,7 +8,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { announce } from "@react-aria/live-announcer";
 import { VisuallyHidden } from "react-aria";
 
 import * as Styled from "./TableComparison.styles";
@@ -49,6 +48,7 @@ export const TableComparison = forwardRef<
     ref,
   ) => {
     const tableId = useId();
+    const [announcement, setAnnouncement] = useState("");
     const [selectedItem, setSelectedItem] = useState(
       data
         .slice(0, showThirdColumn ? 3 : 2)
@@ -71,9 +71,8 @@ export const TableComparison = forwardRef<
           newSelectedItemIds[index] = newItem;
           return newSelectedItemIds;
         });
-        announce(
+        setAnnouncement(
           `${newItem.value} wurde in Vergleichsspalte ${index + 1} ausgewählt. Die Vergleichsdaten wurden aktualisiert.`,
-          "polite",
         );
       },
       [data, selectedItem],
@@ -102,6 +101,9 @@ export const TableComparison = forwardRef<
 
     return (
       <Styled.Root ref={ref} {...rest}>
+        <VisuallyHidden role="log" aria-live="polite">
+          {announcement}
+        </VisuallyHidden>
         <Styled.ItemTitle>
           <Headline
             as={headlineLevel}
