@@ -45,16 +45,36 @@ export const Item = forwardRef<
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
   const ariaLabel = getAriaLabel(step, state);
+  const currentContent =
+    state === "current" && React.isValidElement(children)
+      ? React.cloneElement(children, {
+          children: React.Children.toArray(children.props.children).map(
+            (child, index) => {
+              if (index === 0) {
+                return child;
+              }
+
+              if (React.isValidElement(child)) {
+                return React.cloneElement(child, {
+                  "aria-hidden": true,
+                });
+              }
+
+              return <span aria-hidden="true">{child}</span>;
+            },
+          ),
+        })
+      : children;
   return (
     <Styled.Item ref={ref} $state={state} size={size} {...rest}>
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
-          role="img"
+          role="group"
           aria-label={ariaLabel}
           step={(step?.index ?? 0) + 1}
         />
-        {children}
+        {currentContent}
       </StepperItemContext.Provider>
     </Styled.Item>
   );
