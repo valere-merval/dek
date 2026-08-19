@@ -44,10 +44,10 @@ Root.displayName = "Stepper.Root";
 const Indicator = forwardRef<
   ElementRef<typeof Styled.StepperIndicator>,
   StepperIndicatorProps
->(({ state, step, checkout, ...rest }, ref) => {
+>(({ state, step, checkout, a11yHidden, ...rest }, ref) => {
   const { size } = useContext(StepperContext);
   return (
-    <Styled.IndicatorShell>
+    <Styled.IndicatorShell aria-hidden={a11yHidden ? "true" : undefined}>
       <Styled.StepperIndicator
         ref={ref}
         $size={size}

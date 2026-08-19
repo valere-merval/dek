@@ -102,6 +102,7 @@ export const Item = forwardRef<
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
+          a11yHidden={state === "current"}
           role="presentation"
           aria-hidden="true"
           step={(step?.index ?? 0) + 1}
