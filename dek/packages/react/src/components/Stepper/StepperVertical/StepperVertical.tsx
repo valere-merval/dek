@@ -1,13 +1,6 @@
 "use client";
 
-import React, {
-  cloneElement,
-  ElementRef,
-  forwardRef,
-  isValidElement,
-  useContext,
-  useId,
-} from "react";
+import React, { ElementRef, forwardRef, useContext } from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
 import {
   StepContext,
@@ -16,7 +9,27 @@ import {
   StepperItemContext,
 } from "../shared/Stepper";
 import * as Styled from "./StepperVertical.styles";
-import { getAriaLabel } from "../shared/utils";
+
+const getNodeText = (node: React.ReactNode): string => {
+  if (node === null || node === undefined || typeof node === "boolean") {
+    return "";
+  }
+
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getNodeText).join(" ");
+  }
+
+  if (React.isValidElement(node)) {
+    const element = node as React.ReactElement<{ children?: React.ReactNode }>;
+    return getNodeText(element.props.children);
+  }
+
+  return "";
+};
 
 export const Root = forwardRef<
   ElementRef<typeof Styled.Root>,
@@ -51,38 +64,15 @@ export const Item = forwardRef<
   const { children, state = "open", ...rest } = props;
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
-  const ariaLabel = getAriaLabel(step, state);
-  const titleId = useId();
-  const shouldLinkTitle = state === "current";
-  const currentContent = shouldLinkTitle && isValidElement(children)
-    ? (() => {
-        const contentElement =
-          children as React.ReactElement<{ children?: React.ReactNode }>;
-        return cloneElement(contentElement as React.ReactElement<any>, {
-          children: React.Children.toArray(contentElement.props.children).map(
-            (child, index) => {
-              if (index === 0 && isValidElement(child)) {
-                return cloneElement(child as React.ReactElement<any>, {
-                  id: titleId,
-                } as any);
-              }
-
-              if (index === 0) {
-                return child;
-              }
-
-              if (isValidElement(child)) {
-                return cloneElement(child as React.ReactElement<any>, {
-                  "aria-hidden": true,
-                } as any);
-              }
-
-              return <span aria-hidden="true">{child}</span>;
-            },
-          ),
-        } as any);
-      })()
-    : children;
+  const contentChildren = React.isValidElement(children)
+    ? (children as React.ReactElement<{ children?: React.ReactNode }>).props
+        .children
+    : undefined;
+  const title = getNodeText(
+    React.Children.toArray(contentChildren)[0],
+  ).trim();
+  const position = step ? `Schritt ${step.index + 1} von ${step.total}` : "";
+  const ariaLabel = [position, title].filter(Boolean).join(", ");
   return (
     <Styled.Item ref={ref} $state={state} size={size} {...rest}>
       <StepperItemContext.Provider value={props}>
@@ -90,11 +80,9 @@ export const Item = forwardRef<
           state={state}
           role="group"
           aria-label={ariaLabel}
-          aria-describedby={shouldLinkTitle ? titleId : undefined}
-          hideValue={shouldLinkTitle}
           step={(step?.index ?? 0) + 1}
         />
-        {currentContent}
+        {children}
       </StepperItemContext.Provider>
     </Styled.Item>
   );

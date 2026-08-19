@@ -44,7 +44,7 @@ Root.displayName = "Stepper.Root";
 const Indicator = forwardRef<
   ElementRef<typeof Styled.StepperIndicator>,
   StepperIndicatorProps
->(({ state, children, step, checkout, hideValue, ...rest }, ref) => {
+>(({ state, children, step, checkout, ...rest }, ref) => {
   const { size } = useContext(StepperContext);
   return (
     <Styled.StepperIndicator
@@ -61,7 +61,7 @@ const Indicator = forwardRef<
         <Styled.IndicatorText
           $size={size}
           $checkout={checkout}
-          aria-hidden={hideValue ? "true" : undefined}
+          aria-hidden="true"
         >
           {step}
         </Styled.IndicatorText>
