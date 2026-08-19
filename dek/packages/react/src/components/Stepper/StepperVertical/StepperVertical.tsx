@@ -8,8 +8,29 @@ import {
   StepperContext,
   StepperItemContext,
 } from "../shared/Stepper";
-import { getAriaLabel } from "../shared/utils";
+import { stepStatusToTextMap } from "../shared/mappings";
 import * as Styled from "./StepperVertical.styles";
+
+const getNodeText = (node: React.ReactNode): string => {
+  if (node === null || node === undefined || typeof node === "boolean") {
+    return "";
+  }
+
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getNodeText).join(" ");
+  }
+
+  if (React.isValidElement(node)) {
+    const element = node as React.ReactElement<{ children?: React.ReactNode }>;
+    return getNodeText(element.props.children);
+  }
+
+  return "";
+};
 
 export const Root = forwardRef<
   ElementRef<typeof Styled.Root>,
@@ -44,7 +65,17 @@ export const Item = forwardRef<
   const { children, state = "open", ...rest } = props;
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
-  const ariaLabel = getAriaLabel(step, state);
+  const title = React.isValidElement(children)
+    ? getNodeText(
+        React.Children.toArray(
+          (children as React.ReactElement<{ children?: React.ReactNode }>).props
+            .children,
+        )[0],
+      ).trim()
+    : "";
+  const ariaLabel = step
+    ? `Schritt ${step.index + 1} von ${step.total}, ${stepStatusToTextMap[state]}, ${title}`
+    : title;
   const contentElement = React.isValidElement(children)
     ? (children as React.ReactElement<{ children?: React.ReactNode }>)
     : undefined;
@@ -67,12 +98,11 @@ export const Item = forwardRef<
       })
     : children;
   return (
-    <Styled.Item ref={ref} $state={state} size={size} {...rest}>
+    <Styled.Item ref={ref} $state={state} size={size} aria-label={ariaLabel} {...rest}>
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
-          role="img"
-          aria-label={ariaLabel}
+          aria-hidden="true"
           step={(step?.index ?? 0) + 1}
         />
         {content}

@@ -52,12 +52,20 @@ const Indicator = forwardRef<
       $size={size}
       $state={state}
       aria-hidden="true"
-      data-step={step}
       {...rest}
     >
       {state === "completed" && <Check aria-hidden="true" />}
       {state === "error" && <Cross aria-hidden="true" />}
       {state === "pending" && <Clock aria-hidden="true" />}
+      {(state === "open" || state === "current") && (
+        <Styled.IndicatorText
+          $size={size}
+          $checkout={checkout}
+          aria-hidden="true"
+        >
+          {step}
+        </Styled.IndicatorText>
+      )}
     </Styled.StepperIndicator>
   );
 });
