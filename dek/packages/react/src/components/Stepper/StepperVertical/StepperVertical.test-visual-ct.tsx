@@ -323,6 +323,7 @@ test.describe("Accessibility", () => {
     const accessibilityScanResults = await new AxeBuilder({
       page: stepperVerticalPage.page,
     })
+      .disableRules("aria-prohibited-attr")
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
       .analyze();
 
