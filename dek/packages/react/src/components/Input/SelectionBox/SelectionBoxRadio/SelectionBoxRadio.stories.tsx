@@ -14,8 +14,8 @@ import { ButtonPrimary } from "../../../Button/ButtonPrimary";
 import { ButtonSecondary } from "../../../Button/ButtonSecondary";
 
 const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
-  congstarWeb: ["black", "white"],
-  congstarApp: ["black", "white"],
+  congstarWeb: ["black", "white", "darkGrey", "lightGrey"],
+  congstarApp: ["black", "white", "darkGrey", "lightGrey"],
   ja: ["jaGeneralWhite"],
   penny: ["pennyNeutralWhite"],
 };
