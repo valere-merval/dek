@@ -1,6 +1,14 @@
 "use client";
 
-import React, { ElementRef, forwardRef, useContext } from "react";
+import React, {
+  ElementRef,
+  ReactNode,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useContext,
+  useId,
+} from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
 import {
   StepContext,
@@ -9,7 +17,48 @@ import {
   StepperItemContext,
 } from "../shared/Stepper";
 import * as Styled from "./StepperVertical.styles";
-import { getAriaLabel } from "../shared/utils";
+import { stepStatusToTextMap } from "../shared/mappings";
+
+const injectIdIntoHeadline = (
+  children: ReactNode,
+  id: string,
+): ReactNode => {
+  let headlineInjected = false;
+
+  const visit = (node: ReactNode): ReactNode => {
+    if (
+      headlineInjected ||
+      !isValidElement<{ children?: ReactNode; id?: string }>(node)
+    ) {
+      return node;
+    }
+
+    const typeName =
+      typeof node.type === "string"
+        ? node.type
+        : (node.type as { displayName?: string; name?: string }).displayName ??
+          (node.type as { displayName?: string; name?: string }).name;
+
+    if (typeName === "Headline") {
+      headlineInjected = true;
+      return cloneElement(node, { id });
+    }
+
+    if (!node.props.children) {
+      return node;
+    }
+
+    const nextChildren = React.Children.map(node.props.children, visit);
+
+    if (nextChildren === node.props.children) {
+      return node;
+    }
+
+    return cloneElement(node, undefined, nextChildren);
+  };
+
+  return React.Children.map(children, visit);
+};
 
 export const Root = forwardRef<
   ElementRef<typeof Styled.Root>,
@@ -44,17 +93,28 @@ export const Item = forwardRef<
   const { children, state = "open", ...rest } = props;
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
-  const ariaLabel = getAriaLabel(step, state);
+  const titleId = useId();
+  const labelId = useId();
+  const ariaLabel = step
+    ? `Schritt ${step.index + 1} von ${step.total}, ${stepStatusToTextMap[state]},`
+    : undefined;
+  const labelledChildren = injectIdIntoHeadline(children, titleId);
   return (
-    <Styled.Item ref={ref} $state={state} size={size} {...rest}>
+    <Styled.Item
+      ref={ref}
+      $state={state}
+      size={size}
+      aria-labelledby={`${labelId} ${titleId}`}
+      {...rest}
+    >
       <StepperItemContext.Provider value={props}>
+        <Styled.VisuallyHidden id={labelId}>{ariaLabel}</Styled.VisuallyHidden>
         <Stepper.Indicator
           state={state}
-          role="img"
-          aria-label={ariaLabel}
+          aria-hidden="true"
           step={(step?.index ?? 0) + 1}
         />
-        {children}
+        {labelledChildren}
       </StepperItemContext.Provider>
     </Styled.Item>
   );
