@@ -74,6 +74,7 @@ export const Item = forwardRef<
       ) : (
         <Styled.Indicator
           state={state}
+          role="img"
           aria-label={stepAriaLabel}
           step={(step?.index ?? 0) + 1}
           checkout

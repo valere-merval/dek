@@ -2,12 +2,9 @@
 
 import React, {
   createContext,
-  cloneElement,
   ElementRef,
   forwardRef,
-  isValidElement,
   useContext,
-  useId,
 } from "react";
 import { Check, Clock, Cross } from "@fair/icons";
 import * as Styled from "./Stepper.styles";
@@ -19,12 +16,8 @@ import {
   StepperRootProps,
 } from "./Stepper.types";
 
-type StepperContextValue = StepperRootProps & {
-  contentIdPrefix: string;
-};
-
-export const StepperContext = createContext<StepperContextValue>(
-  {} as StepperContextValue,
+export const StepperContext = createContext<StepperRootProps>(
+  {} as StepperRootProps,
 );
 
 export const StepperItemContext = createContext<StepperItemProps>(
@@ -38,10 +31,9 @@ export const Root = forwardRef<
   StepperRootProps
 >((props: StepperRootProps, ref) => {
   const { children, size, ...rest } = props;
-  const contentIdPrefix = useId();
   return (
     <Styled.StepperList ref={ref} size={size} {...rest}>
-      <StepperContext.Provider value={{ ...props, contentIdPrefix }}>
+      <StepperContext.Provider value={props}>
         {children}
       </StepperContext.Provider>
     </Styled.StepperList>
@@ -53,17 +45,13 @@ const Indicator = forwardRef<
   ElementRef<typeof Styled.StepperIndicator>,
   StepperIndicatorProps
 >(({ state, children, step, checkout, ...rest }, ref) => {
-  const { size, contentIdPrefix } = useContext(StepperContext);
-  const stepContentTitleId = step
-    ? `${contentIdPrefix}-step-${step}-title`
-    : undefined;
+  const { size } = useContext(StepperContext);
   return (
     <Styled.StepperIndicator
       ref={ref}
-      role="group"
       $size={size}
       $state={state}
-      aria-describedby={stepContentTitleId}
+      step={step}
       {...rest}
     >
       {state === "completed" && <Check aria-hidden="true" />}
@@ -88,27 +76,10 @@ export const Content = forwardRef<
   ElementRef<typeof Styled.StepperContent>,
   StepperContentProps
 >((props: StepperContentProps, ref) => {
-  const { children, id, ...rest } = props;
-  const { contentIdPrefix } = useContext(StepperContext);
-  const step = useContext(StepContext);
-  const stepContentId =
-    id ??
-    (step
-      ? `${contentIdPrefix}-step-${step.index + 1}-content`
-      : undefined);
-  const stepContentTitleId = step
-    ? `${contentIdPrefix}-step-${step.index + 1}-title`
-    : undefined;
-  const childrenArray = React.Children.toArray(children);
-  const enhancedChildren = childrenArray.map((child, index) => {
-    if (index === 0 && stepContentTitleId && isValidElement(child)) {
-      return cloneElement(child, { id: stepContentTitleId });
-    }
-    return child;
-  });
+  const { children, ...rest } = props;
   return (
-    <Styled.StepperContent ref={ref} id={stepContentId} {...rest}>
-      {enhancedChildren}
+    <Styled.StepperContent ref={ref} {...rest}>
+      {children}
     </Styled.StepperContent>
   );
 });

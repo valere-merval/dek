@@ -1,6 +1,12 @@
 "use client";
 
-import React, { ElementRef, forwardRef, useContext, useId } from "react";
+import React, {
+  cloneElement,
+  ElementRef,
+  forwardRef,
+  isValidElement,
+  useContext,
+} from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
 import {
   StepContext,
@@ -16,13 +22,12 @@ export const Root = forwardRef<
   StepperRootProps
 >((props: StepperRootProps, ref) => {
   const { children, size, ...rest } = props;
-  const contentIdPrefix = useId();
   const childrenArray = React.Children.toArray(children);
   const total = childrenArray.length;
 
   return (
     <Styled.Root ref={ref} {...rest}>
-      <StepperContext.Provider value={{ ...props, contentIdPrefix }}>
+      <StepperContext.Provider value={props}>
         {childrenArray.map((child, index) => {
           const contextValue = { index, total };
           return (
@@ -46,15 +51,35 @@ export const Item = forwardRef<
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
   const ariaLabel = getAriaLabel(step, state);
+  const content = state === "current" && isValidElement(children)
+    ? cloneElement(children, {
+        children: React.Children.toArray(children.props.children).map(
+          (child, index) => {
+            if (index === 0) {
+              return child;
+            }
+
+            if (isValidElement(child)) {
+              return cloneElement(child, {
+                "aria-hidden": true,
+              });
+            }
+
+            return <span aria-hidden="true">{child}</span>;
+          },
+        ),
+      })
+    : children;
   return (
     <Styled.Item ref={ref} $state={state} size={size} {...rest}>
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
+          role="img"
           aria-label={ariaLabel}
           step={(step?.index ?? 0) + 1}
         />
-        {children}
+        {content}
       </StepperItemContext.Provider>
     </Styled.Item>
   );

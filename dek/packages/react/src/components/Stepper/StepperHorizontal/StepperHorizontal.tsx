@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  ElementRef,
-  forwardRef,
-  ReactNode,
-  useContext,
-  useId,
-} from "react";
+import React, { ElementRef, forwardRef, ReactNode, useContext } from "react";
 import * as Styled from "./StepperHorizontal.styles";
 import { StepContext, Stepper, StepperContext } from "../shared/Stepper";
 import { StepperItemProps, StepperRootProps } from "../shared";
@@ -19,10 +13,9 @@ export const Root = forwardRef<
   StepperRootProps
 >((props: StepperRootProps, ref) => {
   const { children, size, ...rest } = props;
-  const contentIdPrefix = useId();
   return (
     <Styled.Root ref={ref} {...rest}>
-      <StepperContext.Provider value={{ ...props, contentIdPrefix }}>
+      <StepperContext.Provider value={props}>
         {children}
       </StepperContext.Provider>
     </Styled.Root>
@@ -66,6 +59,7 @@ export const Item = forwardRef<
     <Styled.Item ref={ref} {...rest}>
       <Stepper.Indicator
         state={state}
+        role="img"
         aria-label={ariaLabel}
         step={(step?.index ?? 0) + 1}
       />
