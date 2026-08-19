@@ -51,7 +51,6 @@ const Indicator = forwardRef<
       ref={ref}
       $size={size}
       $state={state}
-      step={step}
       {...rest}
     >
       {state === "completed" && <Check aria-hidden="true" />}
@@ -62,8 +61,8 @@ const Indicator = forwardRef<
           $size={size}
           $checkout={checkout}
           aria-hidden="true"
+          data-step={step}
         >
-          {step}
         </Styled.IndicatorText>
       )}
     </Styled.StepperIndicator>

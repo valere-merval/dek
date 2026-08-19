@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ElementRef, forwardRef, useContext, useId } from "react";
+import React, { ElementRef, forwardRef, useContext } from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
 import {
   StepContext,
@@ -9,96 +9,7 @@ import {
   StepperItemContext,
 } from "../shared/Stepper";
 import { getAriaLabel } from "../shared/utils";
-import { stepStatusToTextMap } from "../shared/mappings";
 import * as Styled from "./StepperVertical.styles";
-
-type A11yContentElementProps = {
-  children?: React.ReactNode;
-  id?: string;
-  "aria-hidden"?: boolean;
-};
-
-const interactiveElementNames = new Set([
-  "a",
-  "button",
-  "input",
-  "select",
-  "textarea",
-  "summary",
-]);
-
-const getElementName = (element: React.ReactElement): string => {
-  if (typeof element.type === "string") {
-    return element.type;
-  }
-
-  return (
-    (element.type as React.ComponentType).displayName ||
-    (element.type as React.ComponentType).name ||
-    ""
-  );
-};
-
-const isInteractiveElement = (node: React.ReactNode): boolean => {
-  if (!React.isValidElement(node)) {
-    return false;
-  }
-
-  if (typeof node.type === "string") {
-    return interactiveElementNames.has(node.type);
-  }
-
-  return /^Button|^Link/.test(getElementName(node));
-};
-
-const shouldHideFromA11y = (node: React.ReactNode): boolean => {
-  if (!React.isValidElement(node)) {
-    return false;
-  }
-
-  if (isInteractiveElement(node)) {
-    return false;
-  }
-
-  const elementName = getElementName(node);
-  return elementName === "Text" || elementName === "Headline";
-};
-
-const hideNodeFromA11y = (node: React.ReactNode): React.ReactNode => {
-  if (node === null || node === undefined || typeof node === "boolean") {
-    return node;
-  }
-
-  if (typeof node === "string" || typeof node === "number") {
-    return <span aria-hidden="true">{node}</span>;
-  }
-
-  if (Array.isArray(node)) {
-    return node.map(hideNodeFromA11y);
-  }
-
-  if (!React.isValidElement(node)) {
-    return node;
-  }
-
-  if (isInteractiveElement(node)) {
-    return node;
-  }
-
-  const element = node as React.ReactElement<A11yContentElementProps>;
-
-  if (shouldHideFromA11y(node)) {
-    return React.cloneElement(element, {
-      "aria-hidden": true,
-    });
-  }
-
-  return React.cloneElement(element, {
-    children: React.Children.toArray(element.props.children).map(
-      hideNodeFromA11y,
-    ),
-  });
-};
 
 export const Root = forwardRef<
   ElementRef<typeof Styled.Root>,
@@ -133,12 +44,9 @@ export const Item = forwardRef<
   const { children, state = "open", ...rest } = props;
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
-  const titleId = useId();
   const ariaLabel = getAriaLabel(step, state);
-  const indicatorLabel =
-    state === "current" ? stepStatusToTextMap.current : ariaLabel;
   const contentElement = React.isValidElement(children)
-    ? (children as React.ReactElement<A11yContentElementProps>)
+    ? (children as React.ReactElement<{ children?: React.ReactNode }>)
     : undefined;
   const content = contentElement
     ? React.cloneElement(contentElement, {
@@ -146,31 +54,25 @@ export const Item = forwardRef<
           (child, index) => {
             if (index === 0 && React.isValidElement(child)) {
               return React.cloneElement(
-                child as React.ReactElement<{ id?: string }>,
+                child as React.ReactElement<{ as?: "div" }>,
                 {
-                  id: titleId,
+                  as: "div",
                 },
               );
             }
 
-            return hideNodeFromA11y(child);
+            return child;
           },
         ),
       })
     : children;
   return (
-    <Styled.Item
-      ref={ref}
-      $state={state}
-      size={size}
-      aria-labelledby={titleId}
-      {...rest}
-    >
+    <Styled.Item ref={ref} $state={state} size={size} {...rest}>
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
           role="img"
-          aria-label={indicatorLabel}
+          aria-label={ariaLabel}
           step={(step?.index ?? 0) + 1}
         />
         {content}
