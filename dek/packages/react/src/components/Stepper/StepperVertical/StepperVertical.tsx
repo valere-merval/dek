@@ -3,7 +3,9 @@
 import React, {
   ElementRef,
   ReactNode,
+  cloneElement,
   forwardRef,
+  isValidElement,
   useContext,
 } from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
@@ -59,6 +61,47 @@ const extractHeadlineText = (children: ReactNode): string => {
   return "";
 };
 
+const injectHeadlineLevel = (
+  children: ReactNode,
+  level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6",
+): ReactNode => {
+  let headlineInjected = false;
+
+  const visit = (node: ReactNode): ReactNode => {
+    if (
+      headlineInjected ||
+      !isValidElement<{ children?: ReactNode; as?: string }>(node)
+    ) {
+      return node;
+    }
+
+    const typeName =
+      typeof node.type === "string"
+        ? node.type
+        : (node.type as { displayName?: string; name?: string }).displayName ??
+          (node.type as { displayName?: string; name?: string }).name;
+
+    if (typeName === "Headline") {
+      headlineInjected = true;
+      return cloneElement(node, { as: level });
+    }
+
+    if (!node.props.children) {
+      return node;
+    }
+
+    const nextChildren = React.Children.map(node.props.children, visit);
+
+    if (nextChildren === node.props.children) {
+      return node;
+    }
+
+    return cloneElement(node, undefined, nextChildren);
+  };
+
+  return React.Children.map(children, visit);
+};
+
 export const Root = forwardRef<
   ElementRef<typeof Styled.Root>,
   StepperRootProps
@@ -93,6 +136,9 @@ export const Item = forwardRef<
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
   const title = extractHeadlineText(children);
+  const headingLevel =
+    step && step.index < 6 ? (`h${step.index + 1}` as const) : ("h6" as const);
+  const labelledChildren = injectHeadlineLevel(children, headingLevel);
   const ariaLabel = step
     ? `Schritt ${step.index + 1} von ${step.total}, ${stepStatusToTextMap[state]}, ${title}`
     : undefined;
@@ -111,7 +157,7 @@ export const Item = forwardRef<
           suppressStepTextA11y
           step={(step?.index ?? 0) + 1}
         />
-        {children}
+        {labelledChildren}
       </StepperItemContext.Provider>
     </Styled.Item>
   );
