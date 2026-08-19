@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ElementRef, forwardRef, useContext } from "react";
+import React, { ElementRef, forwardRef, useContext, useId } from "react";
 import { StepperItemProps, StepperRootProps } from "../shared";
 import {
   StepContext,
@@ -10,25 +10,86 @@ import {
 } from "../shared/Stepper";
 import * as Styled from "./StepperVertical.styles";
 
-const getNodeText = (node: React.ReactNode): string => {
+const interactiveElementNames = new Set([
+  "a",
+  "button",
+  "input",
+  "select",
+  "textarea",
+  "summary",
+]);
+
+const getElementName = (element: React.ReactElement): string => {
+  if (typeof element.type === "string") {
+    return element.type;
+  }
+
+  return (
+    (element.type as React.ComponentType).displayName ||
+    (element.type as React.ComponentType).name ||
+    ""
+  );
+};
+
+const isInteractiveElement = (node: React.ReactNode): boolean => {
+  if (!React.isValidElement(node)) {
+    return false;
+  }
+
+  if (typeof node.type === "string") {
+    return interactiveElementNames.has(node.type);
+  }
+
+  return /^Button|^Link/.test(getElementName(node));
+};
+
+const shouldHideFromA11y = (node: React.ReactNode): boolean => {
+  if (!React.isValidElement(node)) {
+    return false;
+  }
+
+  if (isInteractiveElement(node)) {
+    return false;
+  }
+
+  const elementName = getElementName(node);
+  return elementName === "Text" || elementName === "Headline";
+};
+
+const hideNodeFromA11y = (node: React.ReactNode): React.ReactNode => {
   if (node === null || node === undefined || typeof node === "boolean") {
-    return "";
+    return node;
   }
 
   if (typeof node === "string" || typeof node === "number") {
-    return String(node);
+    return <span aria-hidden="true">{node}</span>;
   }
 
   if (Array.isArray(node)) {
-    return node.map(getNodeText).join(" ");
+    return node.map(hideNodeFromA11y);
   }
 
-  if (React.isValidElement(node)) {
-    const element = node as React.ReactElement<{ children?: React.ReactNode }>;
-    return getNodeText(element.props.children);
+  if (!React.isValidElement(node)) {
+    return node;
   }
 
-  return "";
+  if (isInteractiveElement(node)) {
+    return node;
+  }
+
+  const element = node as React.ReactElement<{ children?: React.ReactNode }>;
+
+  if (shouldHideFromA11y(node)) {
+    return React.cloneElement(element, {
+      "aria-hidden": true,
+    } as any);
+  }
+
+  return React.cloneElement(element, {
+    children: React.Children.toArray(element.props.children).map(
+      hideNodeFromA11y,
+    ),
+  } as any);
 };
 
 export const Root = forwardRef<
@@ -64,24 +125,40 @@ export const Item = forwardRef<
   const { children, state = "open", ...rest } = props;
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
-  const contentChildren = React.isValidElement(children)
-    ? (children as React.ReactElement<{ children?: React.ReactNode }>).props
-        .children
+  const titleId = useId();
+  const contentElement = React.isValidElement(children)
+    ? (children as React.ReactElement<{ children?: React.ReactNode }>)
     : undefined;
-  const title = getNodeText(
-    React.Children.toArray(contentChildren)[0],
-  ).trim();
-  const position = step ? `Schritt ${step.index + 1} von ${step.total}` : "";
-  const ariaLabel = [position, title].filter(Boolean).join(", ");
+  const content = contentElement
+    ? React.cloneElement(contentElement, {
+        children: React.Children.toArray(contentElement.props.children).map(
+          (child, index) => {
+            if (index === 0 && React.isValidElement(child)) {
+              return React.cloneElement(child as React.ReactElement<any>, {
+                id: titleId,
+              } as any);
+            }
+
+            return hideNodeFromA11y(child);
+          },
+        ),
+      })
+    : children;
   return (
-    <Styled.Item ref={ref} $state={state} size={size} aria-label={ariaLabel} {...rest}>
+    <Styled.Item
+      ref={ref}
+      $state={state}
+      size={size}
+      aria-labelledby={titleId}
+      {...rest}
+    >
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
           aria-hidden="true"
           step={(step?.index ?? 0) + 1}
         />
-        {children}
+        {content}
       </StepperItemContext.Provider>
     </Styled.Item>
   );
