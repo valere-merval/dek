@@ -8,6 +8,7 @@ import {
   StepperContext,
   StepperItemContext,
 } from "../shared/Stepper";
+import { getAriaLabel } from "../shared/utils";
 import * as Styled from "./StepperVertical.styles";
 
 type A11yContentElementProps = {
@@ -132,6 +133,7 @@ export const Item = forwardRef<
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
   const titleId = useId();
+  const ariaLabel = getAriaLabel(step, state);
   const contentElement = React.isValidElement(children)
     ? (children as React.ReactElement<A11yContentElementProps>)
     : undefined;
@@ -164,7 +166,8 @@ export const Item = forwardRef<
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
-          aria-hidden="true"
+          role="img"
+          aria-label={ariaLabel}
           step={(step?.index ?? 0) + 1}
         />
         {content}
