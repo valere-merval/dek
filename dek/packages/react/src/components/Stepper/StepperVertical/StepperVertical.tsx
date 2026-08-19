@@ -24,8 +24,8 @@ const extractText = (children: ReactNode): string => {
       if (typeof child === "string" || typeof child === "number") {
         return String(child);
       }
-      if (React.isValidElement(child)) {
-        return extractText(child.props.children);
+      if (React.isValidElement<{ children?: ReactNode }>(child)) {
+        return extractText(child.props.children ?? null);
       }
       return "";
     })
@@ -49,10 +49,12 @@ const extractHeadlineText = (children: ReactNode): string => {
           (node.type as { displayName?: string; name?: string }).name;
 
     if (typeName === "Headline") {
-      return extractText(node.props.children);
+      return extractText((node.props as { children?: ReactNode }).children ?? null);
     }
 
-    const nested = extractHeadlineText(node.props.children);
+    const nested = extractHeadlineText(
+      (node.props as { children?: ReactNode }).children ?? null,
+    );
     if (nested) {
       return nested;
     }
@@ -86,11 +88,13 @@ const injectHeadlineLevel = (
       return cloneElement(node, { as: level });
     }
 
-    if (!node.props.children) {
+    const nodeChildren = (node.props as { children?: ReactNode }).children;
+
+    if (!nodeChildren) {
       return node;
     }
 
-    const nextChildren = React.Children.map(node.props.children, visit);
+    const nextChildren = React.Children.map(nodeChildren, visit);
 
     if (nextChildren === node.props.children) {
       return node;
@@ -136,8 +140,16 @@ export const Item = forwardRef<
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
   const title = extractHeadlineText(children);
-  const headingLevel =
-    step && step.index < 6 ? (`h${step.index + 1}` as const) : ("h6" as const);
+  const headingLevel: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" =
+    step && step.index < 6
+      ? (["h1", "h2", "h3", "h4", "h5", "h6"][step.index] as
+          | "h1"
+          | "h2"
+          | "h3"
+          | "h4"
+          | "h5"
+          | "h6")
+      : "h6";
   const labelledChildren = injectHeadlineLevel(children, headingLevel);
   const ariaLabel = step
     ? `Schritt ${step.index + 1} von ${step.total}, ${stepStatusToTextMap[state]}, ${title}`
