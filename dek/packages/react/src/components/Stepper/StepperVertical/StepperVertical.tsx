@@ -10,6 +10,12 @@ import {
 } from "../shared/Stepper";
 import * as Styled from "./StepperVertical.styles";
 
+type A11yContentElementProps = {
+  children?: React.ReactNode;
+  id?: string;
+  "aria-hidden"?: boolean;
+};
+
 const interactiveElementNames = new Set([
   "a",
   "button",
@@ -77,19 +83,19 @@ const hideNodeFromA11y = (node: React.ReactNode): React.ReactNode => {
     return node;
   }
 
-  const element = node as React.ReactElement<{ children?: React.ReactNode }>;
+  const element = node as React.ReactElement<A11yContentElementProps>;
 
   if (shouldHideFromA11y(node)) {
     return React.cloneElement(element, {
       "aria-hidden": true,
-    } as any);
+    });
   }
 
   return React.cloneElement(element, {
     children: React.Children.toArray(element.props.children).map(
       hideNodeFromA11y,
     ),
-  } as any);
+  });
 };
 
 export const Root = forwardRef<
@@ -127,16 +133,19 @@ export const Item = forwardRef<
   const step = useContext(StepContext);
   const titleId = useId();
   const contentElement = React.isValidElement(children)
-    ? (children as React.ReactElement<{ children?: React.ReactNode }>)
+    ? (children as React.ReactElement<A11yContentElementProps>)
     : undefined;
   const content = contentElement
     ? React.cloneElement(contentElement, {
         children: React.Children.toArray(contentElement.props.children).map(
           (child, index) => {
             if (index === 0 && React.isValidElement(child)) {
-              return React.cloneElement(child as React.ReactElement<any>, {
-                id: titleId,
-              } as any);
+              return React.cloneElement(
+                child as React.ReactElement<{ id?: string }>,
+                {
+                  id: titleId,
+                },
+              );
             }
 
             return hideNodeFromA11y(child);
