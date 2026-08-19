@@ -47,7 +47,7 @@ export const normalizeSegments = (
     return {
       segment: item.segment,
       label: item.label ?? deriveLabel(item.segment),
-      href: buildHref(baseUrl, rawSegments, index),
+      href: item.href ?? buildHref(baseUrl, rawSegments, index),
       onPress: item.onPress,
       linkProps: item.linkProps,
     };

@@ -1,4 +1,4 @@
-import { forwardRef, ElementRef } from "react";
+import { forwardRef, ElementRef, useId } from "react";
 import * as Styled from "./TableRowHead.styles";
 import { ModalFootnotes } from "../../../../Modal/ModalFootnotes";
 import { InfoCircleFill } from "@fair/icons";
@@ -10,23 +10,28 @@ export const TableRowHead = forwardRef<
   TableRowHeadProps
 >(
   (
-    { title = "icon", footnotes, children, ...rest }: TableRowHeadProps,
+    { id, title = "icon", footnotes, children, ...rest }: TableRowHeadProps,
     ref,
   ) => {
+    const accessibleId = useId();
+    const titleId = id ? `${id}-title` : `${accessibleId}-title`;
+
     return (
-      <Styled.Root ref={ref} {...rest} role="rowheader">
-        <Styled.RowHeader id={`rowheader-${title.replace(/\s+/g, "-")}`}>
-          {children}
+      <Styled.Root
+        ref={ref}
+        {...rest}
+        id={id}
+        role="rowheader"
+        aria-labelledby={titleId}
+      >
+        <Styled.RowHeader forwardedAs="div" size="large" variant="bold">
+          <span id={titleId}>{children}</span>
           {footnotes && (
             <ModalFootnotes
               trigger={
                 <ButtonMicroIcon
                   label={"Mehr Details zu " + title}
-                  icon={
-                    <InfoCircleFill
-                      titleId={`rowheader-${title.replace(/\s+/g, "-")}`}
-                    />
-                  }
+                  icon={<InfoCircleFill aria-hidden="true" />}
                   align="center"
                 />
               }

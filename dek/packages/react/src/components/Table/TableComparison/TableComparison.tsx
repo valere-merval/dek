@@ -1,23 +1,35 @@
 "use client";
 
-import { ElementRef, forwardRef, useCallback, useMemo, useState } from "react";
+import {
+  ElementRef,
+  forwardRef,
+  useCallback,
+  useId,
+  useMemo,
+  useState,
+} from "react";
+import { announce } from "@react-aria/live-announcer";
+import { VisuallyHidden } from "react-aria";
+
 import * as Styled from "./TableComparison.styles";
-import { TableCell } from "./components/TableCell";
-import { TableRowHead } from "./components/TableRowHead";
-import { CellIcon } from "./components/CellIcon";
+import { BillingPeriod, formatBillingPeriod } from "../../../utils/pricing";
+import { formatPrice } from "../../../utils/pricing/utils/formatPrice";
+import { ButtonMoreDetails } from "../../Button/ButtonMoreDetails";
 import { Select } from "../../Input/Select";
+import { SelectValueKey } from "../../Input/Select/Select.types";
+import { Headline } from "../../Typography/Headline";
+import { Text } from "../../Typography/Text";
+import { TableBasic } from "../shared";
+import { CellIcon } from "./components/CellIcon";
+import { TableCell } from "./components/TableCell";
+import { TableRowBody } from "./components/TableRowBody/TableRowBody";
+import { TableRowHead } from "./components/TableRowHead";
 import {
   TableComparisonHeadProps,
   TableComparisonItem,
   TableComparisonProps,
   TableComparisonRow,
 } from "./TableComparison.types";
-import { Headline } from "../../Typography/Headline";
-import { formatPrice } from "../../../utils/pricing/utils/formatPrice";
-import { BillingPeriod, formatBillingPeriod } from "../../../utils/pricing";
-import { TableRowBody } from "./components/TableRowBody/TableRowBody";
-import { TableBasic } from "../shared";
-import { SelectValueKey } from "../../Input/Select/Select.types";
 
 export const TableComparison = forwardRef<
   ElementRef<typeof Styled.Root>,
@@ -27,17 +39,21 @@ export const TableComparison = forwardRef<
     {
       data,
       title = "Tarif",
+      headlineLevel = "h4",
       sticky = true,
       placeholder,
+      showThirdColumn = false,
       children,
       ...rest
     }: TableComparisonProps,
     ref,
   ) => {
+    const tableId = useId();
     const [selectedItem, setSelectedItem] = useState(
-      data.slice(0, 2).map((item: TableComparisonItem) => item),
+      data
+        .slice(0, showThirdColumn ? 3 : 2)
+        .map((item: TableComparisonItem) => item),
     );
-
     const handleSelectChange = useCallback(
       (index: number, value: SelectValueKey | SelectValueKey[] | null) => {
         const newItemId = Number(value);
@@ -45,13 +61,22 @@ export const TableComparison = forwardRef<
           return; // Ignore if the item is already selected in another column
         }
 
+        const newItem = data.find(({ id }) => id === newItemId);
+        if (!newItem) {
+          return;
+        }
+
         setSelectedItem((selectedItemIds) => {
           const newSelectedItemIds = [...selectedItemIds];
-          newSelectedItemIds[index] = data.find(({ id }) => id === newItemId)!;
+          newSelectedItemIds[index] = newItem;
           return newSelectedItemIds;
         });
+        announce(
+          `${newItem.value} wurde in Vergleichsspalte ${index + 1} ausgewählt. Die Vergleichsdaten wurden aktualisiert.`,
+          "polite",
+        );
       },
-      [selectedItem],
+      [data, selectedItem],
     );
 
     const filteredAndSortedRows = useMemo(
@@ -78,51 +103,76 @@ export const TableComparison = forwardRef<
     return (
       <Styled.Root ref={ref} {...rest}>
         <Styled.ItemTitle>
-          <Headline as="h4" size="medium" variant="bold" id={headlineId}>
+          <Headline
+            as={headlineLevel}
+            size="medium"
+            variant="bold"
+            id={headlineId}
+          >
             {title}
           </Headline>
         </Styled.ItemTitle>
-        <TableBasic.Root aria-labelledby={headlineId}>
+        <TableBasic.Root
+          aria-labelledby={headlineId}
+          aria-colcount={selectedItem.length + 1}
+        >
           <Head
             data={data}
             sticky={sticky}
             title={title}
             placeholder={placeholder}
+            showThirdColumn={showThirdColumn}
             selectedItemIds={selectedItem.map(({ id }) => id)}
             handleSelectChange={handleSelectChange}
           />
-          {filteredAndSortedRows.map((row: TableComparisonRow) => (
-            <TableBasic.RowGroup key={row.title}>
-              <TableBasic.Row>
-                <TableRowHead footnotes={row.footnotes} title={row.title}>
-                  {row.title}
-                </TableRowHead>
-                <TableRowBody>
-                  {selectedItem.map((selectedItem) => {
-                    const selectedCell = selectedItem?.rows.find(
-                      (rowItem: TableComparisonRow) =>
-                        rowItem.title === row.title,
-                    ); // Find the row with the same title
-                    return (
-                      <TableCell key={`${row.title}-${selectedItem.id}`}>
-                        {selectedCell ? (
-                          <>
-                            {selectedCell.state && (
-                              <CellIcon state={selectedCell.state} />
-                            )}
-                            {selectedCell.image && selectedCell.image}
-                            {selectedCell.description}
-                          </>
-                        ) : (
-                          <span>Nicht verfügbar</span>
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRowBody>
-              </TableBasic.Row>
-            </TableBasic.RowGroup>
-          ))}
+          {filteredAndSortedRows.map((row: TableComparisonRow, rowIndex) => {
+            const rowHeaderId = `${tableId}-rowheader-${rowIndex}`;
+
+            return (
+              <TableBasic.RowGroup key={row.title}>
+                <TableBasic.Row>
+                  <TableRowHead
+                    id={rowHeaderId}
+                    footnotes={row.footnotes}
+                    title={row.title}
+                    aria-colindex={1}
+                  >
+                    {row.title}
+                  </TableRowHead>
+                  <TableRowBody>
+                    {selectedItem.map((selectedItem, columnIndex) => {
+                      const selectedCell = selectedItem?.rows.find(
+                        (rowItem: TableComparisonRow) =>
+                          rowItem.title === row.title,
+                      ); // Find the row with the same title
+                      return (
+                        <TableCell
+                          key={`${row.title}-${selectedItem.id}`}
+                          aria-colindex={columnIndex + 2}
+                          aria-describedby={`${rowHeaderId}-title`}
+                        >
+                          {selectedCell ? (
+                            <>
+                              {selectedCell.state && (
+                                <CellIcon state={selectedCell.state} />
+                              )}
+                              {selectedCell.image && selectedCell.image}
+                              {selectedCell.description}
+                              {selectedCell.link && (
+                                <ButtonMoreDetails {...selectedCell.link} />
+                              )}
+                            </>
+                          ) : (
+                            <span>Nicht verfügbar</span>
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRowBody>
+                </TableBasic.Row>
+              </TableBasic.RowGroup>
+            );
+          })}
         </TableBasic.Root>
       </Styled.Root>
     );
@@ -134,74 +184,113 @@ const Head = ({
   data,
   placeholder,
   sticky,
+  showThirdColumn,
   selectedItemIds,
   handleSelectChange,
 }: TableComparisonHeadProps) => {
   return (
     <Styled.Head $sticky={sticky} role="rowgroup">
-      <TableRowBody title={placeholder} role="row">
-        {selectedItemIds.map((selectedItemId: number, columnIndex: number) => {
-          const selectedItem: TableComparisonItem | undefined = data.find(
-            (item: TableComparisonItem) => item.id === selectedItemId,
-          );
-          return (
-            <TableCell key={selectedItemId}>
-              {data.length === 2 ? (
-                <>
-                  {selectedItem && (
-                    <Styled.ItemGroup>{placeholder}</Styled.ItemGroup>
+      <Styled.HeadRowContainer>
+        <Styled.HeadRow title={placeholder} role="row">
+          <VisuallyHidden>
+            <span role="columnheader" aria-colindex={1}>
+              Merkmal
+            </span>
+          </VisuallyHidden>
+          {selectedItemIds.map(
+            (selectedItemId: number, columnIndex: number) => {
+              const selectedItem: TableComparisonItem | undefined = data.find(
+                (item: TableComparisonItem) => item.id === selectedItemId,
+              );
+              return (
+                <TableCell
+                  key={selectedItemId}
+                  role="columnheader"
+                  aria-colindex={columnIndex + 2}
+                >
+                  {data.length === selectedItemIds.length ? (
+                    <Styled.HeadlineWrapper>
+                      {showThirdColumn ? (
+                        <Text as="p" size="large" variant="bold">
+                          {selectedItem?.value}
+                        </Text>
+                      ) : (
+                        <Headline as="div" size="medium" variant="bold">
+                          {selectedItem?.value}
+                        </Headline>
+                      )}
+                    </Styled.HeadlineWrapper>
+                  ) : (
+                    <Styled.SelectWrapper>
+                      <Styled.Form>
+                        <Select.Root
+                          id={`select-${columnIndex}`}
+                          name={`select-${columnIndex}`}
+                          aria-label={`Auswahl ${columnIndex + 1}`}
+                          fullWidth
+                          placeholder={placeholder}
+                          onChange={(value) =>
+                            handleSelectChange(columnIndex, value)
+                          }
+                          defaultValue={selectedItemId.toString()}
+                        >
+                          {data
+                            .filter(
+                              (item: TableComparisonItem) =>
+                                !selectedItemIds.includes(item.id) ||
+                                item.id === selectedItemId,
+                            )
+                            .map((item: TableComparisonItem) => (
+                              <Select.Item
+                                key={item.id}
+                                id={item.id.toString()}
+                                textValue={item.value}
+                              />
+                            ))}
+                        </Select.Root>
+                      </Styled.Form>
+                    </Styled.SelectWrapper>
                   )}
-                  <Headline as="h3" size="medium" variant="bold">
-                    {selectedItem?.value}
-                  </Headline>
-                  <Styled.Price>
-                    {formatPrice(selectedItem?.price as number)}{" "}
-                    {formatBillingPeriod(
-                      selectedItem?.billingPeriod as BillingPeriod,
+                </TableCell>
+              );
+            },
+          )}
+        </Styled.HeadRow>
+        <Styled.HeadRow title="Preis" role="row">
+          {selectedItemIds.map(
+            (selectedItemId: number, columnIndex: number) => {
+              const selectedItem: TableComparisonItem | undefined = data.find(
+                (item: TableComparisonItem) => item.id === selectedItemId,
+              );
+              return (
+                <Styled.HeadPriceCell
+                  key={selectedItemId}
+                  aria-colindex={columnIndex + 2}
+                >
+                  <Price>
+                    {selectedItem?.price.priceUnknown ? (
+                      "keine Preisangabe"
+                    ) : (
+                      <>
+                        {formatPrice(selectedItem?.price.price as number)}{" "}
+                        {formatBillingPeriod(
+                          selectedItem?.price.billingPeriod as BillingPeriod,
+                        )}
+                      </>
                     )}
-                  </Styled.Price>
-                </>
-              ) : (
-                <Styled.SelectWrapper>
-                  <Styled.Form>
-                    <Select.Root
-                      id={`select-${columnIndex}`}
-                      name={`select-${columnIndex}`}
-                      aria-label={`Auswahl ${columnIndex + 1}`}
-                      fullWidth
-                      placeholder={placeholder}
-                      onChange={(value) =>
-                        handleSelectChange(columnIndex, value)
-                      }
-                      defaultValue={selectedItemId.toString()}
-                    >
-                      {data
-                        .filter(
-                          (item: TableComparisonItem) =>
-                            !selectedItemIds.includes(item.id) ||
-                            item.id === selectedItemId,
-                        )
-                        .map((item: TableComparisonItem) => (
-                          <Select.Item
-                            key={item.id}
-                            id={item.id.toString()}
-                            textValue={item.value}
-                          />
-                        ))}
-                    </Select.Root>
-                  </Styled.Form>
-                  <Styled.Price>
-                    {formatPrice(selectedItem?.price as number)}{" "}
-                    {formatBillingPeriod(
-                      selectedItem?.billingPeriod as BillingPeriod,
-                    )}
-                  </Styled.Price>
-                </Styled.SelectWrapper>
-              )}
-            </TableCell>
-          );
-        })}
-      </TableRowBody>
+                  </Price>
+                </Styled.HeadPriceCell>
+              );
+            },
+          )}
+        </Styled.HeadRow>
+      </Styled.HeadRowContainer>
     </Styled.Head>
   );
 };
+
+const Price = ({ children }: { children: React.ReactNode }) => (
+  <Styled.Price forwardedAs="div" size="large" variant="light">
+    {children}
+  </Styled.Price>
+);

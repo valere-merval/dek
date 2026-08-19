@@ -87,6 +87,108 @@ test.describe("With only two plans", () => {
       });
     },
   );
+
+  test("Should not render placeholder text in table when all items fit", async ({
+    mount,
+    tableComparisonPage,
+  }) => {
+    await mount(<stories.WithOnlyTwoPlans />);
+    await expect(tableComparisonPage.table).toBeVisible();
+    await expect(
+      tableComparisonPage.table.getByText("congstar Zuhause Flex", {
+        exact: true,
+      }),
+    ).toHaveCount(0);
+  });
+
+  test("Should render default story with header select buttons and placeholder text", async ({
+    mount,
+    tableComparisonPage,
+  }) => {
+    await mount(<stories.Default />);
+    await expect(tableComparisonPage.table).toBeVisible();
+
+    const selectButtons = tableComparisonPage.page.getByRole("button", {
+      name: /MBit\/s/,
+    });
+    await expect(selectButtons).toHaveCount(2);
+
+    await expect(
+      tableComparisonPage.table.getByText("congstar Zuhause Flex", {
+        exact: true,
+      }),
+    ).toHaveCount(2);
+  });
+});
+
+test("Should render a row link", async ({ mount, tableComparisonPage }) => {
+  await mount(<stories.WithThirdColumn />);
+  const link = tableComparisonPage.table.getByRole("link", {
+    name: "Routercheck",
+    exact: true,
+  });
+
+  await expect(link).toBeVisible();
+  await expect(link).not.toHaveAttribute("type");
+});
+
+test("Should remount the story with two columns when showThirdColumn changes to false", async ({
+  mount,
+  tableComparisonPage,
+}) => {
+  const component = await mount(<stories.WithThirdColumn />);
+
+  await expect(tableComparisonPage.table).toHaveAttribute("aria-colcount", "4");
+
+  await component.update(<stories.WithThirdColumn showThirdColumn={false} />);
+
+  await expect(tableComparisonPage.table).toHaveAttribute("aria-colcount", "3");
+  await expect(tableComparisonPage.table.getByRole("columnheader")).toHaveCount(
+    3,
+  );
+});
+
+test("Should render static header typography based on the column count", async ({
+  mount,
+  tableComparisonPage,
+}) => {
+  const thirdColumnComponent = await mount(<stories.WithThirdColumn />);
+  const thirdColumnHeader = tableComparisonPage.table.getByText(
+    "bei congstar mieten",
+    { exact: true },
+  );
+
+  await expect(thirdColumnHeader).toHaveCSS("font-size", "16px");
+  await expect(thirdColumnHeader).toHaveCSS("font-weight", "700");
+  await expect(tableComparisonPage.table.getByRole("heading")).toHaveCount(0);
+  await expect(
+    tableComparisonPage.page.getByRole("heading", { level: 4 }),
+  ).toHaveCSS("font-size", "24px");
+
+  await thirdColumnComponent.unmount();
+
+  await mount(<stories.WithOnlyTwoPlans />);
+  const twoPlanHeader = tableComparisonPage.table
+    .getByRole("columnheader", {
+      name: "50 MBit/s",
+      exact: true,
+    })
+    .getByText("50 MBit/s", { exact: true });
+
+  await expect(twoPlanHeader).toHaveCSS("font-size", "24px");
+  await expect(twoPlanHeader).toHaveCSS("font-weight", "700");
+  await expect(tableComparisonPage.table.getByRole("heading")).toHaveCount(0);
+});
+
+test("Should allow overriding the title headline level", async ({
+  mount,
+  tableComparisonPage,
+}) => {
+  await mount(<stories.Default headlineLevel="h2" />);
+
+  await expect(
+    tableComparisonPage.page.getByRole("heading", { level: 2 }),
+  ).toHaveText("congstar Zuhause Flex");
 });
 
 test.describe("Small Viewport", () => {
@@ -97,6 +199,19 @@ test.describe("Small Viewport", () => {
   }) => {
     await mount(<stories.Default />);
     await expect(tableComparisonPage.table).toBeVisible();
+    await expect(tableComparisonPage.root).toHaveScreenshot();
+  });
+  test("Should wrap with third column in small viewport", async ({
+    mount,
+    tableComparisonPage,
+  }) => {
+    await mount(<stories.WithThirdColumn />);
+    await expect(tableComparisonPage.table).toBeVisible();
+    // it need to count 4 columns because the first column is the row header and the other 3 are the plans
+    await expect(tableComparisonPage.table).toHaveAttribute(
+      "aria-colcount",
+      "4",
+    );
     await expect(tableComparisonPage.root).toHaveScreenshot();
   });
   test("Should focus a select field", async ({
@@ -124,6 +239,19 @@ test.describe("Large Viewport", () => {
   }) => {
     await mount(<stories.Default />);
     await expect(tableComparisonPage.table).toBeVisible();
+    await expect(tableComparisonPage.root).toHaveScreenshot();
+  });
+  test("Should wrap with third column in large viewport", async ({
+    mount,
+    tableComparisonPage,
+  }) => {
+    await mount(<stories.WithThirdColumn />);
+    await expect(tableComparisonPage.table).toBeVisible();
+    // it need to count 4 columns because the first column is the row header and the other 3 are the plans
+    await expect(tableComparisonPage.table).toHaveAttribute(
+      "aria-colcount",
+      "4",
+    );
     await expect(tableComparisonPage.root).toHaveScreenshot();
   });
   test("Should focus a select field", async ({
@@ -213,6 +341,99 @@ test.describe("Sticky", () => {
 
 test.describe("Accessibility", () => {
   test.use(viewports.sm);
+
+  test("announces a successful comparison selection", async ({
+    mount,
+    tableComparisonPage,
+  }) => {
+    await mount(<stories.Default />);
+
+    await tableComparisonPage.select.click();
+    await tableComparisonPage.page
+      .getByRole("option", { name: "250 MBit/s" })
+      .click();
+
+    await expect(
+      tableComparisonPage.page.locator('[role="log"][aria-live="polite"]'),
+    ).toContainText(
+      "250 MBit/s wurde in Vergleichsspalte 1 ausgewählt. Die Vergleichsdaten wurden aktualisiert.",
+    );
+  });
+
+  test("exposes column semantics for three and two plans", async ({
+    mount,
+    tableComparisonPage,
+  }) => {
+    const thirdColumnComponent = await mount(<stories.WithThirdColumn />);
+    const columnHeaders = tableComparisonPage.table.getByRole("columnheader");
+    const priceCells = tableComparisonPage.table
+      .getByRole("row")
+      .nth(1)
+      .getByRole("cell");
+    const firstBodyRow = tableComparisonPage.table.getByRole("row").nth(2);
+    const firstRowHeader = firstBodyRow.getByRole("rowheader");
+    const firstRowCells = firstBodyRow.getByRole("cell");
+
+    await expect(tableComparisonPage.table).toHaveAttribute(
+      "aria-colcount",
+      "4",
+    );
+    await expect(columnHeaders).toHaveCount(4);
+    await expect(columnHeaders.nth(0)).toHaveAccessibleName("Merkmal");
+    await expect(columnHeaders.nth(0)).toHaveAttribute("aria-colindex", "1");
+    await expect(columnHeaders.nth(1)).toHaveAttribute("aria-colindex", "2");
+    await expect(columnHeaders.nth(2)).toHaveAttribute("aria-colindex", "3");
+    await expect(columnHeaders.nth(3)).toHaveAttribute("aria-colindex", "4");
+    await expect(priceCells).toHaveCount(3);
+    await expect(priceCells.nth(0)).toHaveAttribute("aria-colindex", "2");
+    await expect(priceCells.nth(1)).toHaveAttribute("aria-colindex", "3");
+    await expect(priceCells.nth(2)).toHaveAttribute("aria-colindex", "4");
+    await expect(firstRowHeader).toHaveAttribute("aria-colindex", "1");
+    await expect(firstRowCells).toHaveCount(3);
+    await expect(firstRowCells.nth(0)).toHaveAttribute("aria-colindex", "2");
+    await expect(firstRowCells.nth(1)).toHaveAttribute("aria-colindex", "3");
+    await expect(firstRowCells.nth(2)).toHaveAttribute("aria-colindex", "4");
+
+    await thirdColumnComponent.unmount();
+    await mount(<stories.WithOnlyTwoPlans />);
+
+    await expect(tableComparisonPage.table).toHaveAttribute(
+      "aria-colcount",
+      "3",
+    );
+    await expect(
+      tableComparisonPage.table.getByRole("columnheader"),
+    ).toHaveCount(3);
+  });
+
+  test("exposes the row header and footnote button separately", async ({
+    mount,
+    tableComparisonPage,
+  }) => {
+    await mount(<stories.Default />);
+
+    const rowHeader = tableComparisonPage.table.getByRole("rowheader", {
+      name: "Download Geschwindigkeit",
+      exact: true,
+    });
+    const downloadSpeedRow = tableComparisonPage.table.getByRole("row", {
+      name: /Download Geschwindigkeit/,
+    });
+    const downloadSpeedCell = downloadSpeedRow
+      .getByRole("cell")
+      .filter({ hasText: "100 MBit/s" });
+
+    await expect(rowHeader).toBeVisible();
+    await expect(
+      rowHeader.getByRole("button", {
+        name: "Mehr Details zu Download Geschwindigkeit",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(downloadSpeedCell).toHaveAccessibleDescription(
+      "Download Geschwindigkeit",
+    );
+  });
 
   test("highContrast and light mode", async ({
     mount,

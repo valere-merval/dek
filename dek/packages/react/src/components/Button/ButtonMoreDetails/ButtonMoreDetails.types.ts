@@ -3,7 +3,9 @@ import { ComponentPropsWithoutRef } from "react";
 export type ButtonPrimarySize = "medium" | "large";
 
 interface CommonButtonMoreDetailsProps extends ComponentPropsWithoutRef<"button"> {
+  /** @deprecated Use `children` instead. */
   linkText?: string;
+  asChild?: boolean;
 }
 
 interface ConditionalButtonMoreDetailsPropsWithoutSize {

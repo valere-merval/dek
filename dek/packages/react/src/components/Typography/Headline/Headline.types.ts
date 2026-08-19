@@ -15,14 +15,12 @@ export type HeadlineSize = (typeof headlineSizes)[number];
 
 export type HeadlineProps = HeadlineWithForwardedAs | HeadlineWithAs;
 
-interface HeadlineWithAs extends HeadlineBaseProps, RequireAs {}
-interface HeadlineWithForwardedAs
-  extends HeadlineBaseProps,
-    RequireForwardedAs {}
+export interface HeadlineWithAs extends HeadlineBaseProps, RequireAs {}
+export interface HeadlineWithForwardedAs
+  extends HeadlineBaseProps, RequireForwardedAs {}
 
 interface HeadlineBaseProps
-  extends ComponentPropsWithoutRef<"div">,
-    WithTestId {
+  extends ComponentPropsWithoutRef<"div">, WithTestId {
   size: HeadlineSize;
   variant: HeadlineVariant;
   color?: HeadlineColor;

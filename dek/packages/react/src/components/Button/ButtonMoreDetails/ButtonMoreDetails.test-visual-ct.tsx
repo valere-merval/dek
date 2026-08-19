@@ -64,9 +64,30 @@ test("Should render with alternate Text", async ({
   buttonMoreDetailsPage,
   mount,
 }) => {
-  await mount(<stories.AlternateLinkText />);
+  await mount(<stories.AlternateText />);
   await expect(buttonMoreDetailsPage.buttonAlternate).toBeVisible();
   await expect(buttonMoreDetailsPage.buttonAlternate).toHaveScreenshot();
+});
+
+test("Should support deprecated linkText", async ({
+  buttonMoreDetailsPage,
+  mount,
+}) => {
+  await mount(<stories.DeprecatedLinkText />);
+  await expect(
+    buttonMoreDetailsPage.page.getByRole("button", {
+      name: "Deprecated label",
+    }),
+  ).toBeVisible();
+});
+
+test("Should render as an anchor", async ({ mount, page }) => {
+  await mount(<stories.AsAnchor />);
+  const link = page.getByRole("link", { name: "Mehr Details" });
+  await expect(link).toBeVisible();
+  await expect(link).toHaveAttribute("href", "https://www.congstar.de");
+  await expect(link).not.toHaveAttribute("type");
+  await expect(page.getByRole("button")).toHaveCount(0);
 });
 
 test("Should render with inherited size", async ({

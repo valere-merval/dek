@@ -650,7 +650,9 @@ export const bringBackHighlightsContent = (
               Du bekommst schon heute den Ankaufswert angerechnet und
               profitierst direkt von vergünstigten Raten.
             </Text>
-            <ButtonMoreDetails linkText="Zum Rechenbeispiel" size="large" />
+            <ButtonMoreDetails size="large">
+              Zum Rechenbeispiel
+            </ButtonMoreDetails>
           </div>
         </ProductOverviewItem.Root>
 
@@ -704,7 +706,9 @@ export const bringBackHighlightsContent = (
               dein Gerät ganz normal 36 Monate lang nutzen und musst es am Ende
               nicht zwingend zurückgeben.
             </Text>
-            <ButtonMoreDetails linkText="Rückgabekonditionen" size="large" />
+            <ButtonMoreDetails size="large">
+              Rückgabekonditionen
+            </ButtonMoreDetails>
           </div>
         </ProductOverviewItem.Root>
       </div>

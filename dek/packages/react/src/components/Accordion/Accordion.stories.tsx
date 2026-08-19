@@ -286,11 +286,12 @@ export const SelectionBoxes: Story = {
                         moreDetails={
                           <ButtonMoreDetails
                             role="link"
-                            linkText="Tarifinformationen"
                             onClick={() => {
                               alert("mehr details");
                             }}
-                          />
+                          >
+                            Tarifinformationen
+                          </ButtonMoreDetails>
                         }
                       >
                         <SelectionBoxOption.RadioGroup.Item value="item-1" />

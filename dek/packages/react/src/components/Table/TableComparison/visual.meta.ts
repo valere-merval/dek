@@ -4,11 +4,11 @@ export default defineVisualMeta({
   component: "TableComparison",
   categories: ["data-display", "product"],
   visualTraits: [
-    "select field in header row to compare two products",
+    "header row for comparing two products by default, or three with showThirdColumn",
     "if more than two products, select field will be shown, otherwise there will be a text header with product name",
   ],
   useWhen: [
-    "Comparing two products side by side",
+    "Comparing two products side by side by default, or three with showThirdColumn",
     "Displaying product features in a table format",
   ],
   notUseWhen: [
@@ -20,7 +20,7 @@ export default defineVisualMeta({
     {
       component: "TableInfo",
       difference:
-        "TableInfo is used for displaying basic tabular data, while TableComparison is for comparing two products side by side.",
+        "TableInfo displays basic tabular data, while TableComparison compares two products by default or three with showThirdColumn.",
     },
   ],
 });

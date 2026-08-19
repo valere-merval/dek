@@ -7,7 +7,13 @@ export const TableRowBody = forwardRef<
   TableRowBodyProps
 >((props: TableRowBodyProps, ref) => {
   return (
-    <Styled.Root ref={ref} {...props}>
+    <Styled.Root
+      {...props}
+      ref={ref}
+      forwardedAs="div"
+      size="large"
+      variant="light"
+    >
       {props.children}
     </Styled.Root>
   );

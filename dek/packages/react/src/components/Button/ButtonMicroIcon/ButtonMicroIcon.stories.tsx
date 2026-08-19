@@ -79,9 +79,7 @@ export const WithinText: Story = {
           onClick={() => {
             console.log("ButtonMoreDetails clicked");
           }}
-        >
-          Click me
-        </ButtonMoreDetails>{" "}
+        />{" "}
         aliqua.
       </Text>
     </div>

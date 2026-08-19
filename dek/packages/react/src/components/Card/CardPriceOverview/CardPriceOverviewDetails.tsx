@@ -14,7 +14,7 @@ export const CardPriceOverviewDetails = ({
           description: description,
         },
       ]}
-      trigger={buttonText ? { linkText: buttonText } : undefined}
+      trigger={buttonText ? { children: buttonText } : undefined}
     />
   );
 };

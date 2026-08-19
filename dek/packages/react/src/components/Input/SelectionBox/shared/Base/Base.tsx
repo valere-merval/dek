@@ -8,6 +8,7 @@ import { CardFilledColor } from "../../../../Card/CardFilled";
 import { Divider } from "../../../../Divider";
 import { formatPrice } from "../../../../../utils/pricing";
 import { useSelectionBoxAriaDescribedby } from "../../../../Card/shared/hooks/useSelectionBoxAriaDescribedby";
+import { VisuallyHidden } from "react-aria";
 
 export const Base = (props: BaseProps) => {
   const {
@@ -105,6 +106,8 @@ export const Base = (props: BaseProps) => {
               : boxColorBackgroundMapping[backgroundColor].colorIfSelected
           }
         >
+          {/* set discount text for screen readers */}
+          {discountText && <VisuallyHidden>{discountText}</VisuallyHidden>}
           <Styled.ContentWrapper $hasHeaderImage={!!headerImage}>
             {interactiveElement}
             {duration ? (
@@ -133,6 +136,8 @@ export const Base = (props: BaseProps) => {
             <Styled.Discount
               id={discountTextId}
               $backgroundColor={boxColorBackground as CardFilledColor}
+              // hide discount text from screen readers, as it is already announced via the VisuallyHidden component above.
+              aria-hidden="true"
             >
               {discountText}
             </Styled.Discount>

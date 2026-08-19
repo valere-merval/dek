@@ -30,18 +30,17 @@ const test = base.extend<{
     const root = page.locator("#root");
     const list = page.getByRole("list");
 
-    const completedSteps = page.getByLabel("abgeschlossen");
-    const stepItem1 = completedSteps.nth(0);
-    const stepItem2 = completedSteps.nth(1);
-    const stepItem3 = page.getByLabel("Aktueller Schritt");
-    const stepItem4 = page.getByLabel("offen");
+    const stepItem1 = page.getByLabel("Schritt 1 von 4: abgeschlossen");
+    const stepItem2 = page.getByLabel("Schritt 2 von 4: abgeschlossen");
+    const stepItem3 = page.getByLabel("Schritt 3 von 4: Aktueller Schritt");
+    const stepItem4 = page.getByLabel("Schritt 4 von 4: offen");
     const stepContentHeadline = page.getByRole("heading", {
       name: "Auftragsbestätigung",
     });
     const stepContent = page.getByText("Wir haben deinen Wechsel");
-    const stepItemError = page.getByLabel("Fehler");
+    const stepItemError = page.getByLabel("Schritt 3 von 4: Fehler");
     const stepContentError = page.getByText("Bitte melde dich");
-    const stepItemPending = page.getByLabel("ausstehend");
+    const stepItemPending = page.getByLabel("Schritt 3 von 4: ausstehend");
     const stepItemPendingContent = page.getByText(
       "Leider verzögert sich der Versand deiner Bestellung. Wir bitten dich noch um ein wenig Geduld.",
     );

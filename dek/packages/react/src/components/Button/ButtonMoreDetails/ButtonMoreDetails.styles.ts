@@ -4,6 +4,7 @@ import { up } from "../../../theme/mappings/mediaBreakpoints";
 import { BackgroundColor } from "../../../theme/theme";
 import { textColorMixin } from "../../Typography/themeBackgroundColorMapping";
 import { ConvertToTransient } from "../../propTypes";
+import { ButtonBase } from "../ButtonBase/ButtonBase";
 import { ButtonMoreDetailsProps } from "./ButtonMoreDetails.types";
 
 const themeBackgroundColorMapping: Record<BackgroundColor, ColorVariant> = {
@@ -102,4 +103,4 @@ export const getMoreDetailsButtonStyles = ({
   }}
 `;
 
-export const Button = styled.button<Props>(getMoreDetailsButtonStyles);
+export const Button = styled(ButtonBase)<Props>(getMoreDetailsButtonStyles);

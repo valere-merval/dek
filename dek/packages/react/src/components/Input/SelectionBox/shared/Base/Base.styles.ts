@@ -10,48 +10,39 @@ import {
   errorColorMap,
 } from "./mappings";
 import { CardFilled, CardFilledColor } from "../../../../Card/CardFilled";
-import { HeaderImageWrapper } from "../../../../Card/CardFilled/CardFilled.styles";
 import { Text } from "../../../../Typography/Text/Text";
 import { Brand, getFocusStyles } from "../../../../../theme/theme";
 import { textColorMixin } from "../../../../Typography/themeBackgroundColorMapping";
 import { TypographyVariant } from "../../../../Typography/Typography";
 import { up } from "../../../../../theme/mappings/mediaBreakpoints";
+import { HeaderImageWrapper } from "../../../../Card/CardFilled/CardFilled.styles";
 
 export const Root = styled(CardFilled.Root)`
   ${({ theme }) => {
     const brand = theme.contextSpecific.brand;
-    const congstarWebOffsetMobile = theme.space[20];
-    const congstarWebOffsetDesktop = theme.space[24];
-    const headerImageBleedMobile = `calc(${congstarWebOffsetMobile} * -1 + ${theme.space["04"]})`;
-    const headerImageBleedDesktop = `calc(${congstarWebOffsetDesktop} * -1 + ${theme.space["04"]})`;
+
     return css`
       position: relative;
       background-color: ${theme.color[
         boxColorMapping[theme.contextSpecific.backgroundColor].backgroundColor
       ]};
       cursor: pointer;
+
       ${brand === "congstarWeb"
-        ? css`
-            &:has(${HeaderImageWrapper}) {
-              padding-left: ${congstarWebOffsetMobile};
-              padding-right: ${congstarWebOffsetMobile};
-
-              ${HeaderImageWrapper} {
-                margin-right: ${headerImageBleedMobile};
-                margin-left: ${headerImageBleedMobile};
-              }
-
-              ${up("md")} {
-                padding-left: ${congstarWebOffsetDesktop};
-                padding-right: ${congstarWebOffsetDesktop};
-
-                ${HeaderImageWrapper} {
-                  margin-right: ${headerImageBleedDesktop};
-                  margin-left: ${headerImageBleedDesktop};
-                }
-              }
-            }
-          `
+        ? `padding-left: ${theme.space[20]};
+        padding-right: ${theme.space[20]};
+        ${HeaderImageWrapper} {
+        margin-right: calc(${theme.space[20]} * -1 + ${theme.space["04"]});
+        margin-left: calc(${theme.space[20]} * -1 + ${theme.space["04"]});
+      }
+      ${up("md")} {
+        padding-left: ${theme.space[24]};
+        padding-right: ${theme.space[24]};
+        ${HeaderImageWrapper} {
+        margin-right: calc(${theme.space[24]} * -1 + ${theme.space["04"]});
+        margin-left: calc(${theme.space[24]} * -1 + ${theme.space["04"]});
+      }
+      };`
         : ``}
       @media (hover: hover) {
         &:hover {

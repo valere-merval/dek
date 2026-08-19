@@ -26,6 +26,24 @@ describe("normalizeSegments", () => {
     ]);
   });
 
+  it("uses an href override without affecting subsequent segments", () => {
+    const segments = normalizeSegments(
+      [
+        {
+          segment: "geraete",
+          href: "https://www.congstar.de/handys/",
+        },
+        { segment: "apple" },
+      ],
+      "https://www.congstar.de",
+    );
+
+    expect(segments.map(({ href }) => href)).toEqual([
+      "https://www.congstar.de/handys/",
+      "https://www.congstar.de/geraete/apple/",
+    ]);
+  });
+
   it("uses explicit labels and carries interaction props through", () => {
     const onPress = () => undefined;
     const segments = normalizeSegments(
@@ -90,11 +108,15 @@ describe("getMobileCollapsedIndices", () => {
 });
 
 describe("serializeBreadcrumbListJsonLd", () => {
-  it("serializes the complete schema.org path", () => {
+  it("serializes the complete schema.org path with href overrides", () => {
     const segments = normalizeSegments(
       [
         { segment: "geraete", label: "Geräte mit Vertrag" },
-        { segment: "apple", label: "Apple" },
+        {
+          segment: "apple",
+          label: "Apple",
+          href: "https://www.congstar.de/apple/",
+        },
       ],
       "https://www.congstar.de",
     );
@@ -127,7 +149,7 @@ describe("serializeBreadcrumbListJsonLd", () => {
           "@type": "ListItem",
           position: 3,
           name: "Apple",
-          item: "https://www.congstar.de/geraete/apple/",
+          item: "https://www.congstar.de/apple/",
         },
       ],
     });

@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TableComparison } from "./TableComparison";
+import type { TableComparisonProps } from "./TableComparison.types";
 import {
   plansMock,
   plansMockOnlyTwo,
   plansMockPhone,
+  routersMock,
 } from "./TableComparison.mock";
 import { AllowedBackgroundColors } from "../../../theme/theme";
 
@@ -36,8 +38,6 @@ export const Default: Story = {
     placeholder: "congstar Zuhause Flex",
     title: "congstar Zuhause Flex",
   },
-
-  render: (args) => <TableComparison {...args} />,
 };
 
 export const WithOnlyTwoPlans: Story = {
@@ -46,7 +46,6 @@ export const WithOnlyTwoPlans: Story = {
     placeholder: "congstar Zuhause Flex",
     title: "congstar Zuhause Flex",
   },
-  render: (args) => <TableComparison {...args} />,
 };
 
 export const WithoutSticky: Story = {
@@ -56,7 +55,6 @@ export const WithoutSticky: Story = {
     placeholder: "congstar Zuhause Flex",
     title: "congstar Zuhause Flex",
   },
-  render: (args) => <TableComparison {...args} />,
 };
 
 export const WithOnlyTwoPlansWithoutSticky: Story = {
@@ -66,7 +64,6 @@ export const WithOnlyTwoPlansWithoutSticky: Story = {
     placeholder: "congstar Zuhause Flex",
     title: "congstar Zuhause Flex",
   },
-  render: (args) => <TableComparison {...args} />,
 };
 
 export const WithVerticalImages: Story = {
@@ -75,6 +72,19 @@ export const WithVerticalImages: Story = {
     placeholder: "congstar Zuhause Flex",
     title: "congstar Zuhause Flex",
   },
+};
 
-  render: (args) => <TableComparison {...args} />,
+export const WithThirdColumn: Story = {
+  args: {
+    data: routersMock,
+    showThirdColumn: true,
+    placeholder: "Router-Option",
+    title: "Mit Router oder ohne?",
+  },
+  render: (args: TableComparisonProps) => (
+    <TableComparison
+      key={args.showThirdColumn ? "three-columns" : "two-columns"}
+      {...args}
+    />
+  ),
 };

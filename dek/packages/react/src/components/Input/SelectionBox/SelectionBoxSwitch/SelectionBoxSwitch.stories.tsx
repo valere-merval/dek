@@ -40,11 +40,12 @@ export const Default: Story = {
     moreDetails: (
       <ButtonMoreDetails
         role="link"
-        linkText="Details und Rücknahmekonditionen"
         onClick={() => {
           alert("mehr details");
         }}
-      />
+      >
+        Details und Rücknahmekonditionen
+      </ButtonMoreDetails>
     ),
   },
 };
@@ -77,7 +78,9 @@ export const WithModal: Story = {
           },
         ]}
         trigger={
-          <ButtonMoreDetails linkText="Details und Rücknahmekonditionen" />
+          <ButtonMoreDetails>
+            Details und Rücknahmekonditionen
+          </ButtonMoreDetails>
         }
       />
     ),

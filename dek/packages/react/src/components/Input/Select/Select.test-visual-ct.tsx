@@ -239,6 +239,19 @@ test.describe("Should render select component within a modal", () => {
 test.describe("Accessibility", () => {
   test.use(viewportWithAlteredHeight("sm", 600));
 
+  test("exposes the selected option to assistive technology", async ({
+    mount,
+    selectPage,
+  }) => {
+    await mount(<stories.Default />);
+    await selectPage.trigger.click();
+    await selectPage.item.click();
+    await selectPage.trigger.click();
+
+    await expect(selectPage.item).toHaveAttribute("aria-selected", "true");
+    await expect(selectPage.item).toBeFocused();
+  });
+
   test("highContrast and light mode", async ({ mount, selectPage }) => {
     await selectPage.page.emulateMedia({
       forcedColors: "active",

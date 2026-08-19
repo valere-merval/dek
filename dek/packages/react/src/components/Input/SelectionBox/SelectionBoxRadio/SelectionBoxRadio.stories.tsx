@@ -14,8 +14,8 @@ import { ButtonPrimary } from "../../../Button/ButtonPrimary";
 import { ButtonSecondary } from "../../../Button/ButtonSecondary";
 
 const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
-  congstarWeb: ["black", "white", "darkGrey", "lightGrey"],
-  congstarApp: ["black", "white", "darkGrey", "lightGrey"],
+  congstarWeb: ["black", "white"],
+  congstarApp: ["black", "white"],
   ja: ["jaGeneralWhite"],
   penny: ["pennyNeutralWhite"],
 };
@@ -98,11 +98,12 @@ export const WithLinks: Story = {
       >
         <ButtonMoreDetails
           role="link"
-          linkText="Zu den Tarifdetails"
           onClick={() => {
             alert("Zu den Tarifdetails");
           }}
-        />
+        >
+          Zu den Tarifdetails
+        </ButtonMoreDetails>
       </SelectionBoxRadio.Item>
       <SelectionBoxRadio.Item
         value="option-2"
@@ -114,22 +115,25 @@ export const WithLinks: Story = {
             onClick={() => {
               alert("Zu den Tarifdetails");
             }}
-            linkText="Zu den Tarifdetails"
-          />
+          >
+            Zu den Tarifdetails
+          </ButtonMoreDetails>
           <ButtonMoreDetails
             role="link"
             onClick={() => {
               alert("Zu den Gerätedetails");
             }}
-            linkText="Zu den Gerätedetails"
-          />
+          >
+            Zu den Gerätedetails
+          </ButtonMoreDetails>
           <ButtonMoreDetails
             role="link"
             onClick={() => {
               alert("Zu den Konditionen");
             }}
-            linkText="Zu den Konditionen"
-          />
+          >
+            Zu den Konditionen
+          </ButtonMoreDetails>
         </>
       </SelectionBoxRadio.Item>
     </SelectionBoxRadio.Group>
@@ -441,11 +445,12 @@ export const Duration: Story = {
           },
           moreDetails: (
             <ButtonMoreDetails
-              linkText="Zu den Tarifdetails"
               onClick={() => {
                 alert("mehr details");
               }}
-            />
+            >
+              Zu den Tarifdetails
+            </ButtonMoreDetails>
           ),
         }}
       />

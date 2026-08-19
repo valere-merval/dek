@@ -1,6 +1,9 @@
 import styled, { css, keyframes } from "styled-components";
 import { up } from "../../../theme/mappings/mediaBreakpoints";
 import { colorMap } from "./mappings";
+import { Text } from "../../Typography/Text";
+import { TableRowBody } from "./components/TableRowBody";
+import { TableCell } from "./components/TableCell";
 
 export const Root = styled.div(
   ({ theme }) => css`
@@ -48,10 +51,34 @@ export const Head = styled.div<{
   `,
 );
 
+export const HeadRowContainer = styled(TableRowBody)(
+  () => css`
+    display: block;
+  `,
+);
+
+export const HeadRow = styled.div(
+  () => css`
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+  `,
+);
+
+export const HeadPriceCell = styled(TableCell)`
+  justify-content: flex-start;
+`;
+
 export const ItemTitle = styled.div(
   ({ theme }) => css`
     text-align: center;
     padding: ${theme.space["16"]} 0;
+  `,
+);
+
+export const HeadlineWrapper = styled.div(
+  ({ theme }) => css`
+    margin-bottom: ${theme.space["04"]};
   `,
 );
 
@@ -64,6 +91,7 @@ export const SelectWrapper = styled.div(
     align-items: center;
     flex-direction: column;
     gap: ${theme.space["12"]};
+    margin-bottom: ${theme.space["12"]};
     ${up("md")} {
       padding: 0;
       max-width: 320px;
@@ -79,18 +107,4 @@ export const Form = styled.form(
   `,
 );
 
-export const ItemGroup = styled.div(
-  ({ theme }) => css`
-    font: ${theme.typography.BodyLight16};
-    text-align: center;
-  `,
-);
-
-export const Price = styled.div(
-  ({ theme }) => css`
-    font: ${theme.typography.BodyLight14};
-    ${up("md")} {
-      font: ${theme.typography.BodyLight16};
-    }
-  `,
-);
+export const Price = styled(Text)(() => css``);

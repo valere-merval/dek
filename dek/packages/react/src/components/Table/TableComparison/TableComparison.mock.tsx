@@ -22,8 +22,10 @@ export const plan50: TableComparisonItem = {
   name: "congstar zuhause 50 Flex",
   value: "50 MBit/s",
   id: 1,
-  price: 20,
-  billingPeriod: BillingPeriod.MONTHLY,
+  price: {
+    price: 20,
+    billingPeriod: BillingPeriod.MONTHLY,
+  },
   rows: [
     {
       title: "Gerät",
@@ -56,8 +58,10 @@ export const plan100: TableComparisonItem = {
   name: "congstar zuhause 100 Flex",
   value: "100 MBit/s",
   id: 2,
-  price: 35,
-  billingPeriod: BillingPeriod.MONTHLY,
+  price: {
+    price: 35,
+    billingPeriod: BillingPeriod.MONTHLY,
+  },
   rows: [
     {
       title: "Download Geschwindigkeit",
@@ -91,8 +95,10 @@ export const plan250: TableComparisonItem = {
   name: "congstar zuhause 250 Flex",
   value: "250 MBit/s",
   id: 3,
-  price: 45,
-  billingPeriod: BillingPeriod.MONTHLY,
+  price: {
+    price: 45,
+    billingPeriod: BillingPeriod.MONTHLY,
+  },
   rows: [
     {
       title: "Download Geschwindigkeit",
@@ -122,8 +128,10 @@ export const plan50Phone: TableComparisonItem = {
   name: "congstar zuhause 50 Flex",
   value: "50 MBit/s",
   id: 1,
-  price: 20,
-  billingPeriod: BillingPeriod.MONTHLY,
+  price: {
+    price: 20,
+    billingPeriod: BillingPeriod.MONTHLY,
+  },
   rows: [
     {
       title: "Gerät",
@@ -156,8 +164,10 @@ export const plan100Phone: TableComparisonItem = {
   name: "congstar zuhause 100 Flex",
   value: "100 MBit/s",
   id: 2,
-  price: 35,
-  billingPeriod: BillingPeriod.MONTHLY,
+  price: {
+    price: 35,
+    billingPeriod: BillingPeriod.MONTHLY,
+  },
   rows: [
     {
       title: "Gerät",
@@ -191,6 +201,93 @@ export const plan100Phone: TableComparisonItem = {
   ],
 };
 
+export const routerRent: TableComparisonItem = {
+  name: "bei congstar mieten",
+  value: "bei congstar mieten",
+  id: 4,
+  price: {
+    price: 5,
+    billingPeriod: BillingPeriod.MONTHLY,
+  },
+  rows: [
+    {
+      title: "Plug & Play",
+      state: "available",
+    },
+    {
+      title: "Kompatibilität",
+      state: "available",
+    },
+    {
+      title: "Rundum Service von congstar",
+      state: "available",
+    },
+    {
+      title: "Kostenlose Hardware upgrades",
+      state: "available",
+    },
+  ],
+};
+
+export const routerBuy: TableComparisonItem = {
+  name: "bei congstar kaufen",
+  value: "bei congstar kaufen",
+  id: 5,
+  price: {
+    price: 129,
+    billingPeriod: BillingPeriod.ONE_TIME,
+  },
+  rows: [
+    {
+      title: "Plug & Play",
+      state: "available",
+    },
+    {
+      title: "Kompatibilität",
+      state: "available",
+    },
+    {
+      title: "Rundum Service von congstar",
+      state: "available",
+    },
+    {
+      title: "Kostenlose Hardware upgrades",
+      state: "not-available",
+    },
+  ],
+};
+
+export const routerOwn: TableComparisonItem = {
+  name: "eigener Router",
+  value: "eigener Router",
+  id: 6,
+  price: {
+    priceUnknown: true,
+  },
+  rows: [
+    {
+      title: "Plug & Play",
+      state: "not-available",
+    },
+    {
+      title: "Kompatibilität",
+      link: {
+        asChild: true,
+        children: <a href="https://www.congstar.de">Routercheck</a>,
+      },
+    },
+    {
+      title: "Rundum Service von congstar",
+      state: "not-available",
+    },
+    {
+      title: "Kostenlose Hardware upgrades",
+      state: "not-available",
+    },
+  ],
+};
+
 export const plansMock = [plan50, plan100, plan250];
 export const plansMockOnlyTwo = [plan50, plan100];
 export const plansMockPhone = [plan50Phone, plan100Phone, plan250];
+export const routersMock = [routerRent, routerBuy, routerOwn];

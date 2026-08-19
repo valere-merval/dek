@@ -18,6 +18,11 @@ export interface BreadcrumbSegmentObject {
    */
   label?: string;
   /**
+   * Overrides the URL generated from `baseUrl` and the cumulative path for
+   * this segment. Later URLs continue to use the raw `segment` values.
+   */
+  href?: string;
+  /**
    * Called (in addition to navigation) when the segment link is pressed, e.g.
    * for tracking.
    */
@@ -51,7 +56,7 @@ export interface BreadcrumbProps extends Omit<
   path: [BreadcrumbSegmentObject, ...BreadcrumbSegmentObject[]];
   /**
    * Absolute base URL used to build both visible segment links and JSON-LD item
-   * URLs, e.g. `"https://www.congstar.de"`.
+   * URLs without an explicit `href`, e.g. `"https://www.congstar.de"`.
    */
   baseUrl: string;
   /**

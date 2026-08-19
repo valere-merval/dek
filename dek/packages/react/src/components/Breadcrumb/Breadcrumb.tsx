@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef, ElementRef, useRef, useState } from "react";
 import type { BreadcrumbProps } from "./Breadcrumb.types";
 import * as Styled from "./Breadcrumb.styles";

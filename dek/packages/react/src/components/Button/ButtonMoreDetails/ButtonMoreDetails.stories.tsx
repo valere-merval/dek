@@ -10,11 +10,6 @@ const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
 const meta = {
   component: ButtonMoreDetails,
   argTypes: {
-    linkText: {
-      control: {
-        type: "text",
-      },
-    },
     size: {
       control: {
         type: "radio",
@@ -40,9 +35,23 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const AlternateLinkText: Story = {
+export const AsAnchor: Story = {
   args: {
-    linkText: "Zum Router Check",
+    asChild: true,
+    children: <a href="https://www.congstar.de">Mehr Details</a>,
+  },
+};
+
+export const AlternateText: Story = {
+  args: {
+    children: "Zum Router Check",
+    linkText: "Deprecated label",
+  },
+};
+
+export const DeprecatedLinkText: Story = {
+  args: {
+    linkText: "Deprecated label",
   },
 };
 

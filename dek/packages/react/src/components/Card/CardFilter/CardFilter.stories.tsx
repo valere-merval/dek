@@ -41,7 +41,7 @@ export const Default: Story = {
       alert(`value is: ${value}`);
     },
     moreDetails: (
-      <ButtonMoreDetails linkText="Details und Rücknahmekonditionen" />
+      <ButtonMoreDetails>Details und Rücknahmekonditionen</ButtonMoreDetails>
     ),
   },
   render: (args) => (
@@ -64,7 +64,7 @@ export const WithoutIcon: Story = {
       alert(`value is: ${value}`);
     },
     moreDetails: (
-      <ButtonMoreDetails linkText="Details und Rücknahmekonditionen" />
+      <ButtonMoreDetails>Details und Rücknahmekonditionen</ButtonMoreDetails>
     ),
   },
   render: (args) => (
@@ -102,7 +102,9 @@ export const WithModal: Story = {
           },
         ]}
         trigger={
-          <ButtonMoreDetails linkText="Details und Rücknahmekonditionen" />
+          <ButtonMoreDetails>
+            Details und Rücknahmekonditionen
+          </ButtonMoreDetails>
         }
       />
     ),

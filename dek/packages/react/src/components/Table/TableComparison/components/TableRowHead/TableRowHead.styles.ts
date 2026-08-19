@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { colorMap } from "./mappings";
 import { TableRowBody } from "../TableRowBody";
 import { up } from "../../../../../theme/mappings/mediaBreakpoints";
+import { Text } from "../../../../Typography/Text";
 
 export const Root = styled(TableRowBody)(
   ({ theme }) => css`
@@ -17,13 +18,12 @@ export const Root = styled(TableRowBody)(
   `,
 );
 
-export const RowHeader = styled.div(
+export const RowHeader = styled(Text)(
   ({ theme }) => css`
     display: flex;
     gap: ${theme.space["08"]};
     justify-content: center;
     align-items: center;
-    font: ${theme.typography.BodyBold16};
     width: 100%;
   `,
 );

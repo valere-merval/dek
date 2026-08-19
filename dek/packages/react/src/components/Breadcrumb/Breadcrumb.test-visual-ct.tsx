@@ -128,6 +128,23 @@ test("uses home.ariaLabel independently from the JSON-LD home name", async ({
   ).toHaveAttribute("href", "https://www.congstar.de");
 });
 
+test("uses segment link props and href overrides", async ({
+  mount,
+  breadcrumbPage,
+}) => {
+  await mount(<stories.WithLinkPropsPerSegment />);
+
+  const appleLink = breadcrumbPage.page.getByRole("link", { name: "Apple" });
+  await expect(appleLink).toHaveAttribute(
+    "href",
+    "https://www.congstar.de/apple/custom-url/",
+  );
+  await expect(appleLink).toHaveAttribute("data-tealium-rel", "bc-apple");
+  const currentSegment = breadcrumbPage.page.locator('[aria-current="page"]');
+  await expect(currentSegment).toContainText("iPhone 15 Pro Max");
+  await expect(currentSegment).not.toHaveAttribute("href", /.+/);
+});
+
 test("renders the complete focus ring inside the scroll container", async ({
   mount,
   breadcrumbPage,

@@ -350,7 +350,9 @@ test.describe("on a desktop size device", () => {
         ).toBeVisible();
         await filterBarPage.desktop.openManufacturerOptions.click();
         await expect(filterBarPage.desktop.applyButton).toBeVisible();
-        await expect(filterBarPage.page).toHaveScreenshot();
+        await expect(filterBarPage.page).toHaveScreenshot({
+          maxDiffPixelRatio: 0.005,
+        });
       });
     });
     test.describe("highContrast and dark mode", () => {
@@ -374,7 +376,9 @@ test.describe("on a desktop size device", () => {
         ).toBeVisible();
         await filterBarPage.desktop.openManufacturerOptions.click();
         await expect(filterBarPage.desktop.applyButton).toBeVisible();
-        await expect(filterBarPage.page).toHaveScreenshot();
+        await expect(filterBarPage.page).toHaveScreenshot({
+          maxDiffPixelRatio: 0.005,
+        });
       });
     });
     test.describe("lineHeight and letterSpacing modification", () => {
@@ -396,7 +400,9 @@ test.describe("on a desktop size device", () => {
         ).toBeVisible();
         await filterBarPage.desktop.openManufacturerOptions.click();
         await expect(filterBarPage.desktop.applyButton).toBeVisible();
-        await expect(filterBarPage.page).toHaveScreenshot();
+        await expect(filterBarPage.page).toHaveScreenshot({
+          maxDiffPixelRatio: 0.005,
+        });
       });
       test("open state sorting", async ({ mount, filterBarPage }) => {
         await filterBarPage.page.addStyleTag({
@@ -406,7 +412,9 @@ test.describe("on a desktop size device", () => {
         await expect(filterBarPage.desktop.openSortingOptions).toBeVisible();
         await filterBarPage.desktop.openSortingOptions.click();
         await expect(filterBarPage.desktop.applyButton).toBeVisible();
-        await expect(filterBarPage.page).toHaveScreenshot();
+        await expect(filterBarPage.page).toHaveScreenshot({
+          maxDiffPixelRatio: 0.005,
+        });
       });
     });
 

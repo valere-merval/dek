@@ -12,8 +12,11 @@ export const Root = styled(TableBasic.Cell)(
     text-align: center;
     gap: ${theme.space["08"]};
     width: 100%;
+    min-width: 0;
+    min-height: calc(1lh + 1px);
     padding: 0 ${theme.space["16"]};
-    &:not(:first-child) {
+
+    & + & {
       border-left: 2px solid
         ${theme.color[
           colorMap[theme.contextSpecific.backgroundColor].borderColor

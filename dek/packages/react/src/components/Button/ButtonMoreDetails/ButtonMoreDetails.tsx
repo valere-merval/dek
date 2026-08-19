@@ -10,6 +10,7 @@ export const ButtonMoreDetails = forwardRef<
 >(
   (
     {
+      children,
       onClick,
       linkText,
       size = "medium",
@@ -29,13 +30,13 @@ export const ButtonMoreDetails = forwardRef<
       <Styled.Button
         onClick={handleClick}
         ref={ref}
-        type="button"
+        type={!rest.asChild ? "button" : undefined}
         {...rest}
         {...(inheritFont
           ? { $size: undefined, $inheritFont: true }
           : { $size: size, $inheritFont: undefined })}
       >
-        {linkText ? linkText : "Mehr Details"}
+        {children ?? (linkText || "Mehr Details")}
       </Styled.Button>
     );
   },

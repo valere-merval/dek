@@ -15,8 +15,8 @@ import { FileOutline } from "@fair/icons";
 import { useState } from "react";
 
 const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
-  congstarWeb: ["black", "white", "darkGrey", "lightGrey"],
-  congstarApp: ["black", "white", "darkGrey", "lightGrey"],
+  congstarWeb: ["black", "white"],
+  congstarApp: ["black", "white"],
   ja: ["jaGeneralWhite"],
   penny: ["pennyNeutralWhite"],
 };
@@ -134,11 +134,12 @@ export const WithLinks: Story = {
       >
         <ButtonMoreDetails
           role="link"
-          linkText="Link 1"
           onClick={() => {
             alert("mehr details");
           }}
-        />
+        >
+          Link 1
+        </ButtonMoreDetails>
       </SelectionBoxCheckbox.Item>
       <SelectionBoxCheckbox.Item
         value="option-2"
@@ -150,22 +151,25 @@ export const WithLinks: Story = {
             onClick={() => {
               alert("mehr details 1");
             }}
-            linkText="Link 1"
-          />
+          >
+            Link 1
+          </ButtonMoreDetails>
           <ButtonMoreDetails
             role="link"
             onClick={() => {
               alert("mehr details 2");
             }}
-            linkText="Link 2"
-          />
+          >
+            Link 2
+          </ButtonMoreDetails>
           <ButtonMoreDetails
             role="link"
             onClick={() => {
               alert("mehr details 3");
             }}
-            linkText="Link 3"
-          />
+          >
+            Link 3
+          </ButtonMoreDetails>
         </>
       </SelectionBoxCheckbox.Item>
     </SelectionBoxCheckbox.Group>
@@ -332,11 +336,12 @@ export const TextVariation: Story = {
       >
         <ButtonMoreDetails
           role="link"
-          linkText="Zu den Tarifdetails"
           onClick={() => {
             alert("mehr details 1");
           }}
-        />{" "}
+        >
+          Zu den Tarifdetails
+        </ButtonMoreDetails>
       </SelectionBoxCheckbox.Item>
     </SelectionBoxCheckbox.Group>
   ),

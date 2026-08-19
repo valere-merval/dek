@@ -20,11 +20,6 @@ import { backgroundColorMapping } from "../../../theme/theme";
 
 const COUNTER_NAME = "stepper";
 
-export const IndicatorShell = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
 export const StepperList = styled.ul<StepperRootProps>(
   () => css`
     all: unset;
@@ -37,7 +32,7 @@ export const StepperList = styled.ul<StepperRootProps>(
 );
 
 export const StepperIndicator = styled.div<
-  ConvertToTransient<Omit<StepperIndicatorProps, "step">, "state" | "checkout"> & {
+  ConvertToTransient<StepperIndicatorProps, "state"> & {
     $size?: StepperSize;
   }
 >(({ theme, $state, $size }) => {
@@ -50,6 +45,7 @@ export const StepperIndicator = styled.div<
   const iconDimensionsLarge =
     theme.size[itemSizeMap[$size || "large"].iconDimension];
   const accentColor = theme.color[accentColorMap[theme.contextSpecific.brand]];
+  const fontMapForBrand = itemFontMap[theme.contextSpecific.brand];
 
   return css`
     all: unset;
@@ -57,7 +53,7 @@ export const StepperIndicator = styled.div<
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    position: relative;
+
     border: 1px solid ${accentColor};
     border-radius: 50%;
 
@@ -65,6 +61,8 @@ export const StepperIndicator = styled.div<
     background-color: ${theme.color[
       backgroundColorMapping[theme.contextSpecific.backgroundColor]
     ]};
+
+    ${trimFont(fontMapForBrand[$size || "medium"])};
 
     height: ${indicatorDimensionsMedium};
     min-width: ${indicatorDimensionsMedium};
@@ -77,6 +75,8 @@ export const StepperIndicator = styled.div<
     }
 
     ${up("md")} {
+      ${trimFont(fontMapForBrand[$size || "large"])};
+
       height: ${indicatorDimensionsLarge};
       min-width: ${indicatorDimensionsLarge};
       max-width: ${indicatorDimensionsLarge};
@@ -170,7 +170,6 @@ export const IndicatorText = styled.span<{
   const fontMapForBrand = itemFontMap[theme.contextSpecific.brand];
 
   return css`
-    all: unset;
     ${$checkout
       ? generateStepTextStyle(
           theme,
@@ -182,11 +181,5 @@ export const IndicatorText = styled.span<{
           fontMapForBrand[$size || "medium"],
           fontMapForBrand[$size || "large"],
         )}
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
   `;
 });

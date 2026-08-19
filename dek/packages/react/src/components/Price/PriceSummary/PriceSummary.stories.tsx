@@ -123,10 +123,11 @@ export const PostpaidWithBonus: Story = {
               Fixkosten gutgeschrieben.
             </Text>
             <ButtonMoreDetails
-              linkText="Details zur Bonus-Summe"
               role="link"
               onClick={() => alert("More details clicked")}
-            />
+            >
+              Details zur Bonus-Summe
+            </ButtonMoreDetails>
           </>
         ),
       },

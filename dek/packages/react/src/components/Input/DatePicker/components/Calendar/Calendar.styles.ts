@@ -1,8 +1,13 @@
-import { Button, Calendar as AriaCalendar } from "react-aria-components";
+import {
+  Button,
+  Calendar as AriaCalendar,
+  CalendarProps,
+  DateValue,
+} from "react-aria-components";
 import styled, { css } from "styled-components";
 import { highContrast } from "../../../../../utils/accessibility";
 
-export const Calendar = styled(AriaCalendar)(
+export const Calendar = styled(AriaCalendar)<CalendarProps<DateValue>>(
   ({ theme }) => css`
     width: fit-content;
     max-width: 100%;

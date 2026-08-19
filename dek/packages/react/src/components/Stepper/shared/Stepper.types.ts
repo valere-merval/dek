@@ -28,7 +28,6 @@ export interface StepperIndicatorProps
   state: StepperItemState;
   step: number;
   checkout?: boolean;
-  a11yHidden?: boolean;
 }
 
 export interface StepperContentProps
