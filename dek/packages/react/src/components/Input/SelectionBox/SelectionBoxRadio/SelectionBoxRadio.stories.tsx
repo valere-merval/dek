@@ -12,9 +12,6 @@ import { BillingPeriod } from "../../../../utils/pricing";
 import { List } from "../../../List";
 import { ButtonPrimary } from "../../../Button/ButtonPrimary";
 import { ButtonSecondary } from "../../../Button/ButtonSecondary";
-import { Decorator } from "@storybook/react-vite";
-import { ThemeProvider } from "../../../../theme/ThemeProvider";
-import { BackgroundColor } from "../../../../theme/theme";
 
 const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
   congstarWeb: ["black", "white", "darkGrey", "lightGrey"],
@@ -23,31 +20,8 @@ const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
   penny: ["pennyNeutralWhite"],
 };
 
-const surfaceThemeByBackgroundColor: Partial<
-  Record<BackgroundColor, BackgroundColor>
-> = {
-  darkGrey: "lightGrey",
-  lightGrey: "white",
-};
-
-const withReadableSelectionBoxSurface: Decorator = (Story, context) => {
-  const backgroundColor = context.globals
-    .backgroundColor as BackgroundColor | undefined;
-  const surfaceBackgroundColor =
-    surfaceThemeByBackgroundColor[backgroundColor ?? "white"] ??
-    backgroundColor ??
-    "white";
-
-  return (
-    <ThemeProvider backgroundColor={surfaceBackgroundColor}>
-      <Story />
-    </ThemeProvider>
-  );
-};
-
 const meta = {
   component: SelectionBoxRadio.Group,
-  decorators: [withReadableSelectionBoxSurface],
   parameters: {
     allowedBackgroundColors,
   },
