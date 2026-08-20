@@ -15,8 +15,8 @@ import { FileOutline } from "@fair/icons";
 import { useState } from "react";
 
 const allowedBackgroundColors: Partial<AllowedBackgroundColors> = {
-  congstarWeb: ["black", "white", "darkGrey", "lightGrey"],
-  congstarApp: ["black", "white", "darkGrey", "lightGrey"],
+  congstarWeb: ["black", "white"],
+  congstarApp: ["black", "white", "darkGrey"],
   ja: ["jaGeneralWhite"],
   penny: ["pennyNeutralWhite"],
 };

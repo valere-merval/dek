@@ -16,7 +16,7 @@ export const boxColorMapping: Record<
     colorIfSelected: "InteractiveBlue",
   },
   darkGrey: {
-    backgroundColor: "NeutralShape80",
+    backgroundColor: "NeutralSecondary30",
     colorIfSelected: "InteractiveBlue",
   },
   blue: {
