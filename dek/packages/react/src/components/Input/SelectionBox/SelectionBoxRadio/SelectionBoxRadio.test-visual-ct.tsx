@@ -109,6 +109,7 @@ testDescribeAllowedBackgrounds(
     congstarApp: {
       black: stories.WithCongstarAppBlackBackground,
       white: stories.WithCongstarAppWhiteBackground,
+      darkGrey: stories.WithCongstarAppDarkGreyBackground,
     },
     ja: {
       jaGeneralWhite: stories.WithJaJaGeneralWhiteBackground,
