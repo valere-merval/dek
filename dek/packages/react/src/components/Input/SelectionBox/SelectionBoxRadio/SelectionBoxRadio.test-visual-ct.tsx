@@ -6,6 +6,7 @@ import {
   viewports,
   testDescribeAllowedBackgrounds,
 } from "../../../../../playwright/fixtures";
+import type { BackgroundColor, Brand } from "../../../../theme/theme";
 import AxeBuilder from "@axe-core/playwright";
 
 const clickSelectionBoxOuterEdge = async (page: Page, control: Locator) => {
@@ -13,6 +14,38 @@ const clickSelectionBoxOuterEdge = async (page: Page, control: Locator) => {
   if (!box) throw new Error("SelectionBox control is not visible");
 
   await page.mouse.click(box.x - 8, box.y + box.height / 2);
+};
+
+const mobileScreenshotHeights: Partial<
+  Record<Brand, Partial<Record<BackgroundColor, number>>>
+> = {
+  congstarWeb: {
+    black: 540,
+    white: 540,
+  },
+  congstarApp: {
+    black: 550,
+    white: 550,
+  },
+  ja: {
+    jaGeneralWhite: 520,
+  },
+  penny: {
+    pennyNeutralWhite: 500,
+  },
+};
+
+const stabilizeMobileScreenshotHeight = async (
+  root: Locator,
+  brand: Brand,
+  backgroundColor: BackgroundColor,
+) => {
+  const height = mobileScreenshotHeights[brand]?.[backgroundColor] ?? 520;
+  await root.evaluate((element, rootHeight) => {
+    const htmlElement = element as HTMLElement;
+    htmlElement.style.height = `${rootHeight}px`;
+    htmlElement.style.overflow = "hidden";
+  }, height);
 };
 
 const test = base.extend<{
@@ -84,7 +117,7 @@ testDescribeAllowedBackgrounds(
       pennyNeutralWhite: stories.WithPennyPennyNeutralWhiteBackground,
     },
   },
-  (BackgroundStory) => {
+  (BackgroundStory, brand, backgroundColor) => {
     test(`Should render selectionBoxRadio`, async ({
       mount,
       selectionBoxRadioPage,
@@ -101,6 +134,11 @@ testDescribeAllowedBackgrounds(
       test(`on mobile`, async ({ mount, selectionBoxRadioPage }) => {
         await mount(<BackgroundStory />);
         await expect(selectionBoxRadioPage.root).toBeVisible();
+        await stabilizeMobileScreenshotHeight(
+          selectionBoxRadioPage.root,
+          brand,
+          backgroundColor,
+        );
         await expect(selectionBoxRadioPage.root).toHaveScreenshot();
       });
     });
