@@ -63,15 +63,14 @@ const extractHeadlineText = (children: ReactNode): string => {
   return "";
 };
 
-const injectHeadlineLevel = (
+const makeHeadlinePlain = (
   children: ReactNode,
-  level: "h1" | "h2" | "h3" | "h4" | "h5" | "h6",
 ): ReactNode => {
-  let headlineInjected = false;
+  let headlineAdjusted = false;
 
   const visit = (node: ReactNode): ReactNode => {
     if (
-      headlineInjected ||
+      headlineAdjusted ||
       !isValidElement<{ children?: ReactNode; as?: string }>(node)
     ) {
       return node;
@@ -84,8 +83,8 @@ const injectHeadlineLevel = (
           (node.type as { displayName?: string; name?: string }).name;
 
     if (typeName === "Headline") {
-      headlineInjected = true;
-      return cloneElement(node, { as: level });
+      headlineAdjusted = true;
+      return cloneElement(node, { as: "div" });
     }
 
     const nodeChildren = (node.props as { children?: ReactNode }).children;
@@ -140,17 +139,7 @@ export const Item = forwardRef<
   const { size } = useContext(StepperContext);
   const step = useContext(StepContext);
   const title = extractHeadlineText(children);
-  const headingLevel: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" =
-    step && step.index < 6
-      ? (["h1", "h2", "h3", "h4", "h5", "h6"][step.index] as
-          | "h1"
-          | "h2"
-          | "h3"
-          | "h4"
-          | "h5"
-          | "h6")
-      : "h6";
-  const labelledChildren = injectHeadlineLevel(children, headingLevel);
+  const plainChildren = makeHeadlinePlain(children);
   const ariaLabel = step
     ? `Schritt ${step.index + 1} von ${step.total}, ${stepStatusToTextMap[state]}, ${title}`
     : undefined;
@@ -164,13 +153,13 @@ export const Item = forwardRef<
       <StepperItemContext.Provider value={props}>
         <Stepper.Indicator
           state={state}
-          role="button"
+          role="img"
           tabIndex={0}
           aria-label={ariaLabel}
           suppressStepTextA11y
           step={(step?.index ?? 0) + 1}
         />
-        {labelledChildren}
+        {plainChildren}
       </StepperItemContext.Provider>
     </Styled.Item>
   );

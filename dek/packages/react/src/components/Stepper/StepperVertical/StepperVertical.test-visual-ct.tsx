@@ -52,29 +52,17 @@ const test = base.extend<{
     const stepItemPending = page.getByLabel(
       "Schritt 3 von 4, ausstehend, Versandvorbereitung",
     );
-    const stepItem1Title = page.getByRole("heading", {
-      name: "Auftragseingang",
-      level: 1,
+    const stepItem1Title = page.getByText("Auftragseingang", { exact: true });
+    const stepItem2Title = page.getByText("Anbieterwechsel", { exact: true });
+    const stepItem3Title = page.getByText("Auftragsbestätigung", {
+      exact: true,
     });
-    const stepItem2Title = page.getByRole("heading", {
-      name: "Anbieterwechsel",
-      level: 2,
+    const stepItem4Title = page.getByText("Starttermin", { exact: true });
+    const stepItemErrorTitle = page.getByText("Router-Versand", {
+      exact: true,
     });
-    const stepItem3Title = page.getByRole("heading", {
-      name: "Auftragsbestätigung",
-      level: 3,
-    });
-    const stepItem4Title = page.getByRole("heading", {
-      name: "Starttermin",
-      level: 4,
-    });
-    const stepItemErrorTitle = page.getByRole("heading", {
-      name: "Router-Versand",
-      level: 3,
-    });
-    const stepItemPendingTitle = page.getByRole("heading", {
-      name: "Versandvorbereitung",
-      level: 3,
+    const stepItemPendingTitle = page.getByText("Versandvorbereitung", {
+      exact: true,
     });
     const stepItem1Subtitle = page.getByText(
       "Dein Auftrag ist am 13.05.2024 bei uns eingegangen.",
